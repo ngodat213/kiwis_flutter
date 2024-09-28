@@ -43,7 +43,7 @@ abstract class BaseView<Controller extends BaseController>
         statusBarIconBrightness: Brightness.dark,
       ),
       child: Material(
-        color: Colors.transparent,
+        color: Colors.white,
         child: pageScaffold(context),
       ),
     );
@@ -63,9 +63,7 @@ abstract class BaseView<Controller extends BaseController>
   }
 
   Widget pageContent(BuildContext context) {
-    return SafeArea(
-      child: SingleChildScrollView(child: body(context)),
-    );
+    return SingleChildScrollView(child: body(context));
   }
 
   Widget showErrorSnackBar(String message) {

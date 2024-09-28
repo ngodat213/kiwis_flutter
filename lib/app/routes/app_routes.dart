@@ -3,22 +3,24 @@ part of 'app_pages.dart';
 
 abstract class Routes {
   Routes._();
-  static const SPLASH = _Paths.VIEWS + _Paths.SPLASH;
-  static const ONBOARDING = _Paths.VIEWS + _Paths.ONBOARDING;
-  static const HOME = _Paths.VIEWS + _Paths.HOME;
-  static const GROUP = _Paths.VIEWS + _Paths.GROUP;
-  static const EXPENSE = _Paths.VIEWS + _Paths.EXPENSE;
-  static const PROFILE = _Paths.VIEWS + _Paths.PROFILE;
-  static const SETTING = _Paths.VIEWS + _Paths.SETTING;
-  static const CHAT = _Paths.VIEWS + _Paths.CHAT;
-  static const MAP = _Paths.VIEWS + _Paths.MAP;
-  static const TOTAL_EXPENSE = _Paths.VIEWS + _Paths.TOTAL_EXPENSE;
-  static const ADD_INCOME = _Paths.VIEWS + _Paths.ADD_INCOME;
+  static const SPLASH = _Paths.SPLASH;
+  static const ONBOARDING = _Paths.ONBOARDING;
+  static const HOME = _Paths.HOME;
+  static const GROUP = _Paths.GROUP;
+  static const EXPENSE = _Paths.EXPENSE;
+  static const PROFILE = _Paths.PROFILE;
+  static const SETTING = _Paths.SETTING;
+  static const CHAT = _Paths.CHAT;
+  static const MAP = _Paths.MAP;
+  static const TOTAL_EXPENSE = _Paths.TOTAL_EXPENSE;
+  static const ADD_INCOME = _Paths.ADD_INCOME;
+  static const ADD_REMAINDER = _Paths.ADD_REMAINDER;
+  static const ADD_REMINDER = _Paths.ADD_REMINDER;
+  static const REMINDER = _Paths.REMINDER;
 }
 
 abstract class _Paths {
   _Paths._();
-  static const VIEWS = '/kiwi';
   static const SPLASH = '/splash';
   static const ONBOARDING = '/onboarding';
   static const HOME = '/home';
@@ -30,4 +32,7 @@ abstract class _Paths {
   static const MAP = '/map';
   static const TOTAL_EXPENSE = '/total-expense';
   static const ADD_INCOME = '/add-income';
+  static const ADD_REMAINDER = '/add-remainder';
+  static const ADD_REMINDER = '/add-reminder';
+  static const REMINDER = '/reminder';
 }

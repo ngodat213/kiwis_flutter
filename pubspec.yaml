@@ -61,6 +61,7 @@ dependencies:
   logger: ^2.4.0
   localize_and_translate: ^5.1.2
   rive: ^0.13.13
+  glass_kit: ^4.0.1
   
 dependency_overrides:
   flutter_svg: 1.1.6
@@ -137,3 +138,5 @@ flutter:
         - asset: assets/fonts/Montserrat-ThinItalic.otf
           weight: 100
           style: italic
+get_cli:
+  sub_folder: false

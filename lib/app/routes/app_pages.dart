@@ -16,6 +16,8 @@ import '../../views/onboarding/bindings/onboarding_binding.dart';
 import '../../views/onboarding/views/onboarding_view.dart';
 import '../../views/profile/bindings/profile_binding.dart';
 import '../../views/profile/views/profile_view.dart';
+import '../../views/reminder/bindings/reminder_binding.dart';
+import '../../views/reminder/views/reminder_view.dart';
 import '../../views/setting/bindings/setting_binding.dart';
 import '../../views/setting/views/setting_view.dart';
 import '../../views/splash/bindings/splash_binding.dart';
@@ -28,20 +30,13 @@ part 'app_routes.dart';
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.HOME;
+  static const INITIAL = _Paths.HOME;
 
   static final routes = [
     GetPage(
       name: _Paths.SPLASH,
       page: () => SplashView(),
       binding: SplashBinding(),
-      children: [
-        GetPage(
-          name: _Paths.SPLASH,
-          page: () => SplashView(),
-          binding: SplashBinding(),
-        ),
-      ],
     ),
     GetPage(
       name: _Paths.ONBOARDING,
@@ -92,6 +87,11 @@ class AppPages {
       name: _Paths.ADD_INCOME,
       page: () => AddIncomeView(),
       binding: AddIncomeBinding(),
+    ),
+    GetPage(
+      name: _Paths.REMINDER,
+      page: () => ReminderView(),
+      binding: ReminderBinding(),
     ),
   ];
 }

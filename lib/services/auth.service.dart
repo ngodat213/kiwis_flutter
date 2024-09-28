@@ -69,7 +69,7 @@ class AuthServices {
       // FirebaseService().firebaseMessaging.subscribeToTopic("${currentUser.id}");
       // FirebaseService()
       //     .firebaseMessaging
-      //     .subscribeToTopic("d_${currentUser.id}");
+      //     .subscribeToTo9pic("d_${currentUser.id}");
       // FirebaseService().firebaseMessaging.subscribeToTopic(currentUser.role);
 
       return currentUser;

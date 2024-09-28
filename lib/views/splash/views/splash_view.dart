@@ -8,16 +8,10 @@ class SplashView extends BaseView<SplashController> {
   SplashView({super.key});
   @override
   Widget body(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('SplashView'),
-        centerTitle: true,
-      ),
-      body: const Center(
-        child: Text(
-          'SplashView is working',
-          style: TextStyle(fontSize: 20),
-        ),
+    return Center(
+      child: Text(
+        'SplashView is working',
+        style: TextStyle(fontSize: 20),
       ),
     );
   }

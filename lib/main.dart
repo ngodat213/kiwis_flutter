@@ -20,7 +20,7 @@ void main() async {
       await LocalizeAndTranslate.init(
         defaultType: LocalizationDefaultType.asDefined,
         supportedLocales: AppLanguages.codes,
-        assetLoader: const AssetLoaderRootBundleJson('lib/locales/'),
+        assetLoader: const AssetLoaderRootBundleJson('assets/locales/'),
       );
 
       // Run app!
