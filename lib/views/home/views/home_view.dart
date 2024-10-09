@@ -16,33 +16,35 @@ class HomeView extends BaseView<HomeController> {
     return SafeArea(
       child: Stack(
         children: [
-          // Container(
-          //   decoration: BoxDecoration(
-          //     gradient: LinearGradient(
-          //       begin: Alignment.topRight,
-          //       end: Alignment.bottomLeft,
-          //       colors: [
-          //         Colors.blueAccent.withOpacity(0.1),
-          //         Colors.blueAccent.withOpacity(0.08),
-          //         Colors.blueAccent.withOpacity(0.06),
-          //         Colors.blueAccent.withOpacity(0.05),
-          //         Colors.black,
-          //         Colors.black,
-          //         Colors.black,
-          //         Colors.green.withOpacity(0.08),
-          //         Colors.green.withOpacity(0.1),
-          //         Colors.green.withOpacity(0.06),
-          //         Colors.green.withOpacity(0.05),
-          //       ],
-          //     ),
-          //   ),
-          // ),
-          // GlassContainer.clearGlass(),
-          Column(
-            children: [
-              ImagePost(),
-            ],
+          Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Color.fromRGBO(12, 11, 64, 0.8), // rgba(12,11,64,1) at 0%
+                  Color.fromRGBO(0, 0, 0, 1), // rgba(0,0,0,1) at 16%
+                  Color.fromRGBO(0, 0, 0, 1), // rgba(0,0,0,1) at 86%
+                  Color.fromRGBO(9, 23, 9, 1), // rgba(9,23,9,1) at 94%
+                  Color.fromRGBO(15, 55, 13, 1), // rgba(15,55,13,1) at 100%
+                ],
+                begin: Alignment.topRight,
+                end: Alignment.bottomLeft,
+                stops: [
+                  0.0,
+                  // 0.06,
+                  0.16,
+                  0.86,
+                  0.94,
+                  1.0
+                ], // Tỷ lệ tương ứng của màu
+              ),
+            ),
           ),
+          // GlassContainer.clearGlass(),
+          // Column(
+          //   children: [
+          //     ImagePost(),
+          //   ],
+          // ),
         ],
       ).wh(Get.width, Get.height),
     );

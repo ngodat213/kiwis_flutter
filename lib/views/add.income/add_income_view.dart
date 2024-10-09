@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:kiwis_flutter/core/base/base.view.dart';
 
-import '../controllers/add_income_controller.dart';
+import 'add_income_controller.dart';
 
 class AddIncomeView extends BaseView<AddIncomeController> {
   AddIncomeView({super.key});

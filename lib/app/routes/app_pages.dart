@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 
-import '../../views/add.income/bindings/add_income_binding.dart';
-import '../../views/add.income/views/add_income_view.dart';
+import '../../views/add.income/add_income_binding.dart';
+import '../../views/add.income/add_income_view.dart';
 import '../../views/chat/bindings/chat_binding.dart';
 import '../../views/chat/views/chat_view.dart';
 import '../../views/expense/bindings/expense_binding.dart';
