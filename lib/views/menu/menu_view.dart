@@ -1,0 +1,485 @@
+import 'package:flutter/material.dart' hide MenuController;
+import '../../core/app_export.dart';
+import '../../theme/custom_button_style.dart';
+import '../../widgets/app_bar/appbar_leading_iconbutton.dart';
+import '../../widgets/app_bar/appbar_title.dart';
+import '../../widgets/app_bar/custom_app_bar.dart';
+import '../../widgets/custom_elevated_button.dart';
+import '../../widgets/custom_icon_button.dart';
+import 'controller/menu_controller.dart'; // ignore_for_file: must_be_immutable
+
+class MenuScreen extends GetWidget<MenuController> {
+  const MenuScreen({Key? key})
+      : super(
+          key: key,
+        );
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Scaffold(
+        body: SizedBox(
+          width: double.maxFinite,
+          child: SingleChildScrollView(
+            child: Container(
+              height: 798.h,
+              child: Stack(
+                alignment: Alignment.bottomCenter,
+                children: [
+                  Align(
+                    alignment: Alignment.topCenter,
+                    child: _buildAppBar(),
+                  ),
+                  Container(
+                    width: double.maxFinite,
+                    margin: EdgeInsets.only(bottom: 48.h),
+                    padding: EdgeInsets.symmetric(horizontal: 24.h),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        _buildHeaderSection(),
+                        SizedBox(height: 16.h),
+                        _buildSavedPlacesRow(),
+                        SizedBox(height: 16.h),
+                        _buildPaymentSettingsRow(),
+                        _buildLanguageSettingsRow(),
+                        SizedBox(
+                          width: double.maxFinite,
+                          child: _buildAboutSectionRow(
+                            inboxOne: ImageConstant.imgLock,
+                            aboutOne: "msg_privacy_and_term".tr,
+                            applicationvers: "msg_change_password".tr,
+                          ),
+                        ),
+                        SizedBox(
+                          width: double.maxFinite,
+                          child: _buildAboutSectionRow(
+                            inboxOne: ImageConstant.imgInbox,
+                            aboutOne: "lbl_about".tr,
+                            applicationvers: "msg_application_version".tr,
+                          ),
+                        ),
+                        SizedBox(height: 62.h),
+                        CustomElevatedButton(
+                          text: "lbl_logout".tr,
+                          buttonStyle: CustomButtonStyles.fillOnPrimaryTL28,
+                        )
+                      ],
+                    ),
+                  ),
+                  CustomImageView(
+                    imagePath: ImageConstant.imgEllipse2005,
+                    height: 280.h,
+                    width: 274.h,
+                    alignment: Alignment.topRight,
+                  ),
+                  CustomImageView(
+                    imagePath: ImageConstant.imgEllipse2006Green600,
+                    height: 274.h,
+                    width: 344.h,
+                    alignment: Alignment.bottomLeft,
+                  )
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  /// Section Widget
+  Widget _buildAppBar() {
+    return Align(
+      alignment: Alignment.topCenter,
+      child: CustomAppBar(
+        leadingWidth: 68.h,
+        leading: AppbarLeadingIconbutton(
+          imagePath: ImageConstant.imgArrowLeftOnprimary,
+          margin: EdgeInsets.only(left: 24.h),
+          onTap: () {
+            onTapArrowleftone();
+          },
+        ),
+        title: AppbarTitle(
+          text: "lbl_menu".tr,
+          margin: EdgeInsets.only(left: 16.h),
+        ),
+      ),
+    );
+  }
+
+  /// Section Widget
+  Widget _buildHeaderSection() {
+    return SizedBox(
+      width: double.maxFinite,
+      child: Card(
+        clipBehavior: Clip.antiAlias,
+        elevation: 0,
+        margin: EdgeInsets.zero,
+        color: theme.colorScheme.onPrimary.withOpacity(0.05),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadiusStyle.roundedBorder24,
+        ),
+        child: Container(
+          height: 108.h,
+          width: double.maxFinite,
+          decoration: BoxDecoration(
+            color: theme.colorScheme.onPrimary.withOpacity(0.05),
+            borderRadius: BorderRadiusStyle.roundedBorder24,
+          ),
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              CustomImageView(
+                imagePath: ImageConstant.imgAvatar108x204,
+                height: 108.h,
+                width: 206.h,
+                radius: BorderRadius.circular(
+                  54.h,
+                ),
+                alignment: Alignment.centerLeft,
+              ),
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 24.h),
+                    width: double.maxFinite,
+                    child: Row(
+                      children: [
+                        CustomImageView(
+                          imagePath: ImageConstant.imgAvatar60x60,
+                          height: 60.h,
+                          width: 60.h,
+                          radius: BorderRadius.circular(
+                            30.h,
+                          ),
+                        ),
+                        SizedBox(width: 16.h),
+                        SizedBox(width: 16.h),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "lbl_hello".tr,
+                                style: theme.textTheme.labelLarge,
+                              ),
+                              Text(
+                                "lbl_samms".tr,
+                                style: theme.textTheme.titleLarge,
+                              )
+                            ],
+                          ),
+                        ),
+                        SizedBox(width: 16.h),
+                        SizedBox(width: 16.h),
+                        CustomImageView(
+                          imagePath: ImageConstant.imgBell,
+                          height: 20.h,
+                          width: 20.h,
+                        )
+                      ],
+                    ),
+                  )
+                ],
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  /// Section Widget
+  Widget _buildSavedPlacesRow() {
+    return SizedBox(
+      width: double.maxFinite,
+      child: Row(
+        children: [
+          Expanded(
+            child: Container(
+              padding: EdgeInsets.all(16.h),
+              decoration: BoxDecoration(
+                color: appTheme.green600,
+                borderRadius: BorderRadiusStyle.roundedBorder24,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CustomIconButton(
+                    height: 48.h,
+                    width: 48.h,
+                    padding: EdgeInsets.all(12.h),
+                    decoration: IconButtonStyleHelper.fillOnPrimaryTL24,
+                    child: CustomImageView(
+                      imagePath: ImageConstant.imgStarOnprimary,
+                    ),
+                  ),
+                  SizedBox(width: 12.h),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "lbl_saved_place".tr,
+                          style: theme.textTheme.bodySmall,
+                        ),
+                        Text(
+                          "lbl_1000".tr,
+                          style: theme.textTheme.titleLarge,
+                        )
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
+          SizedBox(width: 16.h),
+          Expanded(
+            child: Container(
+              padding: EdgeInsets.all(16.h),
+              decoration: BoxDecoration(
+                color: theme.colorScheme.primary,
+                borderRadius: BorderRadiusStyle.roundedBorder24,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CustomIconButton(
+                    height: 48.h,
+                    width: 48.h,
+                    padding: EdgeInsets.all(12.h),
+                    decoration: IconButtonStyleHelper.fillOnPrimaryTL24,
+                    child: CustomImageView(
+                      imagePath: ImageConstant.imgDollar,
+                    ),
+                  ),
+                  Expanded(
+                    child: Container(
+                      width: double.maxFinite,
+                      padding: EdgeInsets.only(right: 4.h),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Text(
+                            "lbl_total_payout".tr,
+                            style: theme.textTheme.bodySmall,
+                          ),
+                          Text(
+                            "lbl_10002".tr,
+                            style: theme.textTheme.titleLarge,
+                          )
+                        ],
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  /// Section Widget
+  Widget _buildPaymentSettingsRow() {
+    return Container(
+      padding: EdgeInsets.only(
+        top: 16.h,
+        bottom: 14.h,
+      ),
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            color: theme.colorScheme.onPrimary.withOpacity(0.05),
+            width: 1.h,
+          ),
+        ),
+      ),
+      width: double.maxFinite,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          CustomIconButton(
+            height: 48.h,
+            width: 48.h,
+            padding: EdgeInsets.all(12.h),
+            decoration: IconButtonStyleHelper.fillOnPrimaryTL24,
+            child: CustomImageView(
+              imagePath: ImageConstant.imgStack,
+            ),
+          ),  
+          SizedBox(width: 16.h),
+          Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "msg_payment_settings".tr,
+                    style: theme.textTheme.titleSmall,
+                  ),
+                Text(
+                  "lbl_02_card_added".tr,
+                  style: theme.textTheme.bodySmall,
+                )
+              ],
+            ),
+          ),
+          SizedBox(width: 16.h),
+          CustomElevatedButton(
+            height: 32.h,
+            width: 68.h,
+            text: "lbl_visa".tr,
+            rightIcon: Container(
+              margin: EdgeInsets.only(left: 4.h),
+              child: CustomImageView(
+                imagePath: ImageConstant.imgRight,
+                height: 16.h,
+                width: 16.h,
+                fit: BoxFit.contain,
+              ),
+            ),
+            buttonTextStyle: CustomTextStyles.labelLargeOnPrimary,
+          )
+        ],
+      ),
+    );
+  }
+
+  /// Section Widget
+  Widget _buildLanguageSettingsRow() {
+    return Container(
+      padding: EdgeInsets.only(
+        top: 16.h,
+        bottom: 14.h,
+      ),
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            color: theme.colorScheme.onPrimary.withOpacity(0.05),
+            width: 1.h,
+          ),
+        ),
+      ),
+      width: double.maxFinite,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          CustomIconButton(
+            height: 48.h,
+            width: 48.h,
+            padding: EdgeInsets.all(12.h),
+            decoration: IconButtonStyleHelper.fillOnPrimaryTL24,
+            child: CustomImageView(
+              imagePath: ImageConstant.imgFlag,
+            ),
+          ),
+          SizedBox(width: 16.h),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "lbl_change_language".tr,
+                  style: theme.textTheme.titleSmall,
+                ),
+                SizedBox(height: 2.h),
+                Text(
+                  "msg_apperiance_currency".tr,
+                  style: theme.textTheme.bodySmall,
+                )
+              ],
+            ),
+          ),
+          SizedBox(width: 16.h),
+          CustomElevatedButton(
+            height: 32.h,
+            width: 92.h,
+            text: "lbl_vietnam2".tr,
+            rightIcon: Container(
+              margin: EdgeInsets.only(left: 4.h),
+              child: CustomImageView(
+                imagePath: ImageConstant.imgRight,
+                height: 16.h,
+                width: 16.h,
+                fit: BoxFit.contain,
+              ),
+            ),
+            buttonTextStyle: CustomTextStyles.labelLargeOnPrimary,
+          )
+        ],
+      ),
+    );
+  }
+
+  /// Common widget
+  Widget _buildAboutSectionRow({
+    required String inboxOne,
+    required String aboutOne,
+    required String applicationvers,
+  }) {
+    return Container(
+      padding: EdgeInsets.only(
+        top: 16.h,
+        bottom: 14.h,
+      ),
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            color: theme.colorScheme.onPrimary.withOpacity(0.05),
+            width: 1.h,
+          ),
+        ),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Align(
+            alignment: Alignment.center,
+            child: Container(
+              height: 48.h,
+              width: 48.h,
+              decoration: BoxDecoration(
+                color: theme.colorScheme.onPrimary,
+                borderRadius: BorderRadiusStyle.roundedBorder24,
+              ),
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  CustomImageView(
+            decoration: IconButtonStyleHelper.fillOnPrimaryTL24,
+            child: CustomImageView(
+              imagePath: ImageConstant.imgStack,
+            ),
+          ),
+          SizedBox(width: 16.h),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  aboutOne,
+                  style: theme.textTheme.titleSmall!.copyWith(color: theme.colorScheme.onPrimary.withOpacity(1)),
+                ),
+                SizedBox(height: 2.h),
+                Text(
+                  applicationvers,
+                  style: theme.textTheme.bodySmall!.copyWith(color: theme.colorScheme.onPrimary.withOpacity(0.5)),
+                )
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// Navigates to the previous screen.
+  void onTapArrowleftone() {
+    Get.back();
+  }
+}

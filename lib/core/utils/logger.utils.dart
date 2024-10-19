@@ -1,10 +1,8 @@
-import 'package:logger/web.dart';
-
 class LoggerUtils {
   static LogMode _logMode = LogMode.debug;
 
   static void init(LogMode mode) {
-    Logger._logMode = mode;
+    LoggerUtils._logMode = mode;
   }
 
   static void log(dynamic data, {StackTrace? stackTrace}) {

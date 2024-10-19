@@ -1,97 +1,83 @@
 import 'package:get/get.dart';
 
-import '../../views/add.income/add_income_binding.dart';
-import '../../views/add.income/add_income_view.dart';
-import '../../views/chat/bindings/chat_binding.dart';
-import '../../views/chat/views/chat_view.dart';
-import '../../views/expense/bindings/expense_binding.dart';
-import '../../views/expense/views/expense_view.dart';
-import '../../views/group/bindings/group_binding.dart';
-import '../../views/group/views/group_view.dart';
-import '../../views/home/bindings/home_binding.dart';
-import '../../views/home/views/home_view.dart';
-import '../../views/map/bindings/map_binding.dart';
-import '../../views/map/views/map_view.dart';
-import '../../views/onboarding/bindings/onboarding_binding.dart';
-import '../../views/onboarding/views/onboarding_view.dart';
-import '../../views/profile/bindings/profile_binding.dart';
-import '../../views/profile/views/profile_view.dart';
-import '../../views/reminder/bindings/reminder_binding.dart';
-import '../../views/reminder/views/reminder_view.dart';
-import '../../views/setting/bindings/setting_binding.dart';
-import '../../views/setting/views/setting_view.dart';
-import '../../views/splash/bindings/splash_binding.dart';
-import '../../views/splash/views/splash_view.dart';
-import '../../views/total.expense/bindings/total_expense_binding.dart';
-import '../../views/total.expense/views/total_expense_view.dart';
+import '../../views/app_navigation/app_navigation_binding.dart';
+import '../../views/app_navigation/app_navigation_view.dart';
+import '../../views/change_language/change_language_binding.dart';
+import '../../views/change_language/change_language_view.dart';
+import '../../views/change_language_buttomsheet/change_language_buttomsheet_binding.dart';
+import '../../views/change_language_buttomsheet/change_language_buttomsheet_view.dart';
+import '../../views/change_password/change_password_binding.dart';
+import '../../views/change_password/change_password_view.dart';
+import '../../views/history_search/history_search_binding.dart';
+import '../../views/history_search/history_search_view.dart';
+import '../../views/invoce/invoce_binding.dart';
+import '../../views/invoce/invoce_view.dart';
+import '../../views/menu/menu_binding.dart';
+import '../../views/menu/menu_view.dart';
+import '../../views/next_point/next_point_binding.dart';
+import '../../views/next_point/next_point_view.dart';
+import '../../views/notification_center/notification_center_binding.dart';
+import '../../views/notification_center/notification_center_view.dart';
+import '../../views/search_post/search_post_binding.dart';
+import '../../views/search_post/search_post_view.dart';
 
 part 'app_routes.dart';
 
 class AppPages {
   AppPages._();
 
-  static const INITIAL = _Paths.HOME;
+  static const INITIAL = _Paths.APP_NAVIGATION_SCREEN;
 
   static final routes = [
     GetPage(
-      name: _Paths.SPLASH,
-      page: () => SplashView(),
-      binding: SplashBinding(),
+      name: _Paths.APP_NAVIGATION,
+      page: () => const AppNavigationScreen(),
+      binding: AppNavigationBinding(),
     ),
     GetPage(
-      name: _Paths.ONBOARDING,
-      page: () => OnboardingView(),
-      binding: OnboardingBinding(),
+      name: _Paths.CHANGE_LANGUAGE,
+      page: () => const ChangeLanguageScreen(),
+      binding: ChangeLanguageBinding(),
     ),
     GetPage(
-      name: _Paths.HOME,
-      page: () => HomeView(),
-      binding: HomeBinding(),
+      name: _Paths.CHANGE_LANGUAGE_BUTTOMSHEET,
+      page: () => ChangeListviewBottomsheet(),
+      binding: ChangeLanguageButtomsheetBinding(),
     ),
     GetPage(
-      name: _Paths.GROUP,
-      page: () => GroupView(),
-      binding: GroupBinding(),
+      name: _Paths.CHANGE_PASSWORD,
+      page: () => ChangePasswordScreen(),
+      binding: ChangePasswordBinding(),
     ),
     GetPage(
-      name: _Paths.EXPENSE,
-      page: () => ExpenseView(),
-      binding: ExpenseBinding(),
+      name: _Paths.HISTORY_SEARCH,
+      page: () => const HistorySearchView(),
+      binding: HistorySearchBinding(),
     ),
     GetPage(
-      name: _Paths.PROFILE,
-      page: () => ProfileView(),
-      binding: ProfileBinding(),
+      name: _Paths.INVOCE,
+      page: () => const InvoceView(),
+      binding: InvoceBinding(),
     ),
     GetPage(
-      name: _Paths.SETTING,
-      page: () => SettingView(),
-      binding: SettingBinding(),
+      name: _Paths.MENU,
+      page: () => const MenuView(),
+      binding: MenuBinding(),
     ),
     GetPage(
-      name: _Paths.CHAT,
-      page: () => ChatView(),
-      binding: ChatBinding(),
+      name: _Paths.NEXT_POINT,
+      page: () => const NextPointView(),
+      binding: NextPointBinding(),
     ),
     GetPage(
-      name: _Paths.MAP,
-      page: () => MapView(),
-      binding: MapBinding(),
+      name: _Paths.NOTIFICATION_CENTER,
+      page: () => const NotificationCenterView(),
+      binding: NotificationCenterBinding(),
     ),
     GetPage(
-      name: _Paths.TOTAL_EXPENSE,
-      page: () => TotalExpenseView(),
-      binding: TotalExpenseBinding(),
-    ),
-    GetPage(
-      name: _Paths.ADD_INCOME,
-      page: () => AddIncomeView(),
-      binding: AddIncomeBinding(),
-    ),
-    GetPage(
-      name: _Paths.REMINDER,
-      page: () => ReminderView(),
-      binding: ReminderBinding(),
+      name: _Paths.SEARCH_POST,
+      page: () => const SearchPostView(),
+      binding: SearchPostBinding(),
     ),
   ];
 }

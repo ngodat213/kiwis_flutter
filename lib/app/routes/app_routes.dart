@@ -3,36 +3,45 @@ part of 'app_pages.dart';
 
 abstract class Routes {
   Routes._();
-  static const SPLASH = _Paths.SPLASH;
-  static const ONBOARDING = _Paths.ONBOARDING;
-  static const HOME = _Paths.HOME;
-  static const GROUP = _Paths.GROUP;
-  static const EXPENSE = _Paths.EXPENSE;
-  static const PROFILE = _Paths.PROFILE;
-  static const SETTING = _Paths.SETTING;
-  static const CHAT = _Paths.CHAT;
-  static const MAP = _Paths.MAP;
-  static const TOTAL_EXPENSE = _Paths.TOTAL_EXPENSE;
-  static const ADD_INCOME = _Paths.ADD_INCOME;
-  static const ADD_REMAINDER = _Paths.ADD_REMAINDER;
-  static const ADD_REMINDER = _Paths.ADD_REMINDER;
-  static const REMINDER = _Paths.REMINDER;
+
+  static const APP_NAVIGATION_SCREEN = _Paths.APP_NAVIGATION_SCREEN;
+  static const APP_NAVIGATION = _Paths.APP_NAVIGATION;
+  static const CHANGE_LANGUAGE = _Paths.CHANGE_LANGUAGE;
+  static const CHANGE_LANGUAGE_BUTTOMSHEET = _Paths.CHANGE_LANGUAGE_BUTTOMSHEET;
+  static const CHANGE_PASSWORD = _Paths.CHANGE_PASSWORD;
+  static const CHANGE_PASSWORD_SUCCESS =
+      _Paths.VIEWS + _Paths.CHANGE_PASSWORD_SUCCESS;
+  static const CHANGE_PASSWORD_AGAIN =
+      _Paths.VIEWS + _Paths.CHANGE_PASSWORD_AGAIN;
+  static const DETAIL_POST = _Paths.VIEWS + _Paths.DETAIL_POST;
+  static const EXPLORE_LOCATION_MAIN =
+      _Paths.VIEWS + _Paths.EXPLORE_LOCATION_MAIN;
+  static const GRID_VIEW = _Paths.VIEWS + _Paths.GRID_VIEW;
+  static const HISTORY_SEARCH = _Paths.VIEWS + _Paths.HISTORY_SEARCH;
+  static const INVOCE = _Paths.VIEWS + _Paths.INVOCE;
+  static const MENU = _Paths.VIEWS + _Paths.MENU;
+  static const NEXT_POINT = _Paths.VIEWS + _Paths.NEXT_POINT;
+  static const NOTIFICATION_CENTER = _Paths.VIEWS + _Paths.NOTIFICATION_CENTER;
+  static const SEARCH_POST = _Paths.VIEWS + _Paths.SEARCH_POST;
 }
 
 abstract class _Paths {
   _Paths._();
-  static const SPLASH = '/splash';
-  static const ONBOARDING = '/onboarding';
-  static const HOME = '/home';
-  static const GROUP = '/group';
-  static const EXPENSE = '/expense';
-  static const PROFILE = '/profile';
-  static const SETTING = '/setting';
-  static const CHAT = '/chat';
-  static const MAP = '/map';
-  static const TOTAL_EXPENSE = '/total-expense';
-  static const ADD_INCOME = '/add-income';
-  static const ADD_REMAINDER = '/add-remainder';
-  static const ADD_REMINDER = '/add-reminder';
-  static const REMINDER = '/reminder';
+
+  static const APP_NAVIGATION_SCREEN = '/app-navigation-screen';
+  static const APP_NAVIGATION = '/app-navigation';
+  static const CHANGE_LANGUAGE = '/change-language';
+  static const CHANGE_LANGUAGE_BUTTOMSHEET = '/change-language-buttomsheet';
+  static const CHANGE_PASSWORD = '/change-password';
+  static const CHANGE_PASSWORD_SUCCESS = '/change-password-success';
+  static const CHANGE_PASSWORD_AGAIN = '/change-password-again';
+  static const DETAIL_POST = '/detail-post';
+  static const EXPLORE_LOCATION_MAIN = '/explore-location-main';
+  static const GRID_VIEW = '/grid-view';
+  static const HISTORY_SEARCH = '/history-search';
+  static const INVOCE = '/invoce';
+  static const MENU = '/menu';
+  static const NEXT_POINT = '/next-point';
+  static const NOTIFICATION_CENTER = '/notification-center';
+  static const SEARCH_POST = '/search-post';
 }

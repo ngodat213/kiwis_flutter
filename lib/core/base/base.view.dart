@@ -4,7 +4,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:kiwis_flutter/core/base/base.controller.dart';
 import 'package:kiwis_flutter/core/constants/constants.dart';
 import 'package:kiwis_flutter/enums/page_state.enum.dart';
-import 'package:kiwis_flutter/widgets/loading.widget.dart';
 import 'package:get/get.dart';
 
 abstract class BaseView<Controller extends BaseController>
@@ -23,9 +22,6 @@ abstract class BaseView<Controller extends BaseController>
       child: Stack(
         children: [
           annotatedRegion(context),
-          Obx(() => controller.pageState == PageState.LOADING
-              ? _showLoading()
-              : Container()),
           Obx(() => controller.errorMessage.isNotEmpty
               ? showErrorSnackBar(controller.errorMessage)
               : Container()),
@@ -98,9 +94,5 @@ abstract class BaseView<Controller extends BaseController>
 
   Widget? drawer() {
     return null;
-  }
-
-  Widget _showLoading() {
-    return const Loading();
   }
 }
