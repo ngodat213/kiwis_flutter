@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:kiwis_flutter/views/notification_center/notification_center_controller.dart';
+import 'package:kiwis_flutter/widgets/app_bar/app_bar_leadingiconbutton.dart';
+import 'package:kiwis_flutter/widgets/app_bar/app_bar_title.dart';
+import 'package:kiwis_flutter/widgets/app_bar/app_bar_trainling_iconbutton.dart';
 import '../../core/app_export.dart';
-import '../../widgets/app_bar/appbar_leading_iconbutton.dart';
-import '../../widgets/app_bar/appbar_title.dart';
-import '../../widgets/app_bar/appbar_trailing_iconbutton.dart';
 import '../../widgets/app_bar/custom_app_bar.dart';
-import 'controller/notification_center_controller.dart';
-import 'models/notificationlist_item_model.dart';
-import 'widgets/notificationlist_item_widget.dart'; // ignore_for_file: must_be_immutable
 
 class NotificationCenterScreen extends GetWidget<NotificationCenterController> {
   const NotificationCenterScreen({Key? key})
