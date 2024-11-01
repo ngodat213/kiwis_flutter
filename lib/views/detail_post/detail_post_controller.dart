@@ -1,23 +1,6 @@
 import 'package:get/get.dart';
+import 'package:kiwis_flutter/views/detail_post/models/detail_post_list_item.model.dart';
 
 class DetailPostController extends GetxController {
-  //TODO: Implement DetailPostController
-
-  final count = 0.obs;
-  @override
-  void onInit() {
-    super.onInit();
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  void increment() => count.value++;
+  Rx<DetailPostModel> detailPostModelObj = DetailPostModel().obs;
 }

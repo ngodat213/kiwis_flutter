@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:kiwis_flutter/views/grid_view/grid_view_controller.dart';
+import 'package:kiwis_flutter/widgets/app_bar/app_bar_leadingiconbutton.dart';
+import 'package:kiwis_flutter/widgets/app_bar/app_bar_title.dart';
+import 'package:kiwis_flutter/widgets/app_bar/app_bar_trailing_image.dart';
 import '../../core/app_export.dart';
-import '../../widgets/app_bar/appbar_leading_iconbutton.dart';
-import '../../widgets/app_bar/appbar_title.dart';
-import '../../widgets/app_bar/appbar_trailing_image.dart';
 import '../../widgets/app_bar/custom_app_bar.dart';
 import '../../widgets/custom_icon_button.dart';
-import 'controller/grid_view_controller.dart';
 import 'gridviewfreeini_tab_page.dart'; // ignore_for_file: must_be_immutable
 
 class GridViewScreen extends GetWidget<GridViewController> {
@@ -108,7 +108,7 @@ class GridViewScreen extends GetWidget<GridViewController> {
                                 () => SizedBox(
                                   width: 286.h,
                                   child: TabBar(
-                                    controller: controller.tabviewController,
+                                    controller: controller.tabViewController,
                                     labelPadding: EdgeInsets.zero,
                                     labelColor: theme.colorScheme.onPrimary
                                         .withOpacity(1),
@@ -134,27 +134,6 @@ class GridViewScreen extends GetWidget<GridViewController> {
                                           margin: EdgeInsets.only(right: 6.h),
                                           decoration:
                                               controller.tabIndex.value == 0
-                                                  ? BoxDecoration(
-                                                      color: theme
-                                                          .colorScheme.onPrimary
-                                                          .withOpacity(0.05),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                        18.h,
-                                                      ))
-                                                  : BoxDecoration(
-                                                      color: theme
-                                                          .colorScheme.onPrimary
-                                                          .withOpacity(0.05),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                        18.h,
-                                                      ),
-                                                    ),
-                                          margin: EdgeInsets.symmetric(
-                                              horizontal: 6.h),
-                                          decoration:
-                                              controller.tabIndex.value == 1
                                                   ? BoxDecoration(
                                                       color: theme
                                                           .colorScheme.onPrimary
@@ -287,11 +266,6 @@ class GridViewScreen extends GetWidget<GridViewController> {
                               Container(
                                 padding: EdgeInsets.symmetric(
                                   horizontal: 20.h,
-                                          width: double.maxFinite,
-                                        child: Container(
-                                          alignment: Alignment.center,
-                                        height: 36,
-                                      Tab(
                                   vertical: 10.h,
                                 ),
                                 decoration: BoxDecoration(
@@ -311,7 +285,7 @@ class GridViewScreen extends GetWidget<GridViewController> {
                         Expanded(
                           child: Container(
                             child: TabBarView(
-                              controller: controller.tabviewController,
+                              controller: controller.tabViewController,
                               children: [
                                 Container(),
                                 Container(),
@@ -457,8 +431,9 @@ class GridViewScreen extends GetWidget<GridViewController> {
           Container(
             width: double.maxFinite,
             margin: EdgeInsets.symmetric(horizontal: 16.h),
-            child: Row(children: [
-              CustomImageView(
+            child: Row(
+              children: [
+                CustomImageView(
                   imagePath: ImageConstant.imgStar,
                   height: 16.h,
                   width: 16.h,

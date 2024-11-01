@@ -1,23 +1,17 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:kiwis_flutter/views/grid_view/models/grid_view.model.dart';
+import 'package:kiwis_flutter/views/grid_view/models/grid_view_free_ini_tab.model.dart';
 
-class GridViewController extends GetxController {
-  //TODO: Implement GridViewController
+class GridViewController extends GetxController
+    with GetSingleTickerProviderStateMixin {
+  Rx<GridViewModel> gridViewModelObj = GridViewModel().obs;
 
-  final count = 0.obs;
-  @override
-  void onInit() {
-    super.onInit();
-  }
+  late TabController tabViewController =
+      Get.put(TabController(length: 2, vsync: this));
 
-  @override
-  void onReady() {
-    super.onReady();
-  }
+  Rx<int> tabIndex = 0.obs;
 
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  void increment() => count.value++;
+  Rx<GridViewFreeIniTabModel> gridViewFreeIniTabModelObj =
+      GridViewFreeIniTabModel().obs;
 }

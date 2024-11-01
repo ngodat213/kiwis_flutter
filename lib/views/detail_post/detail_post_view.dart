@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:kiwis_flutter/views/detail_post/detail_post_controller.dart';
+import 'package:kiwis_flutter/views/detail_post/models/detail_post.model.dart';
+import 'package:kiwis_flutter/views/detail_post/widgets/detail_post_list_item.widget.dart';
+import 'package:kiwis_flutter/widgets/app_bar/app_bar_leadingiconbutton_one.dart';
+import 'package:kiwis_flutter/widgets/app_bar/app_bar_title.dart';
+import 'package:kiwis_flutter/widgets/app_bar/app_bar_trainling_iconbutton_one.dart';
 import '../../core/app_export.dart';
 import '../../theme/custom_button_style.dart';
-import '../../widgets/app_bar/appbar_leading_iconbutton_one.dart';
-import '../../widgets/app_bar/appbar_title.dart';
-import '../../widgets/app_bar/appbar_trailing_iconbutton_one.dart';
 import '../../widgets/app_bar/custom_app_bar.dart';
 import '../../widgets/custom_elevated_button.dart';
 import '../../widgets/custom_icon_button.dart';
-import 'controller/detail_post_controller.dart';
-import 'models/detailpostlist_item_model.dart';
-import 'widgets/detailpostlist_item_widget.dart'; // ignore_for_file: must_be_immutable
 
 class DetailPostScreen extends GetWidget<DetailPostController> {
   const DetailPostScreen({Key? key})
@@ -105,7 +105,7 @@ class DetailPostScreen extends GetWidget<DetailPostController> {
             itemCount: controller
                 .detailPostModelObj.value.detailpostlistItemList.value.length,
             itemBuilder: (context, index) {
-              DetailpostlistItemModel model = controller
+              DetailPostListItemModel model = controller
                   .detailPostModelObj.value.detailpostlistItemList.value[index];
               return DetailpostlistItemWidget(
                 model,

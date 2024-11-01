@@ -1,5 +1,4 @@
 export 'package:connectivity_plus/connectivity_plus.dart';
-export '../core/utils/image_constant.dart';
 export 'network/network.dart';
 export 'utils/pref.utils.dart';
 export 'utils/logger.utils.dart';
@@ -12,3 +11,4 @@ export '../theme/custom_text_style.dart';
 export '../theme/theme_helper.dart';
 export '../widgets/custom_image_view.dart';
 export 'package:get/get.dart';
+export 'utils/image_constant.utils.dart';

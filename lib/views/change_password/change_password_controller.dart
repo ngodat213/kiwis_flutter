@@ -1,23 +1,26 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:kiwis_flutter/views/change_password/models/change_password.model.dart';
 
 class ChangePasswordController extends GetxController {
-  //TODO: Implement ChangePasswordController
+  TextEditingController oldPasswordInputController = TextEditingController();
+  TextEditingController newPasswordInputController = TextEditingController();
 
-  final count = 0.obs;
-  @override
-  void onInit() {
-    super.onInit();
-  }
+  TextEditingController confirmNewPasswordInputController =
+      TextEditingController();
 
-  @override
-  void onReady() {
-    super.onReady();
-  }
+  Rx<ChangePasswordModel> changePasswordModelObj = ChangePasswordModel().obs;
+
+  Rx<bool> isShowPassword = true.obs;
+  Rx<bool> isShowPassword1 = true.obs;
+  Rx<bool> isShowPassword2 = true.obs;
 
   @override
   void onClose() {
+    // TODO: implement onClose
     super.onClose();
+    oldPasswordInputController.dispose();
+    newPasswordInputController.dispose();
+    confirmNewPasswordInputController.dispose();
   }
-
-  void increment() => count.value++;
 }

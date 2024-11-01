@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:kiwis_flutter/views/explore_location_main/explore_location_main_controller.dart';
+import 'package:kiwis_flutter/views/explore_location_main/models/post_list_item.model.dart';
+import 'package:kiwis_flutter/views/explore_location_main/widgets/post_list_item.widget.dart';
+import 'package:kiwis_flutter/widgets/app_bar/app_bar_leadingiconbutton.dart';
+import 'package:kiwis_flutter/widgets/app_bar/app_bar_title.dart';
 import '../../core/app_export.dart';
 import '../../theme/custom_button_style.dart';
 import '../../widgets/app_bar/custom_app_bar.dart';
@@ -223,13 +227,13 @@ class ExploreLocationMainScreen
               direction: Axis.horizontal,
               spacing: 12.h,
               children: List.generate(
-                controller.exploreLocationMainModelObj.value.postlistItemList
+                controller.exploreLocationMainModelObj.value.postListItemModels
                     .value.length,
                 (index) {
-                  PostlistItemModel model = controller
+                  PostListItemModel model = controller
                       .exploreLocationMainModelObj
                       .value
-                      .postlistItemList
+                      .postListItemModels
                       .value[index];
                   return PostlistItemWidget(
                     model,

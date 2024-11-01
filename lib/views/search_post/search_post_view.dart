@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:kiwis_flutter/views/search_post/search_post_controller.dart';
+import 'package:kiwis_flutter/views/search_post/search_resultgrid_item_model.dart';
 import 'package:kiwis_flutter/views/search_post/widgets/rearchresultgrid_item_widget.dart';
 import 'package:kiwis_flutter/widgets/app_bar/app_bar_titlesearch_view_one.dart';
+import 'package:responsive_grid_list/responsive_grid_list.dart';
 import '../../core/app_export.dart';
 import '../../widgets/app_bar/custom_app_bar.dart';
 

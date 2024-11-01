@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:kiwis_flutter/views/change_language/change_language_controller.dart';
 import '../../core/app_export.dart';
+import 'models/changelanguagelistItem_model.dart';
+import 'widgets/changelanguagelist_item_widget.dart';
+import 'package:kiwis_flutter/widgets/app_bar/custom_app_bar.dart';
+import 'package:kiwis_flutter/widgets/app_bar/app_bar_leadingiconbutton.dart';
+import 'package:kiwis_flutter/widgets/app_bar/app_bar_title.dart';
 
 class ChangeLanguageScreen extends GetWidget<ChangeLanguageController> {
   const ChangeLanguageScreen({Key? key})
@@ -146,23 +151,6 @@ class ChangeLanguageScreen extends GetWidget<ChangeLanguageController> {
           );
         },
       ),
-        physics: NeverScrollableScrollPhysics(),
-        shrinkWrap: true,
-        separatorBuilder: (context, index) {
-          return SizedBox(
-            height: 4.h,
-          );
-        },
-        itemCount: controller.changeLanguageModelObj.value
-            .changelanguagelistItemList.value.length,
-        itemBuilder: (context, index) {
-          ChangelanguagelistItemModel model = controller.changeLanguageModelObj
-              .value.changelanguagelistItemList.value[index];
-          return ChangelanguagelistItemWidget(
-            model,
-          );
-        },
-      ),
     );
   }
 
@@ -208,7 +196,7 @@ class ChangeLanguageScreen extends GetWidget<ChangeLanguageController> {
           ),
           Spacer(),
           CustomImageView(
-            imagePath: ImageConstant.imgCircle,
+            imagePath: ImageConstant.imgTelevisionBlue500,
             height: 24.h,
             width: 26.h,
           )
@@ -251,7 +239,7 @@ class ChangeLanguageScreen extends GetWidget<ChangeLanguageController> {
             ),
           ),
           CustomImageView(
-            imagePath: ImageConstant.imgCircle,
+            imagePath: ImageConstant.imgTelevisionBlue500,
             height: 24.h,
             width: 26.h,
           )
@@ -265,4 +253,3 @@ class ChangeLanguageScreen extends GetWidget<ChangeLanguageController> {
     Get.back();
   }
 }
-

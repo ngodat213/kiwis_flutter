@@ -1,23 +1,6 @@
 import 'package:get/get.dart';
+import 'package:kiwis_flutter/views/next_point/models/next_point.model.dart';
 
 class NextPointController extends GetxController {
-  //TODO: Implement NextPointController
-
-  final count = 0.obs;
-  @override
-  void onInit() {
-    super.onInit();
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  void increment() => count.value++;
+  Rx<NextPointModel> nextPointModelObj = NextPointModel().obs;
 }

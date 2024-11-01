@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:kiwis_flutter/views/notification_center/models/notification_list_item.model.dart';
 import 'package:kiwis_flutter/views/notification_center/notification_center_controller.dart';
+import 'package:kiwis_flutter/views/notification_center/widgets/notification_item_widget.dart';
 import 'package:kiwis_flutter/widgets/app_bar/app_bar_leadingiconbutton.dart';
 import 'package:kiwis_flutter/widgets/app_bar/app_bar_title.dart';
 import 'package:kiwis_flutter/widgets/app_bar/app_bar_trainling_iconbutton.dart';
@@ -97,12 +99,12 @@ class NotificationCenterScreen extends GetWidget<NotificationCenterController> {
           );
         },
         itemCount: controller.notificationCenterModelObj.value
-            .notificationlistItemList.value.length,
+            .notificationListItemList.value.length,
         itemBuilder: (context, index) {
-          NotificationlistItemModel model = controller
+          NotificationListItemModel model = controller
               .notificationCenterModelObj
               .value
-              .notificationlistItemList
+              .notificationListItemList
               .value[index];
           return NotificationlistItemWidget(
             model,

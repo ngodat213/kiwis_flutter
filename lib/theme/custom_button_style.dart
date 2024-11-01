@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:kiwis_flutter/core/app_export.dart';
-import 'package:kiwis_flutter/core/utils/size.utils.dart';
-import 'package:kiwis_flutter/theme/theme_helper.dart';
 
 /// A class that offers pre-defined styles for customizing button appearance.
 class CustomButtonStyles {
@@ -34,7 +32,7 @@ class CustomButtonStyles {
       );
 
   static ButtonStyle get fillOnprimaryTl18 => ElevatedButton.styleFrom(
-        backgroundColor: appTheme.colorScheme.onPrimary,
+        backgroundColor: theme.colorScheme.onPrimary,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(18.h),
@@ -45,8 +43,8 @@ class CustomButtonStyles {
         ),
       );
 
-  static ButtonStyle get fillOnprimaryTl181 => ElevatedButton.styleFrom(
-        backgroundColor: appTheme.colorScheme.onPrimary.withOpacity(0.1),
+  static ButtonStyle get fillOnPrimaryTl181 => ElevatedButton.styleFrom(
+        backgroundColor: theme.colorScheme.onPrimary.withOpacity(0.1),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(18.h),
@@ -56,7 +54,7 @@ class CustomButtonStyles {
         padding: EdgeInsets.zero,
       );
   static ButtonStyle get fillOnPrimaryTl182 => ElevatedButton.styleFrom(
-        backgroundColor: appTheme.colorScheme.onPrimary.withOpacity(0.2),
+        backgroundColor: theme.colorScheme.onPrimary.withOpacity(0.2),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(18.h),
@@ -66,8 +64,8 @@ class CustomButtonStyles {
         padding: EdgeInsets.zero,
       );
 
-  static ButtonStyle get fillOnPrimaryTl183 => ElevatedButton.styleFrom(
-        backgroundColor: appTheme.colorScheme.onPrimary,
+  static ButtonStyle get fillOnPrimaryTL183 => ElevatedButton.styleFrom(
+        backgroundColor: theme.colorScheme.onPrimary,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(18.h),
@@ -77,8 +75,8 @@ class CustomButtonStyles {
         padding: EdgeInsets.zero,
       );
 
-  static ButtonStyle get fillOnPrimaryTl128 => ElevatedButton.styleFrom(
-        backgroundColor: appTheme.colorScheme.onPrimary.withOpacity(0.05),
+  static ButtonStyle get fillOnPrimaryTL28 => ElevatedButton.styleFrom(
+        backgroundColor: theme.colorScheme.onPrimary.withOpacity(0.05),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(28.h),
         ),
@@ -87,7 +85,7 @@ class CustomButtonStyles {
       );
 
   static ButtonStyle get fillPrimary => ElevatedButton.styleFrom(
-        backgroundColor: appTheme.colorScheme.primary,
+        backgroundColor: theme.colorScheme.primary,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(28.h),
         ),
@@ -95,8 +93,8 @@ class CustomButtonStyles {
         padding: EdgeInsets.zero,
       );
 
-  static ButtonStyle get fillPrimaryTl18 => ElevatedButton.styleFrom(
-        backgroundColor: appTheme.colorScheme.primary,
+  static ButtonStyle get fillPrimaryTL18 => ElevatedButton.styleFrom(
+        backgroundColor: theme.colorScheme.primary,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(18.h),
@@ -107,8 +105,8 @@ class CustomButtonStyles {
         ),
       );
 
-  static ButtonStyle get fillPrimaryTl20 => ElevatedButton.styleFrom(
-        backgroundColor: appTheme.colorScheme.primary,
+  static ButtonStyle get fillPrimaryTL20 => ElevatedButton.styleFrom(
+        backgroundColor: theme.colorScheme.primary,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20.h),
         ),
@@ -117,7 +115,7 @@ class CustomButtonStyles {
       );
 
   static ButtonStyle get fillPrimaryTl36 => ElevatedButton.styleFrom(
-        backgroundColor: appTheme.colorScheme.primary,
+        backgroundColor: theme.colorScheme.primary,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(36.h),
         ),

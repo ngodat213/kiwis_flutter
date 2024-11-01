@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:kiwis_flutter/core/app_export.dart';
-import 'package:kiwis_flutter/core/constants/constants.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -12,10 +11,10 @@ class MyApp extends StatelessWidget {
       theme: theme,
       translations: AppLocalization(),
       locale: Get.deviceLocale,
+      getPages: AppPages.routes,
       fallbackLocale: Locale('en', 'US'),
       title: 'kiwis_flutter',
-      initialRoute: AppRoutes.initialRoute,
-      getPages: AppRoutes.pages,
+      initialRoute: AppPages.INITIAL,
     );
   }
 }

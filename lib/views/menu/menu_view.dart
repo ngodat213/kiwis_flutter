@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart' hide MenuController;
+import 'package:kiwis_flutter/views/menu/menu_controller.dart';
+import 'package:kiwis_flutter/widgets/app_bar/app_bar_leadingiconbutton.dart';
+import 'package:kiwis_flutter/widgets/app_bar/app_bar_title.dart';
 import '../../core/app_export.dart';
 import '../../theme/custom_button_style.dart';
-import '../../widgets/app_bar/appbar_leading_iconbutton.dart';
-import '../../widgets/app_bar/appbar_title.dart';
 import '../../widgets/app_bar/custom_app_bar.dart';
 import '../../widgets/custom_elevated_button.dart';
 import '../../widgets/custom_icon_button.dart';
-import 'controller/menu_controller.dart'; // ignore_for_file: must_be_immutable
 
 class MenuScreen extends GetWidget<MenuController> {
   const MenuScreen({Key? key})
@@ -312,16 +312,16 @@ class MenuScreen extends GetWidget<MenuController> {
             child: CustomImageView(
               imagePath: ImageConstant.imgStack,
             ),
-          ),  
+          ),
           SizedBox(width: 16.h),
           Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "msg_payment_settings".tr,
-                    style: theme.textTheme.titleSmall,
-                  ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "msg_payment_settings".tr,
+                  style: theme.textTheme.titleSmall,
+                ),
                 Text(
                   "lbl_02_card_added".tr,
                   style: theme.textTheme.bodySmall,
@@ -451,9 +451,12 @@ class MenuScreen extends GetWidget<MenuController> {
                 alignment: Alignment.center,
                 children: [
                   CustomImageView(
-            decoration: IconButtonStyleHelper.fillOnPrimaryTL24,
-            child: CustomImageView(
-              imagePath: ImageConstant.imgStack,
+                    imagePath: inboxOne,
+                    height: 24.h,
+                    width: 26.h,
+                  ),
+                ],
+              ),
             ),
           ),
           SizedBox(width: 16.h),
@@ -463,12 +466,14 @@ class MenuScreen extends GetWidget<MenuController> {
               children: [
                 Text(
                   aboutOne,
-                  style: theme.textTheme.titleSmall!.copyWith(color: theme.colorScheme.onPrimary.withOpacity(1)),
+                  style: theme.textTheme.titleSmall!.copyWith(
+                      color: theme.colorScheme.onPrimary.withOpacity(1)),
                 ),
                 SizedBox(height: 2.h),
                 Text(
                   applicationvers,
-                  style: theme.textTheme.bodySmall!.copyWith(color: theme.colorScheme.onPrimary.withOpacity(0.5)),
+                  style: theme.textTheme.bodySmall!.copyWith(
+                      color: theme.colorScheme.onPrimary.withOpacity(0.5)),
                 )
               ],
             ),

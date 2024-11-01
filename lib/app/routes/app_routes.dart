@@ -9,20 +9,19 @@ abstract class Routes {
   static const CHANGE_LANGUAGE = _Paths.CHANGE_LANGUAGE;
   static const CHANGE_LANGUAGE_BUTTOMSHEET = _Paths.CHANGE_LANGUAGE_BUTTOMSHEET;
   static const CHANGE_PASSWORD = _Paths.CHANGE_PASSWORD;
-  static const CHANGE_PASSWORD_SUCCESS =
-      _Paths.VIEWS + _Paths.CHANGE_PASSWORD_SUCCESS;
-  static const CHANGE_PASSWORD_AGAIN =
-      _Paths.VIEWS + _Paths.CHANGE_PASSWORD_AGAIN;
-  static const DETAIL_POST = _Paths.VIEWS + _Paths.DETAIL_POST;
-  static const EXPLORE_LOCATION_MAIN =
-      _Paths.VIEWS + _Paths.EXPLORE_LOCATION_MAIN;
-  static const GRID_VIEW = _Paths.VIEWS + _Paths.GRID_VIEW;
-  static const HISTORY_SEARCH = _Paths.VIEWS + _Paths.HISTORY_SEARCH;
-  static const INVOCE = _Paths.VIEWS + _Paths.INVOCE;
-  static const MENU = _Paths.VIEWS + _Paths.MENU;
-  static const NEXT_POINT = _Paths.VIEWS + _Paths.NEXT_POINT;
-  static const NOTIFICATION_CENTER = _Paths.VIEWS + _Paths.NOTIFICATION_CENTER;
-  static const SEARCH_POST = _Paths.VIEWS + _Paths.SEARCH_POST;
+  static const CHANGE_PASSWORD_SUCCESS = _Paths.CHANGE_PASSWORD_SUCCESS;
+  static const CHANGE_PASSWORD_AGAIN = _Paths.CHANGE_PASSWORD_AGAIN;
+  static const DETAIL_POST = _Paths.DETAIL_POST;
+  static const EXPLORE_LOCATION_MAIN = _Paths.EXPLORE_LOCATION_MAIN;
+  static const GRID_VIEW = _Paths.GRID_VIEW;
+  static const HISTORY_SEARCH = _Paths.HISTORY_SEARCH;
+  static const INVOCE = _Paths.INVOCE;
+  static const MENU = _Paths.MENU;
+  static const NEXT_POINT = _Paths.NEXT_POINT;
+  static const NOTIFICATION_CENTER = _Paths.NOTIFICATION_CENTER;
+  static const SEARCH_POST = _Paths.SEARCH_POST;
+  static const SIGN_IN = _Paths.SIGN_IN;
+  static const SIGN_UP = _Paths.SIGN_UP;
 }
 
 abstract class _Paths {
@@ -44,4 +43,6 @@ abstract class _Paths {
   static const NEXT_POINT = '/next-point';
   static const NOTIFICATION_CENTER = '/notification-center';
   static const SEARCH_POST = '/search-post';
+  static const SIGN_IN = '/sign-in';
+  static const SIGN_UP = '/sign-up';
 }

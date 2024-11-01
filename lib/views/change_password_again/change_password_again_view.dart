@@ -151,7 +151,6 @@ class ChangePasswordTryAgainBottomsheet extends StatelessWidget {
                       color: appTheme.amber600,
                       borderRadius: BorderRadius.circular(
                         1.h,
-                        1.h,
                       ),
                     ),
                   ),

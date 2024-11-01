@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:kiwis_flutter/views/search_post/search_post_controller.dart';
+import 'package:kiwis_flutter/views/search_post/search_resultgrid_item_model.dart';
 import '../../../core/app_export.dart';
 import '../../../theme/custom_button_style.dart';
 import '../../../widgets/custom_elevated_button.dart';
-import '../controller/search_post_controller.dart';
-import '../models/searchresultsgrid_item_model.dart';
 
 // ignore_for_file: must_be_immutable
 class SearchresultsgridItemWidget extends StatelessWidget {
@@ -86,7 +85,7 @@ class SearchresultsgridItemWidget extends StatelessWidget {
             width: 124.h,
             child: Obx(
               () => Text(
-                searchresultsgridItemModelObj.loremipsumissim!.value,
+                searchresultsgridItemModelObj.text!.value,
                 maxLines: 4,
                 overflow: TextOverflow.ellipsis,
                 style: CustomTextStyles.labelLargeGoogleSansMedium.copyWith(

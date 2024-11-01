@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:kiwis_flutter/views/next_point/models/chip_view_4_item.model.dart';
 import 'package:kiwis_flutter/views/next_point/next_point_controller.dart';
+import 'package:kiwis_flutter/views/next_point/widgets/next_point.widget.dart';
+import 'package:kiwis_flutter/widgets/app_bar/app_bar_leadingiconbutton.dart';
+import 'package:kiwis_flutter/widgets/app_bar/app_bar_title.dart';
 import '../../core/app_export.dart';
 import '../../widgets/app_bar/custom_app_bar.dart';
 import '../../widgets/custom_icon_button.dart';
@@ -239,12 +243,12 @@ class NextPointScreen extends GetWidget<NextPointController> {
                               spacing: 12.h,
                               children: List<Widget>.generate(
                                 controller.nextPointModelObj.value
-                                    .chipview4ItemList.value.length,
+                                    .chipView4ItemList.value.length,
                                 (index) {
-                                  Chipview4ItemModel model = controller
+                                  ChipView4ItemModel model = controller
                                       .nextPointModelObj
                                       .value
-                                      .chipview4ItemList
+                                      .chipView4ItemList
                                       .value[index];
                                   return Chipview4ItemWidget(
                                     model,

@@ -112,6 +112,7 @@ extension IconButtonStyleHelper on CustomIconButton {
         color: theme.colorScheme.onPrimary.withOpacity(0.2),
         borderRadius: BorderRadius.circular(14.h),
       );
+  static BoxDecoration get none => BoxDecoration();
 }
 
 class CustomIconButton extends StatelessWidget {

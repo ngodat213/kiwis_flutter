@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kiwis_flutter/views/notification_center/models/notification_list_item.model.dart';
 import 'package:kiwis_flutter/views/notification_center/notification_center_controller.dart';
 import '../../../core/app_export.dart';
 import '../../../theme/custom_button_style.dart';
@@ -12,7 +13,7 @@ class NotificationlistItemWidget extends StatelessWidget {
           key: key,
         );
 
-  NotificationlistItemModel notificationlistItemModelObj;
+  NotificationListItemModel notificationlistItemModelObj;
 
   var controller = Get.find<NotificationCenterController>();
 
@@ -37,15 +38,13 @@ class NotificationlistItemWidget extends StatelessWidget {
             width: double.maxFinite,
             child: Row(
               children: [
-                Obx(
-                  () => CustomIconButton(
-                    height: 48.h,
-                    width: 48.h,
-                    padding: EdgeInsets.all(12.h),
-                    decoration: IconButtonStyleHelper.fillOnPrimaryTL241,
-                    child: CustomImageView(
-                      imagePath: notificationlistItemModelObj.bellOne!.value,
-                    ),
+                CustomIconButton(
+                  height: 48.h,
+                  width: 48.h,
+                  padding: EdgeInsets.all(12.h),
+                  decoration: IconButtonStyleHelper.fillOnPrimaryTL241,
+                  child: CustomImageView(
+                    imagePath: ImageConstant.imgBell,
                   ),
                 ),
                 SizedBox(width: 16.h),
@@ -55,7 +54,7 @@ class NotificationlistItemWidget extends StatelessWidget {
                     children: [
                       Obx(
                         () => Text(
-                          notificationlistItemModelObj.yourtourhaveaco!.value,
+                          notificationlistItemModelObj.title!.value,
                           style: CustomTextStyles.labelLargeGray5002,
                         ),
                       ),
@@ -69,14 +68,13 @@ class NotificationlistItemWidget extends StatelessWidget {
                   ),
                 ),
                 SizedBox(width: 16.h),
-                Obx(
-                  () => CustomIconButton(
-                    height: 40.h,
-                    width: 40.h,
-                    padding: EdgeInsets.all(8.h),
-                    child: CustomImageView(
-                      imagePath: notificationlistItemModelObj.closeOne!.value,
-                    ),
+                CustomIconButton(
+                  height: 40.h,
+                  width: 40.h,
+                  padding: EdgeInsets.all(8.h),
+                  decoration: IconButtonStyleHelper.none,
+                  child: CustomImageView(
+                    imagePath: ImageConstant.imgClose,
                   ),
                 )
               ],
@@ -88,7 +86,7 @@ class NotificationlistItemWidget extends StatelessWidget {
             margin: EdgeInsets.only(left: 10.h),
             child: Obx(
               () => Text(
-                notificationlistItemModelObj.loremipsumissim!.value,
+                notificationlistItemModelObj.text!.value,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 style:
@@ -107,7 +105,7 @@ class NotificationlistItemWidget extends StatelessWidget {
                   child: CustomElevatedButton(
                     height: 36.h,
                     text: "lbl_dissmis".tr,
-                    buttonStyle: CustomButtonStyles.fillOnPrimaryTL181,
+                    buttonStyle: CustomButtonStyles.fillOnPrimaryTl181,
                     buttonTextStyle: CustomTextStyles.labelLargeGreen600,
                   ),
                 ),
@@ -116,7 +114,7 @@ class NotificationlistItemWidget extends StatelessWidget {
                   child: CustomElevatedButton(
                     height: 36.h,
                     text: "lbl_comment".tr,
-                    buttonStyle: CustomButtonStyles.fillOnPrimaryTL182,
+                    buttonStyle: CustomButtonStyles.fillOnPrimaryTl182,
                     buttonTextStyle: CustomTextStyles.labelLargeGray5002,
                   ),
                 )

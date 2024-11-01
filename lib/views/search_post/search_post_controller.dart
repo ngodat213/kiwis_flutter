@@ -1,23 +1,15 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:kiwis_flutter/views/search_post/search_post_model.dart';
 
 class SearchPostController extends GetxController {
-  //TODO: Implement SearchPostController
+  TextEditingController searchController = TextEditingController();
 
-  final count = 0.obs;
-  @override
-  void onInit() {
-    super.onInit();
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
+  Rx<SearchPostModel> searchPostModelObj = SearchPostModel().obs;
 
   @override
   void onClose() {
     super.onClose();
+    searchController.dispose();
   }
-
-  void increment() => count.value++;
 }

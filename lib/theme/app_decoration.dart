@@ -1,6 +1,5 @@
 import 'package:flutter/widgets.dart';
 import 'package:kiwis_flutter/core/app_export.dart';
-import 'package:kiwis_flutter/core/utils/size.utils.dart';
 
 class AppDecoration {
   /// Color decorations
@@ -25,7 +24,7 @@ class AppDecoration {
       );
 
   static BoxDecoration get colorBase800ColorWhite10 => BoxDecoration(
-        color: appTheme.colorScheme.onPrimary,
+        color: theme.colorScheme.onPrimary,
         border: Border.all(color: appTheme.gray800, width: 4.h),
         boxShadow: [
           BoxShadow(
@@ -43,7 +42,7 @@ class AppDecoration {
   static BoxDecoration get colorPrimary800 => BoxDecoration(
         color: appTheme.blueA40019,
         border: Border.all(
-          color: appTheme.primary,
+          color: theme.colorScheme.primary,
           width: 1.h,
           strokeAlign: BorderSide.strokeAlignCenter,
         ),
@@ -52,7 +51,7 @@ class AppDecoration {
   static BoxDecoration get colorPrimary800ColorPrimary100 => BoxDecoration(
         color: appTheme.blueA40019,
         border: Border.all(
-          color: appTheme.primary,
+          color: theme.colorScheme.primary,
           width: 3.h,
         ),
       );
@@ -74,40 +73,39 @@ class AppDecoration {
       );
 
   static BoxDecoration get colorWhite10 => BoxDecoration(
-        color: appTheme.colorScheme.onPrimary,
+        color: theme.colorScheme.onPrimary,
       );
 
   static BoxDecoration get colorWhite100 => BoxDecoration(
-        color: appTheme.colorScheme.onPrimary.withOpacity(1),
+        color: theme.colorScheme.onPrimary.withOpacity(1),
         border: Border.all(
-          color: appTheme.colorScheme.onPrimary.withOpacity(1),
+          color: theme.colorScheme.onPrimary.withOpacity(1),
           width: 3.07.h,
           strokeAlign: BorderSide.strokeAlignOutside,
         ),
       );
 
   static BoxDecoration get colorWhite100ColorWhite100 => BoxDecoration(
-        color: appTheme.colorScheme.onPrimary.withOpacity(1),
+        color: theme.colorScheme.onPrimary.withOpacity(1),
         border: Border.all(
-          color: appTheme.colorScheme.onPrimary.withOpacity(1),
+          color: theme.colorScheme.onPrimary.withOpacity(1),
           width: 1.05.h,
           strokeAlign: BorderSide.strokeAlignOutside,
         ),
       );
 
   static BoxDecoration get colorWhite20 => BoxDecoration(
-        color: appTheme.colorScheme.onPrimary.withOpacity(0.2),
+        color: theme.colorScheme.onPrimary.withOpacity(0.2),
       );
 
   static BoxDecoration get colorWhite50 => BoxDecoration(
-        color: appTheme.colorScheme.onPrimary.withOpacity(0.5),
+        color: theme.colorScheme.onPrimary.withOpacity(0.5),
       );
 
   static BoxDecoration get colorWhite5DropshadowMenu => BoxDecoration(
         border: Border(
           bottom: BorderSide(
-              color: appTheme.colorScheme.onPrimary.withOpacity(0.05),
-              width: 1.h),
+              color: theme.colorScheme.onPrimary.withOpacity(0.05), width: 1.h),
         ),
       );
 
@@ -124,11 +122,11 @@ class AppDecoration {
       );
 
   static BoxDecoration get fillOnPrimary => BoxDecoration(
-        color: appTheme.colorScheme.onPrimary.withOpacity(1),
+        color: theme.colorScheme.onPrimary.withOpacity(1),
       );
 
   static BoxDecoration get fillPrimary => BoxDecoration(
-        color: appTheme.colorScheme.primary,
+        color: theme.colorScheme.primary,
       );
 
   static BoxDecoration get gradientGrayToGray => BoxDecoration(
@@ -163,7 +161,7 @@ class AppDecoration {
         gradient: LinearGradient(
           begin: Alignment(0.5, 0),
           end: Alignment(0.5, 1),
-          colors: [appTheme.gray800, appTheme.gray800, appTheme.tealA800],
+          colors: [appTheme.gray800, appTheme.gray800, appTheme.teal800],
         ),
       );
 
@@ -180,8 +178,8 @@ class AppDecoration {
           begin: Alignment(0.5, 0),
           end: Alignment(0.5, 1),
           colors: [
-            appTheme.colorScheme.onPrimaryContainer,
-            appTheme.colorScheme.onPrimaryContainer,
+            theme.colorScheme.onPrimaryContainer,
+            theme.colorScheme.onPrimaryContainer,
             appTheme.gray80001
           ],
         ),
@@ -202,10 +200,10 @@ class AppDecoration {
       );
 
   static BoxDecoration get outlineOnPrimary => BoxDecoration(
-        color: appTheme.colorScheme.onPrimary.withOpacity(1),
+        color: theme.colorScheme.onPrimary.withOpacity(1),
         border: Border(
           bottom: BorderSide(
-            color: appTheme.colorScheme.onPrimary,
+            color: theme.colorScheme.onPrimary,
             width: 1.35.h,
             strokeAlign: BorderSide.strokeAlignOutside,
           ),
@@ -213,9 +211,9 @@ class AppDecoration {
       );
 
   static BoxDecoration get outlineOnPrimary1 => BoxDecoration(
-        color: appTheme.colorScheme.onPrimary.withOpacity(1),
+        color: theme.colorScheme.onPrimary.withOpacity(1),
         border: Border.all(
-          color: appTheme.colorScheme.onPrimary.withOpacity(1),
+          color: theme.colorScheme.onPrimary.withOpacity(1),
           width: 1.h,
           strokeAlign: BorderSide.strokeAlignOutside,
         ),
@@ -224,7 +222,7 @@ class AppDecoration {
   static BoxDecoration get outlineOnPrimary2 => BoxDecoration(
         border: Border(
           bottom: BorderSide(
-            color: appTheme.colorScheme.onPrimary.withOpacity(0.05),
+            color: theme.colorScheme.onPrimary.withOpacity(0.05),
             width: 1.h,
           ),
         ),
@@ -233,7 +231,7 @@ class AppDecoration {
   static BoxDecoration get outlineOnPrimary3 => BoxDecoration(
         border: Border(
           top: BorderSide(
-            color: appTheme.colorScheme.onPrimary,
+            color: theme.colorScheme.onPrimary,
             width: 1.h,
           ),
         ),
@@ -242,7 +240,7 @@ class AppDecoration {
   static BoxDecoration get outlineOnPrimary4 => BoxDecoration(
         border: Border(
           bottom: BorderSide(
-            color: appTheme.colorScheme.onPrimary,
+            color: theme.colorScheme.onPrimary,
             width: 1.h,
           ),
         ),
@@ -251,7 +249,7 @@ class AppDecoration {
   static BoxDecoration get outlinePrimary => BoxDecoration(
         border: Border(
           bottom: BorderSide(
-            color: appTheme.colorScheme.onPrimary,
+            color: theme.colorScheme.onPrimary,
             width: 1.h,
           ),
         ),
@@ -313,5 +311,5 @@ class BorderRadiusStyle {
   static BorderRadius get roundedBorder32 => BorderRadius.circular(32.h);
   static BorderRadius get roundedBorder44 => BorderRadius.circular(44.h);
   static BorderRadius get roundedBorder48 => BorderRadius.circular(48.h);
-  static BorderRadius get roundedBorder64 => BorderRadius.circular(64.h);
+  static BorderRadius get roundedBorder6 => BorderRadius.circular(6.h);
 }

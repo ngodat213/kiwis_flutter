@@ -31,7 +31,9 @@ class CustomFloatingTextField extends StatelessWidget {
       this.borderDecoration,
       this.fillColor,
       this.filled = true,
-      this.validator})
+      this.validator,
+      this.isTop = false,
+      this.isBottom = false})
       : super(
           key: key,
         );
@@ -62,6 +64,8 @@ class CustomFloatingTextField extends StatelessWidget {
   final Color? fillColor;
   final bool? filled;
   final FormFieldValidator<String>? validator;
+  final bool? isTop;
+  final bool? isBottom;
   @override
   Widget build(BuildContext context) {
     return alignment != null
@@ -72,6 +76,7 @@ class CustomFloatingTextField extends StatelessWidget {
   }
 
   Widget get floatingTextFieldWidget => Container(
+        height: 70.h,
         width: width ?? double.maxFinite,
         decoration: boxDecoration,
         child: TextFormField(
@@ -103,7 +108,7 @@ class CustomFloatingTextField extends StatelessWidget {
   InputDecoration get decoration => InputDecoration(
         hintText: hintText ?? "",
         hintStyle: hintStyle ?? theme.textTheme.bodySmall,
-        labelText: labelText ?? "",
+        // labelText: labelText ?? "",
         labelStyle: labelStyle,
         prefixIcon: prefix,
         prefixIconConstraints: prefixConstraints,
@@ -113,23 +118,63 @@ class CustomFloatingTextField extends StatelessWidget {
         contentPadding: contentPadding ??
             EdgeInsets.symmetric(
               horizontal: 24.h,
-              vertical: 38.h,
+              vertical: 30.h,
             ),
         fillColor: fillColor ?? theme.colorScheme.onPrimary,
         filled: filled,
         border: borderDecoration ??
             CustomOutlinedInputBorder(
-              borderRadius: BorderRadius.circular(8.h),
+              borderRadius: BorderRadius.only(
+                topLeft: isTop == true
+                    ? Radius.circular(16.h)
+                    : Radius.circular(8.h),
+                topRight: isTop == true
+                    ? Radius.circular(16.h)
+                    : Radius.circular(8.h),
+                bottomLeft: isBottom == true
+                    ? Radius.circular(16.h)
+                    : Radius.circular(8.h),
+                bottomRight: isBottom == true
+                    ? Radius.circular(16.h)
+                    : Radius.circular(8.h),
+              ),
               borderSide: BorderSide.none,
             ),
         enabledBorder: borderDecoration ??
             CustomOutlinedInputBorder(
-              borderRadius: BorderRadius.circular(8.h),
+              borderRadius: BorderRadius.only(
+                topLeft: isTop == true
+                    ? Radius.circular(16.h)
+                    : Radius.circular(8.h),
+                topRight: isTop == true
+                    ? Radius.circular(16.h)
+                    : Radius.circular(8.h),
+                bottomLeft: isBottom == true
+                    ? Radius.circular(16.h)
+                    : Radius.circular(8.h),
+                bottomRight: isBottom == true
+                    ? Radius.circular(16.h)
+                    : Radius.circular(8.h),
+              ),
               borderSide: BorderSide.none,
             ),
         focusedBorder: (borderDecoration ??
                 CustomOutlinedInputBorder(
-                  borderRadius: BorderRadius.circular(8.h),
+                  borderRadius: BorderRadius.only(
+                    topLeft: isTop == true
+                        ? Radius.circular(16.h)
+                        : Radius.circular(8.h),
+                    topRight: isTop == true
+                        ? Radius.circular(16.h)
+                        : Radius.circular(8.h),
+                    bottomLeft: isBottom == true
+                        ? Radius.circular(16.h)
+                        : Radius.circular(8.h),
+                    bottomRight: isBottom == true
+                        ? Radius.circular(16.h)
+                        : Radius.circular(8.h),
+                  ),
+                  borderSide: BorderSide.none,
                 ))
             .copyWith(
           borderSide: BorderSide(

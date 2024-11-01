@@ -1,23 +1,17 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:kiwis_flutter/views/explore_location_main/models/explore_location_main.model.dart';
 
 class ExploreLocationMainController extends GetxController {
-  //TODO: Implement ExploreLocationMainController
+  TextEditingController searchController = TextEditingController();
 
-  final count = 0.obs;
-  @override
-  void onInit() {
-    super.onInit();
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
+  Rx<ExploreLocationMainModel> exploreLocationMainModelObj =
+      ExploreLocationMainModel().obs;
 
   @override
   void onClose() {
+    // TODO: implement onClose
     super.onClose();
+    searchController.dispose();
   }
-
-  void increment() => count.value++;
 }
