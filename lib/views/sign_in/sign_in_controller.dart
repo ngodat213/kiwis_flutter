@@ -16,7 +16,7 @@ class SignInController extends BaseController {
   }
 
   void onSignInButtonPressed() {
-    Get.toNamed(Routes.DETAIL_POST);
+    Get.toNamed(Routes.MAIN);
   }
 
   @override

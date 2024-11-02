@@ -135,7 +135,7 @@ class DetailpostlistItemWidget extends StatelessWidget {
                           padding: EdgeInsets.all(8.h),
                           decoration: IconButtonStyleHelper.none,
                           child: CustomImageView(
-                            imagePath: ImageConstant.imgStarGreen300,
+                            imagePath: ImageConstant.svgStar,
                           ),
                         )
                       ],

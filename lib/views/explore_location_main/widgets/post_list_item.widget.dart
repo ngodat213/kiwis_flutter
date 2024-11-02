@@ -93,7 +93,7 @@ class PostlistItemWidget extends StatelessWidget {
                       padding: EdgeInsets.all(8.h),
                       decoration: IconButtonStyleHelper.fillOnPrimaryTL20,
                       child: CustomImageView(
-                        imagePath: ImageConstant.imgArrowRight,
+                        imagePath: ImageConstant.svgArrowRight,
                       ),
                     )
                   ],
@@ -149,7 +149,7 @@ class PostlistItemWidget extends StatelessWidget {
         leftIcon: Container(
           margin: EdgeInsets.only(right: 12.h),
           child: CustomImageView(
-            imagePath: ImageConstant.imgStarGreen300,
+            imagePath: ImageConstant.svgStar,
             height: 16.h,
             width: 16.h,
             fit: BoxFit.contain,

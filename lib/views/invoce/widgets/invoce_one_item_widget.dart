@@ -54,7 +54,7 @@ class InvoceOneItemWidget extends StatelessWidget {
                 ),
                 SizedBox(width: 8.h),
                 CustomImageView(
-                  imagePath: ImageConstant.imgDollar,
+                  imagePath: ImageConstant.svgDollar,
                   height: 16.h,
                   width: 16.h,
                 )

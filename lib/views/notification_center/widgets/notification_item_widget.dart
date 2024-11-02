@@ -44,7 +44,7 @@ class NotificationlistItemWidget extends StatelessWidget {
                   padding: EdgeInsets.all(12.h),
                   decoration: IconButtonStyleHelper.fillOnPrimaryTL241,
                   child: CustomImageView(
-                    imagePath: ImageConstant.imgBell,
+                    imagePath: ImageConstant.svgBell,
                   ),
                 ),
                 SizedBox(width: 16.h),

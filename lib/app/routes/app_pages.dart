@@ -1,17 +1,23 @@
 import 'package:get/get.dart';
 
-import '../../views/detail_post/detail_post_view.dart';
-import '../../views/detail_post/detail_post_binding.dart';
+import '../../views/camera/camera_binding.dart';
+import '../../views/camera/camera_view.dart';
 import '../../views/change_language/change_language_binding.dart';
 import '../../views/change_language/change_language_view.dart';
 import '../../views/change_listview_buttomsheet/change_language_buttomsheet_binding.dart';
 import '../../views/change_listview_buttomsheet/change_language_buttomsheet_view.dart';
 import '../../views/change_password/change_password_binding.dart';
 import '../../views/change_password/change_password_view.dart';
+import '../../views/detail_post/detail_post_binding.dart';
+import '../../views/detail_post/detail_post_view.dart';
 import '../../views/history_search/history_search_binding.dart';
 import '../../views/history_search/history_search_view.dart';
+import '../../views/home/home_binding.dart';
+import '../../views/home/home_view.dart';
 import '../../views/invoce/invoce_binding.dart';
 import '../../views/invoce/invoce_view.dart';
+import '../../views/main/main_binding.dart';
+import '../../views/main/main_view.dart';
 import '../../views/menu/menu_binding.dart';
 import '../../views/menu/menu_view.dart';
 import '../../views/next_point/next_point_binding.dart';
@@ -70,7 +76,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.MENU,
-      page: () => const MenuScreen(),
+      page: () => MenuScreen(),
       binding: MenuBinding(),
     ),
     GetPage(
@@ -97,6 +103,21 @@ class AppPages {
       name: _Paths.SIGN_UP,
       page: () => SignUpScreen(),
       binding: SignUpBinding(),
+    ),
+    GetPage(
+      name: _Paths.HOME,
+      page: () => HomeScreen(),
+      binding: HomeBinding(),
+    ),
+    GetPage(
+      name: _Paths.MAIN,
+      page: () => MainView(),
+      binding: MainBinding(),
+    ),
+    GetPage(
+      name: _Paths.CAMERA,
+      page: () => const CameraView(),
+      binding: CameraBinding(),
     ),
   ];
 }

@@ -10,6 +10,7 @@ abstract class BaseView<Controller extends BaseController>
   final GlobalKey<ScaffoldState> globalKey = GlobalKey<ScaffoldState>();
 
   // final Logger logger = BuildConfig.instance.config.logger;
+  final bool isNavigationBar = false;
 
   BaseView({super.key});
 
@@ -17,17 +18,19 @@ abstract class BaseView<Controller extends BaseController>
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      child: Stack(
-        children: [
-          annotatedRegion(context),
-          Obx(() => controller.errorMessage.isNotEmpty
-              ? showErrorSnackBar(controller.errorMessage)
-              : Container()),
-          Container(),
-        ],
-      ),
-    );
+    return isNavigationBar
+        ? body(context)
+        : GestureDetector(
+            child: Stack(
+              children: [
+                annotatedRegion(context),
+                Obx(() => controller.errorMessage.isNotEmpty
+                    ? showErrorSnackBar(controller.errorMessage)
+                    : Container()),
+                Container(),
+              ],
+            ),
+          );
   }
 
   Widget annotatedRegion(BuildContext context) {
@@ -47,6 +50,7 @@ abstract class BaseView<Controller extends BaseController>
   Widget pageScaffold(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        extendBody: true,
         //sets ios status bar color
         backgroundColor: pageBackgroundColor(),
         key: globalKey,
@@ -62,27 +66,25 @@ abstract class BaseView<Controller extends BaseController>
   Widget pageContent(BuildContext context) {
     return SizedBox(
       width: double.maxFinite,
-      child: SingleChildScrollView(
-        child: Container(
-          height: 798.h,
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              CustomImageView(
-                imagePath: ImageConstant.imgEllipse2005,
-                height: 280.h,
-                width: 274.h,
-                alignment: Alignment.topRight,
-              ),
-              CustomImageView(
-                imagePath: ImageConstant.imgEllipse2006Green600516x342,
-                height: 340.h,
-                width: 240.h,
-                alignment: Alignment.bottomLeft,
-              ),
-              body(context),
-            ],
-          ),
+      child: Container(
+        height: Get.height,
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            CustomImageView(
+              imagePath: ImageConstant.imgEllipse2005,
+              height: 280.h,
+              width: 274.h,
+              alignment: Alignment.topRight,
+            ),
+            CustomImageView(
+              imagePath: ImageConstant.imgEllipse2006Green600516x342,
+              height: 340.h,
+              width: 240.h,
+              alignment: Alignment.bottomLeft,
+            ),
+            SingleChildScrollView(child: body(context)),
+          ],
         ),
       ),
     );

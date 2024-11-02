@@ -1,8 +1,7 @@
 import 'package:get/get.dart';
-import 'package:kiwis_flutter/core/base/base.controller.dart';
 
-class MenuController extends BaseController {
-  //TODO: Implement MenuController
+class CameraController extends GetxController {
+  //TODO: Implement CameraController
 
   final count = 0.obs;
   @override

@@ -369,7 +369,7 @@ class ExploreLocationMainScreen
                   padding: EdgeInsets.all(8.h),
                   decoration: IconButtonStyleHelper.fillOnPrimaryTL20,
                   child: CustomImageView(
-                    imagePath: ImageConstant.imgArrowRight,
+                    imagePath: ImageConstant.svgArrowRight,
                   ),
                 )
               ],

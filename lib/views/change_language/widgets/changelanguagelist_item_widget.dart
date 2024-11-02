@@ -33,7 +33,7 @@ class ChangelanguagelistItemWidget extends StatelessWidget {
             padding: EdgeInsets.all(12.h),
             decoration: IconButtonStyleHelper.fillOnPrimaryTL24,
             child: CustomImageView(
-              imagePath: ImageConstant.imgInbox,
+              imagePath: ImageConstant.svgInbox,
             ),
           ),
           SizedBox(width: 16.h),

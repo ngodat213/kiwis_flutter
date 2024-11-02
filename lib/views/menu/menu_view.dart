@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart' hide MenuController;
+import 'package:kiwis_flutter/core/base/base.view.dart';
 import 'package:kiwis_flutter/views/menu/menu_controller.dart';
 import 'package:kiwis_flutter/widgets/app_bar/app_bar_leadingiconbutton.dart';
 import 'package:kiwis_flutter/widgets/app_bar/app_bar_title.dart';
@@ -8,82 +9,48 @@ import '../../widgets/app_bar/custom_app_bar.dart';
 import '../../widgets/custom_elevated_button.dart';
 import '../../widgets/custom_icon_button.dart';
 
-class MenuScreen extends GetWidget<MenuController> {
-  const MenuScreen({Key? key})
-      : super(
-          key: key,
-        );
+class MenuScreen extends BaseView<MenuController> {
+  MenuScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: SizedBox(
-          width: double.maxFinite,
-          child: SingleChildScrollView(
-            child: Container(
-              height: 798.h,
-              child: Stack(
-                alignment: Alignment.bottomCenter,
-                children: [
-                  Align(
-                    alignment: Alignment.topCenter,
-                    child: _buildAppBar(),
-                  ),
-                  Container(
-                    width: double.maxFinite,
-                    margin: EdgeInsets.only(bottom: 48.h),
-                    padding: EdgeInsets.symmetric(horizontal: 24.h),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        _buildHeaderSection(),
-                        SizedBox(height: 16.h),
-                        _buildSavedPlacesRow(),
-                        SizedBox(height: 16.h),
-                        _buildPaymentSettingsRow(),
-                        _buildLanguageSettingsRow(),
-                        SizedBox(
-                          width: double.maxFinite,
-                          child: _buildAboutSectionRow(
-                            inboxOne: ImageConstant.imgLock,
-                            aboutOne: "msg_privacy_and_term".tr,
-                            applicationvers: "msg_change_password".tr,
-                          ),
-                        ),
-                        SizedBox(
-                          width: double.maxFinite,
-                          child: _buildAboutSectionRow(
-                            inboxOne: ImageConstant.imgInbox,
-                            aboutOne: "lbl_about".tr,
-                            applicationvers: "msg_application_version".tr,
-                          ),
-                        ),
-                        SizedBox(height: 62.h),
-                        CustomElevatedButton(
-                          text: "lbl_logout".tr,
-                          buttonStyle: CustomButtonStyles.fillOnPrimaryTL28,
-                        )
-                      ],
-                    ),
-                  ),
-                  CustomImageView(
-                    imagePath: ImageConstant.imgEllipse2005,
-                    height: 280.h,
-                    width: 274.h,
-                    alignment: Alignment.topRight,
-                  ),
-                  CustomImageView(
-                    imagePath: ImageConstant.imgEllipse2006Green600,
-                    height: 274.h,
-                    width: 344.h,
-                    alignment: Alignment.bottomLeft,
-                  )
-                ],
-              ),
+  bool get isNavigationBar => true;
+  @override
+  Widget body(BuildContext context) {
+    return Container(
+      width: double.maxFinite,
+      margin: EdgeInsets.only(bottom: 48.h),
+      padding: EdgeInsets.symmetric(horizontal: 24.h),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          _buildHeaderSection(),
+          SizedBox(height: 16.h),
+          _buildSavedPlacesRow(),
+          SizedBox(height: 16.h),
+          _buildPaymentSettingsRow(),
+          _buildLanguageSettingsRow(),
+          SizedBox(
+            width: double.maxFinite,
+            child: _buildAboutSectionRow(
+              inboxOne: ImageConstant.svgPrivacy,
+              aboutOne: "msg_privacy_and_term".tr,
+              applicationvers: "msg_change_password".tr,
             ),
           ),
-        ),
+          SizedBox(
+            width: double.maxFinite,
+            child: _buildAboutSectionRow(
+              inboxOne: ImageConstant.svgInbox,
+              aboutOne: "lbl_about".tr,
+              applicationvers: "msg_application_version".tr,
+            ),
+          ),
+          SizedBox(height: 62.h),
+          CustomElevatedButton(
+            text: "lbl_logout".tr,
+            buttonStyle: CustomButtonStyles.fillOnPrimaryTL28,
+          )
+        ],
       ),
     );
   }
@@ -131,15 +98,6 @@ class MenuScreen extends GetWidget<MenuController> {
           child: Stack(
             alignment: Alignment.center,
             children: [
-              CustomImageView(
-                imagePath: ImageConstant.imgAvatar108x204,
-                height: 108.h,
-                width: 206.h,
-                radius: BorderRadius.circular(
-                  54.h,
-                ),
-                alignment: Alignment.centerLeft,
-              ),
               Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -149,7 +107,7 @@ class MenuScreen extends GetWidget<MenuController> {
                     child: Row(
                       children: [
                         CustomImageView(
-                          imagePath: ImageConstant.imgAvatar60x60,
+                          imagePath: ImageConstant.imgAvatar,
                           height: 60.h,
                           width: 60.h,
                           radius: BorderRadius.circular(
@@ -174,9 +132,8 @@ class MenuScreen extends GetWidget<MenuController> {
                           ),
                         ),
                         SizedBox(width: 16.h),
-                        SizedBox(width: 16.h),
                         CustomImageView(
-                          imagePath: ImageConstant.imgBell,
+                          imagePath: ImageConstant.svgBell,
                           height: 20.h,
                           width: 20.h,
                         )
@@ -214,7 +171,7 @@ class MenuScreen extends GetWidget<MenuController> {
                     padding: EdgeInsets.all(12.h),
                     decoration: IconButtonStyleHelper.fillOnPrimaryTL24,
                     child: CustomImageView(
-                      imagePath: ImageConstant.imgStarOnprimary,
+                      imagePath: ImageConstant.svgStar,
                     ),
                   ),
                   SizedBox(width: 12.h),
@@ -254,7 +211,7 @@ class MenuScreen extends GetWidget<MenuController> {
                     padding: EdgeInsets.all(12.h),
                     decoration: IconButtonStyleHelper.fillOnPrimaryTL24,
                     child: CustomImageView(
-                      imagePath: ImageConstant.imgDollar,
+                      imagePath: ImageConstant.svgDollar,
                     ),
                   ),
                   Expanded(
@@ -375,7 +332,7 @@ class MenuScreen extends GetWidget<MenuController> {
             padding: EdgeInsets.all(12.h),
             decoration: IconButtonStyleHelper.fillOnPrimaryTL24,
             child: CustomImageView(
-              imagePath: ImageConstant.imgFlag,
+              imagePath: ImageConstant.svgFlag,
             ),
           ),
           SizedBox(width: 16.h),

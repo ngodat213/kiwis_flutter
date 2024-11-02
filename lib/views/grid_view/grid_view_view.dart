@@ -81,7 +81,7 @@ class GridViewScreen extends GetWidget<GridViewController> {
                           ),
                           actions: [
                             AppbarTrailingImage(
-                              imagePath: ImageConstant.imgMenu,
+                              imagePath: ImageConstant.svgMenu,
                               margin: EdgeInsets.only(right: 8.h),
                             )
                           ],

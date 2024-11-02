@@ -151,7 +151,7 @@ class SignUpContent extends BaseView<SignUpController> {
           child: Container(
             margin: EdgeInsets.fromLTRB(12.h, 38.h, 24.h, 38.h),
             child: CustomImageView(
-              imagePath: ImageConstant.imgLock,
+              imagePath: ImageConstant.svgPrivacy,
               height: 24.h,
               width: 24.h,
               fit: BoxFit.contain,

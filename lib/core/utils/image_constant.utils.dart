@@ -65,7 +65,7 @@ class ImageConstant {
 
   static String imgAqi = '$imagePath/img_aqi.svg';
 
-  static String imgAvatar = '$imagePath/img_avatar.png';
+  static String imgAvatar = '$imagePath/Avatar.png';
 
   static String imgAvatarGray900 = '$imagePath/img_avatar_gray_900.png';
 
@@ -88,15 +88,13 @@ class ImageConstant {
   static String imgImage42 = '$imagePath/img_image_42.png';
 
 //   menu images
-  static String imgAvatar108x204 = '$imagePath/img_avatar_108x204.png';
-
   static String imgAvatar60x60 = '$imagePath/img_avatar_60x60.png';
 
   static String imgStack = '$imagePath/img_stack.svg';
 
   static String imgRight = '$imagePath/img_right.svg';
 
-  static String imgFlag = '$imagePath/img_flag.svg';
+  static String svgFlag = '$svgPath/flag.svg';
 
 //   payment images
   static String imgContrastGreen600 = '$imagePath/img_contrast_green_600.svg';
@@ -158,7 +156,7 @@ class ImageConstant {
 
   static String imgStackOnprimary = '$imagePath/img_stack_onprimary.svg';
 
-  static String imgArrowRight = '$imagePath/img_arrow_right.svg';
+  static String svgArrowRight = '$svgPath/arrow right.svg';
 
   static String imgInterfaceOnprimary =
       '$imagePath/img_interface_onprimary.svg';
@@ -186,7 +184,7 @@ class ImageConstant {
   static String imgUserOnprimary24x24 =
       '$imagePath/img_user_onprimary_24x24.svg';
 
-  static String imgFavorite = '$imagePath/img_favorite.svg';
+  static String svgHeart = '$svgPath/heart2.svg';
 
   static String imgSettingsOnprimary = '$imagePath/img_settings_onprimary.svg';
 
@@ -292,14 +290,14 @@ class ImageConstant {
 
   static String imgMail = '$imagePath/img_mail.svg';
 
-  static String imgLock = '$imagePath/img_lock.svg';
+  static String svgPrivacy = '$svgPath/privacy.svg';
 
   static String imgCloseOnprimary = '$imagePath/img_close_onprimary.svg';
 
   static String imgEllipse2006Green600 =
       '$imagePath/img_ellipse_2006_green_600.png';
 
-  static String imgMenu = '$imagePath/img_menu.svg';
+  static String svgMenu = '$svgPath/menu.svg';
 
   static String imgClose = '$imagePath/img_close.svg';
 
@@ -319,7 +317,7 @@ class ImageConstant {
 
   static String imgArrowUp = '$imagePath/img_arrow_up.svg';
 
-  static String imgStarGreen300 = '$imagePath/img_star_green_300.svg';
+  static String svgStar = '$svgPath/star.svg';
   static String imgClosePrimary = '$svgPath/close.svg';
 
   static String imgContrastOnprimary = '$imagePath/img_contrast_onprimary.svg';
@@ -331,11 +329,11 @@ class ImageConstant {
 
   static String imgAvatar40x40 = '$imagePath/Avatar.png';
 
-  static String imgBell = '$imagePath/img_bell.svg';
+  static String svgBell = '$svgPath/bell.svg';
 
-  static String imgDollar = '$imagePath/img_dollar.svg';
+  static String svgDollar = '$svgPath/dollar.svg';
 
-  static String imgInbox = '$imagePath/img_inbox.svg';
+  static String svgInbox = '$svgPath/warning circle.svg';
 
   static String imgVisa = '$imagePath/img_visa.svg';
 
@@ -366,4 +364,9 @@ class ImageConstant {
   static String imgStar = '$imagePath/img_star.svg';
 
   static String imgResize = '$imagePath/img_resize.svg';
+
+  // Home
+  static String svgMenuDefault = '$svgPath/Property 1=Default.svg';
+  static String svgComment = '$svgPath/comment.svg';
+  static String svgHome = '$svgPath/home.svg';
 }

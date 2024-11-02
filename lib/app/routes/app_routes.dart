@@ -22,6 +22,9 @@ abstract class Routes {
   static const SEARCH_POST = _Paths.SEARCH_POST;
   static const SIGN_IN = _Paths.SIGN_IN;
   static const SIGN_UP = _Paths.SIGN_UP;
+  static const HOME = _Paths.HOME;
+  static const MAIN = _Paths.MAIN;
+  static const CAMERA = _Paths.VIEWS + _Paths.CAMERA;
 }
 
 abstract class _Paths {
@@ -45,4 +48,7 @@ abstract class _Paths {
   static const SEARCH_POST = '/search-post';
   static const SIGN_IN = '/sign-in';
   static const SIGN_UP = '/sign-up';
+  static const HOME = '/home';
+  static const MAIN = '/main';
+  static const CAMERA = '/camera';
 }
