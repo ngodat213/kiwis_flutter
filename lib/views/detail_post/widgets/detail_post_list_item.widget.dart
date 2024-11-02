@@ -56,7 +56,8 @@ class DetailpostlistItemWidget extends StatelessWidget {
                           padding: EdgeInsets.all(12.h),
                           decoration: IconButtonStyleHelper.fillOnPrimaryTL202,
                           child: CustomImageView(
-                            imagePath: ImageConstant.imgFullscreen,
+                            color: Colors.black,
+                            imagePath: ImageConstant.svgFullscreen,
                           ),
                         )
                       ],

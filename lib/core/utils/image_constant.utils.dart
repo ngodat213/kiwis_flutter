@@ -172,9 +172,9 @@ class ImageConstant {
       '$imagePath/img_ellipse_2005_primary_282x272.png';
 
 //   detail_post images
-  static String imgFrame47240200x342 = '$imagePath/img_frame_47240_200x342.png';
+  static String imgFrame47240200x342 = '$imagePath/Frame 47240.png';
 
-  static String imgFullscreen = '$imagePath/img_fullscreen.svg';
+  static String svgFullscreen = '$svgPath/full screen.svg';
 
   static String imgAvatar3 = '$imagePath/img_avatar_3.png';
 
@@ -311,7 +311,7 @@ class ImageConstant {
 
   static String imgHotel = '$imagePath/img_hotel.svg';
 
-  static String imgUserOnprimary = '$imagePath/img_user_onprimary.svg';
+  static String svgMore = '$svgPath/more.svg';
 
   static String imgAvatar2 = '$imagePath/img_avatar_2.png';
 
@@ -329,7 +329,7 @@ class ImageConstant {
 
   static String imgUp = '$imagePath/img_up.svg';
 
-  static String imgAvatar40x40 = '$imagePath/img_avatar_40x40.png';
+  static String imgAvatar40x40 = '$imagePath/Avatar.png';
 
   static String imgBell = '$imagePath/img_bell.svg';
 

@@ -3,9 +3,10 @@ import 'package:kiwis_flutter/core/app_export.dart';
 class DetailPostListItemModel {
   DetailPostListItemModel(
       {this.date, this.foridaNessi, this.description, this.id}) {
-    date = date ?? Rx("date");
-    foridaNessi = foridaNessi ?? Rx("foridaNessi");
-    description = description ?? Rx("description");
+    date = date ?? Rx("26/10/2003");
+    foridaNessi = foridaNessi ?? Rx("Ngô Văn Tiến Đạt");
+    description = description ??
+        Rx("Nostrud enim enim elit duis dolore eu adipisicing sunt ex exercitation minim aliqua.");
     id = id ?? Rx("id");
   }
 

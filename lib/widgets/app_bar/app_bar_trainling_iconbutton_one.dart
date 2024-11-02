@@ -4,7 +4,7 @@ import '../custom_icon_button.dart';
 
 class AppbarTrailingIconbuttonOne extends StatelessWidget {
   AppbarTrailingIconbuttonOne(
-      {Key? key, this.imagePath, this.onTap, this.margin})
+      {Key? key, this.imagePath, this.onTap, this.margin, this.color})
       : super(
           key: key,
         );
@@ -12,6 +12,8 @@ class AppbarTrailingIconbuttonOne extends StatelessWidget {
   final String? imagePath;
 
   final Function? onTap;
+
+  final Color? color;
 
   final EdgeInsetsGeometry? margin;
 
@@ -28,7 +30,8 @@ class AppbarTrailingIconbuttonOne extends StatelessWidget {
           width: 44.h,
           padding: EdgeInsets.all(10.h),
           child: CustomImageView(
-            imagePath: ImageConstant.imgUserOnprimary,
+            color: color ?? Colors.white,
+            imagePath: ImageConstant.svgMore,
           ),
         ),
       ),

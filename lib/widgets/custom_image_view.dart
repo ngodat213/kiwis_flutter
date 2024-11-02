@@ -100,6 +100,7 @@ class CustomImageView extends StatelessWidget {
               imagePath!,
               height: height,
               width: width,
+              color: color,
               fit: fit ?? BoxFit.contain,
               // colorFilter: this.color != null
               //     ? ColorFilter.mode(

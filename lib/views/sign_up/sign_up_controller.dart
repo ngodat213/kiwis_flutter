@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:kiwis_flutter/views/sign_up/sign_up_model.dart';
+import 'package:kiwis_flutter/core/base/base.controller.dart';
+import 'package:kiwis_flutter/views/sign_up/models/sign_up_model.dart';
 import '../../../core/app_export.dart';
 
-class SignUpController extends GetxController {
+class SignUpController extends BaseController {
   TextEditingController emailInputController = TextEditingController();
 
   TextEditingController passwordInputController = TextEditingController();
@@ -13,7 +14,11 @@ class SignUpController extends GetxController {
 
   Rx<SignUpModel> signUpModelObj = SignUpModel().obs;
 
-  Rx<bool> isShowPassword = true.obs;
+  RxBool isShowPassword = true.obs;
+
+  void onSignUpButtonPressed() {
+    Get.toNamed(Routes.SIGN_IN);
+  }
 
   @override
   void onClose() {

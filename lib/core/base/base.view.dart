@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:kiwis_flutter/core/app_export.dart';
 import 'package:kiwis_flutter/core/base/base.controller.dart';
 import 'package:kiwis_flutter/core/constants/constants.dart';
-import 'package:kiwis_flutter/enums/page_state.enum.dart';
-import 'package:get/get.dart';
 
 abstract class BaseView<Controller extends BaseController>
     extends GetView<Controller> {
@@ -46,20 +45,47 @@ abstract class BaseView<Controller extends BaseController>
   }
 
   Widget pageScaffold(BuildContext context) {
-    return Scaffold(
-      //sets ios status bar color
-      backgroundColor: pageBackgroundColor(),
-      key: globalKey,
-      floatingActionButton: floatingActionButton(context),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      body: pageContent(context),
-      bottomNavigationBar: bottomNavigationBar(),
-      drawer: drawer(),
+    return SafeArea(
+      child: Scaffold(
+        //sets ios status bar color
+        backgroundColor: pageBackgroundColor(),
+        key: globalKey,
+        floatingActionButton: floatingActionButton(context),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        body: pageContent(context),
+        bottomNavigationBar: bottomNavigationBar(),
+        drawer: drawer(),
+      ),
     );
   }
 
   Widget pageContent(BuildContext context) {
-    return SingleChildScrollView(child: body(context));
+    return SizedBox(
+      width: double.maxFinite,
+      child: SingleChildScrollView(
+        child: Container(
+          height: 798.h,
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              CustomImageView(
+                imagePath: ImageConstant.imgEllipse2005,
+                height: 280.h,
+                width: 274.h,
+                alignment: Alignment.topRight,
+              ),
+              CustomImageView(
+                imagePath: ImageConstant.imgEllipse2006Green600516x342,
+                height: 340.h,
+                width: 240.h,
+                alignment: Alignment.bottomLeft,
+              ),
+              body(context),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   Widget showErrorSnackBar(String message) {
