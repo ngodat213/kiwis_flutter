@@ -301,7 +301,7 @@ class ImageConstant {
 
   static String imgClose = '$imagePath/img_close.svg';
 
-  static String imgSearch = '$imagePath/img_search.svg';
+  static String svgSearch = '$svgPath/search.svg';
 
   static String imageNotFound = 'assets/images/image_not_found.png';
 
@@ -369,4 +369,5 @@ class ImageConstant {
   static String svgMenuDefault = '$svgPath/Property 1=Default.svg';
   static String svgComment = '$svgPath/comment.svg';
   static String svgHome = '$svgPath/home.svg';
+  static String svgCalander = '$svgPath/calendar.svg';
 }

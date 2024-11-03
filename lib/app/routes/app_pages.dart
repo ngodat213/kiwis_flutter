@@ -6,6 +6,8 @@ import '../../views/change_listview_buttomsheet/change_language_buttomsheet_bind
 import '../../views/change_listview_buttomsheet/change_language_buttomsheet_view.dart';
 import '../../views/change_password/change_password_binding.dart';
 import '../../views/change_password/change_password_view.dart';
+import '../../views/chat_room/chat_room_binding.dart';
+import '../../views/chat_room/chat_room_view.dart';
 import '../../views/detail_post/detail_post_binding.dart';
 import '../../views/detail_post/detail_post_view.dart';
 import '../../views/history_search/history_search_binding.dart';
@@ -113,6 +115,11 @@ class AppPages {
       name: _Paths.MESSAGE,
       page: () => MessageView(),
       binding: MessageBinding(),
+    ),
+    GetPage(
+      name: _Paths.CHAT_ROOM,
+      page: () => const ChatRoomView(),
+      binding: ChatRoomBinding(),
     ),
   ];
 }
