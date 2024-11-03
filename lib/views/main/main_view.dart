@@ -17,7 +17,6 @@ class MainView extends BaseView<MainController> {
           marginR: EdgeInsets.symmetric(horizontal: 16.h, vertical: 20.h),
           // itemPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 24),
           currentIndex: controller.currentIndex.value,
-          indicatorColor: Colors.green,
           unselectedItemColor: Colors.white70,
           backgroundColor: Colors.black.withOpacity(0.1),
           // outlineBorderColor: Colors.black.withOpacity(0.1),
@@ -29,34 +28,28 @@ class MainView extends BaseView<MainController> {
             CrystalNavigationBarItem(
               icon: IconlyBold.home,
               unselectedIcon: IconlyLight.home,
-              selectedColor: Colors.white,
+              selectedColor: appTheme.green60001,
             ),
 
             /// Favourite
             CrystalNavigationBarItem(
-              icon: IconlyBold.heart,
-              unselectedIcon: IconlyLight.heart,
-              selectedColor: Colors.green,
-            ),
-
-            /// Add
-            CrystalNavigationBarItem(
-              icon: IconlyBold.camera,
-              unselectedIcon: IconlyLight.camera,
-              selectedColor: Colors.white,
+              icon: IconlyBold.chart,
+              unselectedIcon: IconlyLight.chart,
+              selectedColor: appTheme.green60001,
             ),
 
             /// Search
             CrystalNavigationBarItem(
-                icon: IconlyBold.chat,
-                unselectedIcon: IconlyLight.chat,
-                selectedColor: Colors.white),
+              icon: IconlyBold.chat,
+              unselectedIcon: IconlyLight.chat,
+              selectedColor: appTheme.green60001,
+            ),
 
             /// Profile
             CrystalNavigationBarItem(
               icon: IconlyBold.setting,
               unselectedIcon: IconlyLight.setting,
-              selectedColor: Colors.white,
+              selectedColor: appTheme.green60001,
             ),
           ],
         ),

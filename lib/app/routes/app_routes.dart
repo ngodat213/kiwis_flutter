@@ -25,7 +25,7 @@ abstract class Routes {
   static const HOME = _Paths.HOME;
   static const MAIN = _Paths.MAIN;
   static const CAMERA = _Paths.CAMERA;
-  static const MESSAGE = _Paths.VIEWS + _Paths.MESSAGE;
+  static const MESSAGE = _Paths.MESSAGE;
 }
 
 abstract class _Paths {

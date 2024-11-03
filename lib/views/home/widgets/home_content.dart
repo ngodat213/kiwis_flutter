@@ -1,3 +1,4 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:kiwis_flutter/core/app_export.dart';
@@ -7,10 +8,22 @@ class HomeContent extends StatelessWidget {
     super.key,
     required this.notificationOnPressed,
     required this.detailPostOnPressed,
+    required this.cameraController,
+    required this.isCameraInitialized,
+    required this.isFlashOn,
+    required this.toggleFlash,
+    required this.takePicture,
+    required this.toggleRotate,
   });
 
   final Function() notificationOnPressed;
   final Function() detailPostOnPressed;
+  final Function() toggleFlash;
+  final Function() takePicture;
+  final Function() toggleRotate;
+  final CameraController cameraController;
+  final RxBool isCameraInitialized;
+  final RxBool isFlashOn;
 
   @override
   Widget build(BuildContext context) {
@@ -20,10 +33,13 @@ class HomeContent extends StatelessWidget {
         children: [
           Swiper(
             itemBuilder: (BuildContext context, int index) {
+              if (index == 0) {
+                return _cameraWidget();
+              }
               return _postSection();
             },
             scrollDirection: Axis.vertical,
-            itemCount: 3,
+            itemCount: 3 + 1,
             loop: false,
             fade: 0.1,
           ),
@@ -297,6 +313,83 @@ class HomeContent extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _cameraWidget() {
+    return Column(
+      children: [
+        SizedBox(height: Get.height * 0.2),
+        Stack(
+          children: [
+            // Camera Preview
+            Obx(() {
+              if (isCameraInitialized.value) {
+                return Container(
+                  width: Get.width - 70.h,
+                  height: Get.width - 70.h,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: CameraPreview(cameraController),
+                  ),
+                );
+              } else {
+                return Container(
+                  width: Get.width - 70.h,
+                  height: Get.width - 70.h,
+                  decoration: BoxDecoration(
+                    color: Colors.black,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                );
+              }
+            }),
+          ],
+        ),
+        SizedBox(height: 20.h),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            IconButton(
+              icon: Icon(
+                isFlashOn.value ? Icons.flash_on : Icons.flash_off,
+                color: Colors.white,
+                size: 30,
+              ),
+              onPressed: toggleFlash,
+            ),
+            GestureDetector(
+              onTap: takePicture,
+              child: Container(
+                width: 70,
+                height: 70,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: Colors.white,
+                    width: 4,
+                  ),
+                ),
+                child: Container(
+                  margin: EdgeInsets.all(3),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+            IconButton(
+              icon: Icon(
+                Icons.flip_camera_ios,
+                color: Colors.white,
+                size: 30,
+              ),
+              onPressed: toggleRotate,
+            ),
+          ],
+        ),
+      ],
     );
   }
 }

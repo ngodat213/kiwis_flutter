@@ -1,7 +1,5 @@
 import 'package:get/get.dart';
 
-import '../../views/camera/camera_binding.dart';
-import '../../views/camera/camera_view.dart';
 import '../../views/change_language/change_language_binding.dart';
 import '../../views/change_language/change_language_view.dart';
 import '../../views/change_listview_buttomsheet/change_language_buttomsheet_binding.dart';
@@ -41,11 +39,6 @@ class AppPages {
   static const INITIAL = Routes.SIGN_IN;
 
   static List<GetPage> routes = [
-    // GetPage(
-    //   name: _Paths.APP_NAVIGATION,
-    //   page: () => const AppNavigationScreen(),
-    //   binding: AppNavigationBinding(),
-    // ),
     GetPage(
       name: _Paths.DETAIL_POST,
       page: () => DetailPostScreen(),
@@ -117,13 +110,8 @@ class AppPages {
       binding: MainBinding(),
     ),
     GetPage(
-      name: _Paths.CAMERA,
-      page: () => CameraView(),
-      binding: CameraBinding(),
-    ),
-    GetPage(
       name: _Paths.MESSAGE,
-      page: () => const MessageView(),
+      page: () => MessageView(),
       binding: MessageBinding(),
     ),
   ];

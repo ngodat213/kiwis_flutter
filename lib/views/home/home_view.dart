@@ -15,6 +15,12 @@ class HomeScreen extends BaseView<HomeController> {
     return HomeContent(
       notificationOnPressed: controller.notificationOnPressed,
       detailPostOnPressed: controller.detailPostOnPressed,
+      cameraController: controller.cameraController,
+      isCameraInitialized: controller.isCameraInitialized,
+      isFlashOn: controller.isFlashOn,
+      toggleFlash: controller.toggleFlash,
+      takePicture: controller.takePicture,
+      toggleRotate: controller.toggleRotate,
     );
   }
 }
