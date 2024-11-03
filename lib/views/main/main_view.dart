@@ -48,14 +48,14 @@ class MainView extends BaseView<MainController> {
 
             /// Search
             CrystalNavigationBarItem(
-                icon: IconlyBold.search,
-                unselectedIcon: IconlyLight.search,
+                icon: IconlyBold.chat,
+                unselectedIcon: IconlyLight.chat,
                 selectedColor: Colors.white),
 
             /// Profile
             CrystalNavigationBarItem(
-              icon: IconlyBold.user_2,
-              unselectedIcon: IconlyLight.user,
+              icon: IconlyBold.setting,
+              unselectedIcon: IconlyLight.setting,
               selectedColor: Colors.white,
             ),
           ],

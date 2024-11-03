@@ -24,7 +24,7 @@ abstract class Routes {
   static const SIGN_UP = _Paths.SIGN_UP;
   static const HOME = _Paths.HOME;
   static const MAIN = _Paths.MAIN;
-  static const CAMERA = _Paths.VIEWS + _Paths.CAMERA;
+  static const CAMERA = _Paths.CAMERA;
 }
 
 abstract class _Paths {
