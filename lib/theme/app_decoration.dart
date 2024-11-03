@@ -305,6 +305,20 @@ class BorderRadiusStyle {
         bottomRight: Radius.circular(6.h),
       );
 
+  static BorderRadius get customBorderTop28 => BorderRadius.only(
+        topLeft: Radius.circular(28.h),
+        topRight: Radius.circular(28.h),
+        bottomLeft: Radius.circular(8.h),
+        bottomRight: Radius.circular(8.h),
+      );
+
+  static BorderRadius get customBorderBottom28 => BorderRadius.only(
+        topLeft: Radius.circular(8.h),
+        topRight: Radius.circular(8.h),
+        bottomLeft: Radius.circular(28.h),
+        bottomRight: Radius.circular(28.h),
+      );
+
   // Rounded border
   static BorderRadius get roundedBorder194 => BorderRadius.circular(194.h);
   static BorderRadius get roundedBorder24 => BorderRadius.circular(24.h);

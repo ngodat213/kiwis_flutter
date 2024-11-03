@@ -1,24 +1,17 @@
-import 'package:get/get.dart';
+import 'package:kiwis_flutter/core/app_export.dart';
 import 'package:kiwis_flutter/core/base/base.controller.dart';
 
 class MenuController extends BaseController {
-  //TODO: Implement MenuController
-
-  final count = 0.obs;
-  @override
-  void onInit() {
-    super.onInit();
+  /// Handle
+  void onPressedChangeLanguage() {
+    Get.toNamed(Routes.CHANGE_LANGUAGE);
   }
 
-  @override
-  void onReady() {
-    super.onReady();
-  }
+  // void onPressedAbout() {
+  //   Get.to(Routes.ABOUT);
+  // }
 
-  @override
-  void onClose() {
-    super.onClose();
+  void onPressedLogout() {
+    Get.to(Routes.SIGN_IN);
   }
-
-  void increment() => count.value++;
 }

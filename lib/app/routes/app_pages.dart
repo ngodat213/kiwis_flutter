@@ -20,6 +20,8 @@ import '../../views/main/main_binding.dart';
 import '../../views/main/main_view.dart';
 import '../../views/menu/menu_binding.dart';
 import '../../views/menu/menu_view.dart';
+import '../../views/message/message_binding.dart';
+import '../../views/message/message_view.dart';
 import '../../views/next_point/next_point_binding.dart';
 import '../../views/next_point/next_point_view.dart';
 import '../../views/notification_center/notification_center_binding.dart';
@@ -51,7 +53,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.CHANGE_LANGUAGE,
-      page: () => const ChangeLanguageScreen(),
+      page: () => ChangeLanguageScreen(),
       binding: ChangeLanguageBinding(),
     ),
     GetPage(
@@ -118,6 +120,11 @@ class AppPages {
       name: _Paths.CAMERA,
       page: () => CameraView(),
       binding: CameraBinding(),
+    ),
+    GetPage(
+      name: _Paths.MESSAGE,
+      page: () => const MessageView(),
+      binding: MessageBinding(),
     ),
   ];
 }

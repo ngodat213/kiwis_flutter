@@ -6,7 +6,7 @@ class ChangelanguagelistItemModel {
     this.yourLocation,
     this.id,
   }) {
-    allRegion = allRegion ?? Rx("All Region");
+    allRegion = allRegion ?? Rx("Vietnamese");
     yourLocation = yourLocation ?? Rx("Your Location");
     id = id ?? Rx("1");
   }

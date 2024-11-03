@@ -40,44 +40,44 @@ class AuthServices {
 
   //
   //
-  static UserModel? currentUser;
-  static Future<UserModel> getCurrentUser({bool force = false}) async {
-    if (currentUser == null || force) {
-      final userStringObject =
-          LocalStorageService.prefs!.getString(AppStrings.userKey);
-      final userObject = json.decode(userStringObject ?? "{}");
-      currentUser = UserModel.fromJson(userObject);
-      print("CurrentUser: ${currentUser!.name}");
-    }
-    return currentUser!;
-  }
+  // static UserModel? currentUser;
+  // static Future<UserModel> getCurrentUser({bool force = false}) async {
+  //   if (currentUser == null || force) {
+  //     final userStringObject =
+  //         LocalStorageService.prefs!.getString(AppStrings.userKey);
+  //     final userObject = json.decode(userStringObject ?? "{}");
+  //     currentUser = UserModel.fromJson(userObject);
+  //     print("CurrentUser: ${currentUser!.name}");
+  //   }
+  //   return currentUser!;
+  // }
 
-  ///
-  ///
-  ///
-  static Future<UserModel> saveUser(dynamic jsonObject) async {
-    final currentUser = UserModel.fromJson(jsonObject);
-    try {
-      await LocalStorageService.prefs!.setString(
-        AppStrings.userKey,
-        json.encode(
-          currentUser.toJson(),
-        ),
-      );
+  // ///
+  // ///
+  // ///
+  // static Future<UserModel> saveUser(dynamic jsonObject) async {
+  //   final currentUser = UserModel.fromJson(jsonObject);
+  //   try {
+  //     await LocalStorageService.prefs!.setString(
+  //       AppStrings.userKey,
+  //       json.encode(
+  //         currentUser.toJson(),
+  //       ),
+  //     );
 
-      //subscribe to firebase topic
-      // FirebaseService().firebaseMessaging.subscribeToTopic("${currentUser.id}");
-      // FirebaseService()
-      //     .firebaseMessaging
-      //     .subscribeToTo9pic("d_${currentUser.id}");
-      // FirebaseService().firebaseMessaging.subscribeToTopic(currentUser.role);
+  //     //subscribe to firebase topic
+  //     // FirebaseService().firebaseMessaging.subscribeToTopic("${currentUser.id}");
+  //     // FirebaseService()
+  //     //     .firebaseMessaging
+  //     //     .subscribeToTo9pic("d_${currentUser.id}");
+  //     // FirebaseService().firebaseMessaging.subscribeToTopic(currentUser.role);
 
-      return currentUser;
-    } catch (error) {
-      print("saveUser error ==> $error");
-      rethrow;
-    }
-  }
+  //     return currentUser;
+  //   } catch (error) {
+  //     print("saveUser error ==> $error");
+  //     rethrow;
+  //   }
+  // }
 
   static Future<void> handleDeviceLogin(ApiResponse response) async {
     try {

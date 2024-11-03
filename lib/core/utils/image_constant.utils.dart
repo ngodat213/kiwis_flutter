@@ -107,12 +107,12 @@ class ImageConstant {
 
   static String imgCheckmark = '$imagePath/img_checkmark.svg';
 
-  static String imgCheck = '$imagePath/img_check.svg';
+  static String svgCheck = '$svgPath/check1.svg';
 
 //   change_language images
-  static String imgScrollVertical = '$imagePath/img_scroll_vertical.svg';
+  static String svgScrollVertical = '$svgPath/scroll vertical.svg';
 
-  static String imgFlagGray90002 = '$imagePath/img_flag_gray_900_02.png';
+  static String svgVietNam = '$svgPath/vn.svg';
 
   static String imgFlagGray9000222x32 =
       '$imagePath/img_flag_gray_900_02_22x32.png';
@@ -128,7 +128,7 @@ class ImageConstant {
 
   static String imgFlagAmber400 = '$imagePath/img_flag_amber_400.png';
 
-  static String imgTelevisionBlue500 = '$svgPath/ua.svg';
+  static String svgCircle = '$svgPath/circle.svg';
 
 //   change_password images
   static String imgCheckmarkGreen600 = '$imagePath/img_checkmark_green_600.svg';

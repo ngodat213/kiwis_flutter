@@ -1,66 +1,71 @@
 import 'package:flutter/material.dart';
 import '../../../../core/app_export.dart';
-import '../../../../widgets/custom_icon_button.dart';
 import '../models/changelanguagelistItem_model.dart';
 import '../change_language_controller.dart';
-import '../../../core/app_export.dart';
 
 // ignore_for_file: must_be_immutable
 class ChangelanguagelistItemWidget extends StatelessWidget {
-  ChangelanguagelistItemWidget(this.changelanguagelistItemModelObj, {Key? key})
+  ChangelanguagelistItemWidget(this.changelanguagelistItemModelObj,
+      {Key? key, this.isSelected, this.isMaxLenght})
       : super(
           key: key,
         );
 
   ChangelanguagelistItemModel changelanguagelistItemModelObj;
+  final bool? isSelected;
+  final bool? isMaxLenght;
 
   var controller = Get.find<ChangeLanguageController>();
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(16.h),
+      padding: EdgeInsets.all(24.h),
       decoration: BoxDecoration(
-        color: theme.colorScheme.onPrimary,
-        borderRadius: BorderRadiusStyle.roundedBorder6,
+        color: theme.colorScheme.onPrimary.withOpacity(0.05),
+        borderRadius: isMaxLenght == true
+            ? BorderRadiusStyle.customBorderBottom28
+            : BorderRadiusStyle.roundedBorder6,
       ),
+      width: double.maxFinite,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          CustomIconButton(
-            height: 48.h,
-            width: 48.h,
-            padding: EdgeInsets.all(12.h),
-            decoration: IconButtonStyleHelper.fillOnPrimaryTL24,
-            child: CustomImageView(
-              imagePath: ImageConstant.svgInbox,
+          Container(
+            height: 22.h,
+            width: 34.h,
+            decoration: BoxDecoration(
+              color: theme.colorScheme.onPrimary.withOpacity(1),
+              borderRadius: BorderRadiusStyle.roundedBorder6,
             ),
-          ),
-          SizedBox(width: 16.h),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: Stack(
+              alignment: Alignment.center,
               children: [
-                Obx(
-                  () => Text(
-                    changelanguagelistItemModelObj.allRegion!.value,
-                    style: theme.textTheme.titleSmall,
-                  ),
-                ),
-                Obx(
-                  () => Text(
-                    changelanguagelistItemModelObj.yourLocation!.value,
-                    style: theme.textTheme.bodySmall,
+                CustomImageView(
+                  imagePath: ImageConstant.svgVietNam,
+                  width: 34.h,
+                  fit: BoxFit.fill,
+                  radius: BorderRadius.circular(
+                    4.h,
                   ),
                 )
               ],
             ),
           ),
-          SizedBox(width: 16.h),
+          Padding(
+            padding: EdgeInsets.only(left: 20.h),
+            child: Text(
+              changelanguagelistItemModelObj.allRegion!.value,
+              style: theme.textTheme.titleSmall,
+            ),
+          ),
+          Spacer(),
           CustomImageView(
-            imagePath: ImageConstant.imgScrollVertical,
-            height: 16.h,
-            width: 16.h,
+            imagePath: isSelected == true
+                ? ImageConstant.svgCheck
+                : ImageConstant.svgCircle,
+            height: 24.h,
+            width: 26.h,
           )
         ],
       ),

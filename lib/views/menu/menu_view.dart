@@ -309,66 +309,74 @@ class MenuScreen extends BaseView<MenuController> {
 
   /// Section Widget
   Widget _buildLanguageSettingsRow() {
-    return Container(
-      padding: EdgeInsets.only(
-        top: 16.h,
-        bottom: 14.h,
-      ),
-      decoration: BoxDecoration(
-        border: Border(
-          bottom: BorderSide(
-            color: theme.colorScheme.onPrimary.withOpacity(0.05),
-            width: 1.h,
+    return GestureDetector(
+      onTap: () {
+        controller.onPressedChangeLanguage();
+      },
+      child: Container(
+        padding: EdgeInsets.only(
+          top: 16.h,
+          bottom: 14.h,
+        ),
+        decoration: BoxDecoration(
+          border: Border(
+            bottom: BorderSide(
+              color: theme.colorScheme.onPrimary.withOpacity(0.05),
+              width: 1.h,
+            ),
           ),
         ),
-      ),
-      width: double.maxFinite,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          CustomIconButton(
-            height: 48.h,
-            width: 48.h,
-            padding: EdgeInsets.all(12.h),
-            decoration: IconButtonStyleHelper.fillOnPrimaryTL24,
-            child: CustomImageView(
-              imagePath: ImageConstant.svgFlag,
-            ),
-          ),
-          SizedBox(width: 16.h),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "lbl_change_language".tr,
-                  style: theme.textTheme.titleSmall,
-                ),
-                SizedBox(height: 2.h),
-                Text(
-                  "msg_apperiance_currency".tr,
-                  style: theme.textTheme.bodySmall,
-                )
-              ],
-            ),
-          ),
-          SizedBox(width: 16.h),
-          CustomElevatedButton(
-            height: 32.h,
-            width: 92.h,
-            text: "lbl_vietnam2".tr,
-            rightIcon: Container(
-              margin: EdgeInsets.only(left: 4.h),
+        width: double.maxFinite,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CustomIconButton(
+              height: 48.h,
+              width: 48.h,
+              padding: EdgeInsets.all(12.h),
+              decoration: IconButtonStyleHelper.fillOnPrimaryTL24,
               child: CustomImageView(
-                imagePath: ImageConstant.imgRight,
-                height: 16.h,
-                width: 16.h,
-                fit: BoxFit.contain,
+                imagePath: ImageConstant.svgFlag,
               ),
             ),
-            buttonTextStyle: CustomTextStyles.labelLargeOnPrimary,
-          )
-        ],
+            SizedBox(width: 16.h),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "lbl_change_language".tr,
+                    style: theme.textTheme.titleSmall,
+                  ),
+                  SizedBox(height: 2.h),
+                  Text(
+                    "msg_apperiance_currency".tr,
+                    style: theme.textTheme.bodySmall,
+                  )
+                ],
+              ),
+            ),
+            SizedBox(width: 16.h),
+            CustomElevatedButton(
+              onPressed: () {
+                controller.onPressedChangeLanguage();
+              },
+              height: 32.h,
+              width: 92.h,
+              text: "lbl_vietnam2".tr,
+              rightIcon: Container(
+                margin: EdgeInsets.only(left: 4.h),
+                child: CustomImageView(
+                  imagePath: ImageConstant.imgRight,
+                  height: 16.h,
+                  width: 16.h,
+                  fit: BoxFit.contain,
+                ),
+              ),
+              buttonTextStyle: CustomTextStyles.labelLargeOnPrimary,
+            )
+          ],
+        ),
       ),
     );
   }
