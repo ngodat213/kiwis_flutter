@@ -189,9 +189,20 @@ class SettingChatRoom extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return ChatRoomContent();
+  }
+}
+
+class ChatRoomContent extends StatelessWidget {
+  const ChatRoomContent({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: appBar(context),
+        // appBar: appBar(context),
         body: Container(
           margin: EdgeInsets.symmetric(horizontal: 16.h),
           width: Get.width,
@@ -206,80 +217,80 @@ class SettingChatRoom extends StatelessWidget {
               SizedBox(height: 8.h),
               "DMT".tr.text.textStyle(theme.textTheme.titleLarge).bold.make(),
               SizedBox(height: 16.h),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Column(
-                    children: [
-                      AppbarTrailingIconbutton(
-                        imagePath: ImageConstant.svgCalander,
-                        margin: EdgeInsets.only(right: 8.h),
-                      ),
-                      "Create plan"
-                          .tr
-                          .text
-                          .textStyle(theme.textTheme.labelMedium)
-                          .make(),
-                    ],
-                  ),
-                  SizedBox(width: 16.h),
-                  Column(
-                    children: [
-                      AppbarTrailingIconbutton(
-                        imagePath: ImageConstant.svgBell,
-                        margin: EdgeInsets.only(right: 8.h),
-                      ),
-                      "Notification"
-                          .tr
-                          .text
-                          .textStyle(theme.textTheme.labelMedium)
-                          .make(),
-                    ],
-                  ),
-                ],
-              ),
-              SizedBox(height: 32.h),
-              Align(
-                alignment: Alignment.topLeft,
-                child: "Action"
-                    .tr
-                    .text
-                    .textStyle(theme.textTheme.titleLarge)
-                    .bold
-                    .make(),
-              ),
-              SizedBox(
-                width: double.maxFinite,
-                child: _buildAboutSectionRow(
-                  inboxOne: ImageConstant.svgInbox,
-                  aboutOne: "Group Name".tr,
-                  applicationvers: "msg_application_version".tr,
-                ),
-              ),
-              SizedBox(
-                width: double.maxFinite,
-                child: _buildAboutSectionRow(
-                  inboxOne: ImageConstant.svgInbox,
-                  aboutOne: "Add member".tr,
-                  applicationvers: "msg_application_version".tr,
-                ),
-              ),
-              SizedBox(
-                width: double.maxFinite,
-                child: _buildAboutSectionRow(
-                  inboxOne: ImageConstant.svgInbox,
-                  aboutOne: "Gallery".tr,
-                  applicationvers: "msg_application_version".tr,
-                ),
-              ),
-              SizedBox(
-                width: double.maxFinite,
-                child: _buildAboutSectionRow(
-                  inboxOne: ImageConstant.svgInbox,
-                  aboutOne: "Out group".tr,
-                  applicationvers: "msg_application_version".tr,
-                ),
-              ),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   children: [
+              //     Column(
+              //       children: [
+              //         AppbarTrailingIconbutton(
+              //           imagePath: ImageConstant.svgCalander,
+              //           margin: EdgeInsets.only(right: 8.h),
+              //         ),
+              //         "Create plan"
+              //             .tr
+              //             .text
+              //             .textStyle(theme.textTheme.labelMedium)
+              //             .make(),
+              //       ],
+              //     ),
+              //     SizedBox(width: 16.h),
+              //     Column(
+              //       children: [
+              //         AppbarTrailingIconbutton(
+              //           imagePath: ImageConstant.svgBell,
+              //           margin: EdgeInsets.only(right: 8.h),
+              //         ),
+              //         "Notification"
+              //             .tr
+              //             .text
+              //             .textStyle(theme.textTheme.labelMedium)
+              //             .make(),
+              //       ],
+              //     ),
+              //   ],
+              // ),
+              // SizedBox(height: 32.h),
+              // Align(
+              //   alignment: Alignment.topLeft,
+              //   child: "Action"
+              //       .tr
+              //       .text
+              //       .textStyle(theme.textTheme.titleLarge)
+              //       .bold
+              //       .make(),
+              // ),
+              // SizedBox(
+              //   width: double.maxFinite,
+              //   child: _buildAboutSectionRow(
+              //     inboxOne: ImageConstant.svgInbox,
+              //     aboutOne: "Group Name".tr,
+              //     applicationvers: "msg_application_version".tr,
+              //   ),
+              // ),
+              // SizedBox(
+              //   width: double.maxFinite,
+              //   child: _buildAboutSectionRow(
+              //     inboxOne: ImageConstant.svgInbox,
+              //     aboutOne: "Add member".tr,
+              //     applicationvers: "msg_application_version".tr,
+              //   ),
+              // ),
+              // SizedBox(
+              //   width: double.maxFinite,
+              //   child: _buildAboutSectionRow(
+              //     inboxOne: ImageConstant.svgInbox,
+              //     aboutOne: "Gallery".tr,
+              //     applicationvers: "msg_application_version".tr,
+              //   ),
+              // ),
+              // SizedBox(
+              //   width: double.maxFinite,
+              //   child: _buildAboutSectionRow(
+              //     inboxOne: ImageConstant.svgInbox,
+              //     aboutOne: "Out group".tr,
+              //     applicationvers: "msg_application_version".tr,
+              //   ),
+              // ),
             ],
           ),
         ),
