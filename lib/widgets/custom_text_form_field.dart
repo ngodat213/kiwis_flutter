@@ -26,6 +26,7 @@ class CustomTextFormField extends StatelessWidget {
       {Key? key,
       this.alignment,
       this.width,
+      this.height,
       this.boxDecoration,
       this.scrollPadding,
       this.controller,
@@ -56,6 +57,8 @@ class CustomTextFormField extends StatelessWidget {
   final Alignment? alignment;
 
   final double? width;
+
+  final double? height;
 
   final BoxDecoration? boxDecoration;
 
@@ -114,6 +117,7 @@ class CustomTextFormField extends StatelessWidget {
 
   Widget get textFormFieldWidget => Container(
         width: width ?? double.maxFinite,
+        height: height ?? Get.height,
         decoration: boxDecoration,
         child: TextFormField(
           scrollPadding: EdgeInsets.only(
@@ -167,14 +171,8 @@ class CustomTextFormField extends StatelessWidget {
               borderSide: BorderSide.none,
             ),
         focusedBorder: (borderDecoration ??
-                OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.h),
-                ))
-            .copyWith(
-          borderSide: BorderSide(
-            color: theme.colorScheme.primary,
-            width: 1,
-          ),
-        ),
+            OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8.h),
+            )),
       );
 }

@@ -25,12 +25,17 @@ class MessageView extends BaseView<MessageController> {
               children: [
                 // _buildButtonLarge(),
                 SizedBox(height: 16.h),
-                SizedBox(
-                  width: double.maxFinite,
-                  child: _buildAboutSectionRow(
-                    inboxOne: ImageConstant.imgAvatar,
-                    aboutOne: "Hydra Coder".tr,
-                    applicationvers: "Qua chưa đang ở dâu".tr,
+                GestureDetector(
+                  onTap: () {
+                    Get.toNamed(Routes.CHAT_ROOM);
+                  },
+                  child: SizedBox(
+                    width: double.maxFinite,
+                    child: _buildAboutSectionRow(
+                      inboxOne: ImageConstant.imgAvatar,
+                      aboutOne: "Hydra Coder".tr,
+                      applicationvers: "Qua chưa đang ở dâu".tr,
+                    ),
                   ),
                 ),
                 SizedBox(

@@ -50,7 +50,9 @@ abstract class BaseView<Controller extends BaseController>
   Widget pageScaffold(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         extendBody: true,
+        appBar: appBar(context),
         //sets ios status bar color
         backgroundColor: pageBackgroundColor(),
         key: globalKey,
@@ -88,6 +90,10 @@ abstract class BaseView<Controller extends BaseController>
         ),
       ),
     );
+  }
+
+  PreferredSizeWidget? appBar(BuildContext context) {
+    return null;
   }
 
   Widget showErrorSnackBar(String message) {

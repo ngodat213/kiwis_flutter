@@ -10,6 +10,8 @@ import '../../views/chat_room/chat_room_binding.dart';
 import '../../views/chat_room/chat_room_view.dart';
 import '../../views/detail_post/detail_post_binding.dart';
 import '../../views/detail_post/detail_post_view.dart';
+import '../../views/expense/expense_binding.dart';
+import '../../views/expense/expense_view.dart';
 import '../../views/history_search/history_search_binding.dart';
 import '../../views/history_search/history_search_view.dart';
 import '../../views/home/home_binding.dart';
@@ -118,8 +120,13 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.CHAT_ROOM,
-      page: () => const ChatRoomView(),
+      page: () => ChatRoomView(),
       binding: ChatRoomBinding(),
+    ),
+    GetPage(
+      name: _Paths.EXPENSE,
+      page: () => const ExpenseView(),
+      binding: ExpenseBinding(),
     ),
   ];
 }

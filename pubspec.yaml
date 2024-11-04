@@ -65,6 +65,7 @@ dependencies:
   iconly: ^1.0.1
   card_swiper: ^3.0.1
   camera: ^0.10.5+9
+  syncfusion_flutter_calendar: ^27.1.57
   
 dependency_overrides:
   flutter_svg: 1.1.6
