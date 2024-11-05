@@ -29,6 +29,7 @@ abstract class Routes {
   static const CHAT_ROOM = _Paths.CHAT_ROOM;
   static const EXPENSE = _Paths.EXPENSE;
   static const SPLASH = _Paths.SPLASH;
+  static const ENTRIES = _Paths.ENTRIES;
 }
 
 abstract class _Paths {
@@ -59,4 +60,5 @@ abstract class _Paths {
   static const CHAT_ROOM = '/chat-room';
   static const EXPENSE = '/expense';
   static const SPLASH = '/splash';
+  static const ENTRIES = '/entries';
 }

@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart' hide MenuController;
 import 'package:get/get.dart';
+import 'package:kiwis_flutter/views/expense/expense_controller.dart';
 import 'package:kiwis_flutter/views/home/home_controller.dart';
 import 'package:kiwis_flutter/views/menu/menu_controller.dart';
 import 'package:kiwis_flutter/views/message/message_controller.dart';
@@ -11,6 +11,7 @@ class MainBinding extends Bindings {
   void dependencies() {
     Get.put<MainController>(MainController());
     Get.put<MessageController>(MessageController());
+    Get.put<ExpenseController>(ExpenseController());
     Get.put<HomeController>(HomeController());
     Get.put<MenuController>(MenuController());
   }
