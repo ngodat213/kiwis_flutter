@@ -27,7 +27,8 @@ abstract class Routes {
   static const CAMERA = _Paths.CAMERA;
   static const MESSAGE = _Paths.MESSAGE;
   static const CHAT_ROOM = _Paths.CHAT_ROOM;
-  static const EXPENSE = _Paths.VIEWS + _Paths.EXPENSE;
+  static const EXPENSE = _Paths.EXPENSE;
+  static const SPLASH = _Paths.SPLASH;
 }
 
 abstract class _Paths {
@@ -57,4 +58,5 @@ abstract class _Paths {
   static const MESSAGE = '/message';
   static const CHAT_ROOM = '/chat-room';
   static const EXPENSE = '/expense';
+  static const SPLASH = '/splash';
 }

@@ -43,7 +43,7 @@ class SignInContent extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "lbl_t".tr,
+                        "k".tr,
                         style: theme.textTheme.bodyMedium,
                       ),
                     ],
@@ -51,7 +51,7 @@ class SignInContent extends StatelessWidget {
                 ),
                 SizedBox(width: 10.h),
                 Text(
-                  "lbl_travee".tr,
+                  "kiwis".tr,
                   style: theme.textTheme.headlineMedium,
                 )
               ],

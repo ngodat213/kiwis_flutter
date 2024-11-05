@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:kiwis_flutter/core/app_export.dart';
 
 import 'package:kiwis_flutter/core/base/base.view.dart';
+import 'package:kiwis_flutter/widgets/app_bar/app_bar_title.dart';
+import 'package:kiwis_flutter/widgets/app_bar/app_bar_trainling_iconbutton.dart';
+import 'package:kiwis_flutter/widgets/app_bar/custom_app_bar.dart';
 
 import 'message_controller.dart';
 
-class MessageView extends BaseView<MessageController> {
-  MessageView({super.key});
+class MessageScreen extends BaseView<MessageController> {
+  MessageScreen({super.key});
 
   @override
   bool get isNavigationBar => true;
@@ -15,59 +18,60 @@ class MessageView extends BaseView<MessageController> {
   Widget body(BuildContext context) {
     return Container(
       height: Get.height,
-      child: Stack(
+      child: Column(
         children: [
-          Container(
-            margin: EdgeInsets.only(top: Get.height * 0.16),
-            padding: EdgeInsets.symmetric(horizontal: 32.h),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                // _buildButtonLarge(),
-                SizedBox(height: 16.h),
-                GestureDetector(
-                  onTap: () {
-                    Get.toNamed(Routes.CHAT_ROOM);
-                  },
-                  child: SizedBox(
-                    width: double.maxFinite,
-                    child: _buildAboutSectionRow(
-                      inboxOne: ImageConstant.imgAvatar,
-                      aboutOne: "Hydra Coder".tr,
-                      applicationvers: "Qua chưa đang ở dâu".tr,
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  width: double.maxFinite,
-                  child: _buildAboutSectionRow(
-                    inboxOne: ImageConstant.svgPrivacy,
-                    aboutOne: "msg_privacy_and_term".tr,
-                    applicationvers: "msg_change_password".tr,
-                  ),
-                ),
-                SizedBox(
-                  width: double.maxFinite,
-                  child: _buildAboutSectionRow(
-                    inboxOne: ImageConstant.svgPrivacy,
-                    aboutOne: "msg_privacy_and_term".tr,
-                    applicationvers: "msg_change_password".tr,
-                  ),
-                ),
-                SizedBox(
-                  width: double.maxFinite,
-                  child: _buildAboutSectionRow(
-                    inboxOne: ImageConstant.svgPrivacy,
-                    aboutOne: "msg_privacy_and_term".tr,
-                    applicationvers: "msg_change_password".tr,
-                  ),
-                ),
-              ],
-            ),
-          ),
           Align(
             alignment: Alignment.topCenter,
             child: _buildHeaderSection(),
+          ),
+          Expanded(
+            child: SingleChildScrollView(
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 32.h),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Get.toNamed(Routes.CHAT_ROOM);
+                      },
+                      child: SizedBox(
+                        width: double.maxFinite,
+                        child: _buildAboutSectionRow(
+                          inboxOne: ImageConstant.imgAvatar,
+                          aboutOne: "Hydra Coder".tr,
+                          applicationvers: "Qua chưa đang ở dâu".tr,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: double.maxFinite,
+                      child: _buildAboutSectionRow(
+                        inboxOne: ImageConstant.svgPrivacy,
+                        aboutOne: "msg_privacy_and_term".tr,
+                        applicationvers: "msg_change_password".tr,
+                      ),
+                    ),
+                    SizedBox(
+                      width: double.maxFinite,
+                      child: _buildAboutSectionRow(
+                        inboxOne: ImageConstant.svgPrivacy,
+                        aboutOne: "msg_privacy_and_term".tr,
+                        applicationvers: "msg_change_password".tr,
+                      ),
+                    ),
+                    SizedBox(
+                      width: double.maxFinite,
+                      child: _buildAboutSectionRow(
+                        inboxOne: ImageConstant.svgPrivacy,
+                        aboutOne: "msg_privacy_and_term".tr,
+                        applicationvers: "msg_change_password".tr,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ),
         ],
       ),
@@ -177,97 +181,25 @@ class MessageView extends BaseView<MessageController> {
   /// Section Widget
   Widget _buildHeaderSection() {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 24.h, vertical: 32.h),
-      child: Card(
-        clipBehavior: Clip.antiAlias,
-        elevation: 0,
-        margin: EdgeInsets.zero,
-        color: theme.colorScheme.onPrimary.withOpacity(0.05),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadiusStyle.roundedBorder24,
+      margin: EdgeInsets.symmetric(
+          horizontal: 16.0, vertical: 16), // Adjust padding as needed
+      child: CustomAppBar(
+        title: AppbarTitle(
+          text: "Message".tr,
+          margin: EdgeInsets.only(left: 16.h),
         ),
-        child: Container(
-          padding: EdgeInsets.all(24.h),
-          width: double.maxFinite,
-          decoration: BoxDecoration(
-            color: theme.colorScheme.onPrimary.withOpacity(0.05),
-            borderRadius: BorderRadiusStyle.roundedBorder24,
+        actions: [
+          AppbarTrailingIconbutton(
+            // onTap: () => controller.showModalCalenderSheet(context),
+            imagePath: ImageConstant.svgCalander,
+            margin: EdgeInsets.only(right: 8.h),
           ),
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(
-                    width: double.maxFinite,
-                    child: Row(
-                      children: [
-                        CustomImageView(
-                          imagePath: ImageConstant.svgMenuDefault,
-                          height: 24.h,
-                          width: 24.h,
-                        ),
-                        SizedBox(width: 24.h),
-                        CustomImageView(
-                          imagePath: ImageConstant.imgAvatar,
-                          height: 40.h,
-                          width: 40.h,
-                          radius: BorderRadius.circular(
-                            30.h,
-                          ),
-                        ),
-                        SizedBox(width: 16.h),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "lbl_hello".tr,
-                                style: theme.textTheme.labelLarge,
-                              ),
-                              Text(
-                                "lbl_samms".tr,
-                                style: theme.textTheme.titleLarge,
-                              )
-                            ],
-                          ),
-                        ),
-                        GestureDetector(
-                          // onTap: notificationOnPressed,
-                          child: Container(
-                            decoration: BoxDecoration(
-                                color: Color(0x0DFFFFFF),
-                                borderRadius: BorderRadius.circular(100)),
-                            padding: EdgeInsets.symmetric(
-                              vertical: 12.h,
-                              horizontal: 16.h,
-                            ),
-                            child: Row(
-                              children: [
-                                CustomImageView(
-                                  imagePath: ImageConstant.svgSearch,
-                                  height: 20.h,
-                                  width: 20.h,
-                                ),
-                                SizedBox(width: 16.h),
-                                CustomImageView(
-                                  imagePath: ImageConstant.svgCalander,
-                                  height: 20.h,
-                                  width: 20.h,
-                                ),
-                              ],
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  )
-                ],
-              )
-            ],
+          AppbarTrailingIconbutton(
+            // onTap: () => controller.showModalSettingChatRoomSheet(context),
+            imagePath: ImageConstant.svgMore,
+            margin: EdgeInsets.only(right: 8.h),
           ),
-        ),
+        ],
       ),
     );
   }

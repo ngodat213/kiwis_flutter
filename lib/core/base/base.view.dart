@@ -111,11 +111,11 @@ abstract class BaseView<Controller extends BaseController>
   }
 
   Color pageBackgroundColor() {
-    return AppColors.primaryColor;
+    return appTheme.primary;
   }
 
   Color statusBarColor() {
-    return AppColors.primaryColor;
+    return appTheme.primary;
   }
 
   Widget? floatingActionButton(BuildContext context) {

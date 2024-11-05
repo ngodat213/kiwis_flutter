@@ -175,6 +175,7 @@ class ColorSchemes {
 
 /// Class containing custom colors for a lightCode theme.
 class LightCodeColors {
+  Color get primary => Color(0xff14151C);
   // Amber
   Color get amber400 => Color(0XFFFBCD17);
   Color get amber600 => Color(0XFFFFB700);

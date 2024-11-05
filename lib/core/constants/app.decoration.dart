@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:kiwis_flutter/core/app_export.dart';
+import 'package:kiwis_flutter/core/constants/app_export.dart';
 
 class AppDecoration {
   /// Color decorations
@@ -273,8 +273,8 @@ class BorderRadiusStyle {
   static BorderRadius get customBorderTL14 => BorderRadius.only(
         topLeft: Radius.circular(14.h),
         topRight: Radius.circular(14.h),
-        bottomLeft: Radius.circular(14.h),
-        bottomRight: Radius.circular(3.h),
+        bottomRight: Radius.circular(14.h),
+        bottomLeft: Radius.circular(3.h),
       );
 
   static BorderRadius get customBorderTL20 => BorderRadius.only(

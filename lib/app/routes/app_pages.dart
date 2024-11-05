@@ -34,13 +34,15 @@ import '../../views/sign_in/sign_in_binding.dart';
 import '../../views/sign_in/sign_in_view.dart';
 import '../../views/sign_up/sign_up_binding.dart';
 import '../../views/sign_up/sign_up_view.dart';
+import '../../views/splash/splash_binding.dart';
+import '../../views/splash/splash_view.dart';
 
 part 'app_routes.dart';
 
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.SIGN_IN;
+  static const INITIAL = Routes.SPLASH;
 
   static List<GetPage> routes = [
     GetPage(
@@ -115,7 +117,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.MESSAGE,
-      page: () => MessageView(),
+      page: () => MessageScreen(),
       binding: MessageBinding(),
     ),
     GetPage(
@@ -125,8 +127,13 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.EXPENSE,
-      page: () => const ExpenseView(),
+      page: () => ExpenseScreen(),
       binding: ExpenseBinding(),
+    ),
+    GetPage(
+      name: _Paths.SPLASH,
+      page: () => SplashScreen(),
+      binding: SplashBinding(),
     ),
   ];
 }

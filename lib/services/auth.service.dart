@@ -79,27 +79,27 @@ class AuthServices {
   //   }
   // }
 
-  static Future<void> handleDeviceLogin(ApiResponse response) async {
-    try {
-      // Login custom token with firebase
-      final firebaseToken = response.body["firebase_token"];
-      await FirebaseAuth.instance.signInWithCustomToken(firebaseToken);
+  // static Future<void> handleDeviceLogin(ApiResponse response) async {
+  //   try {
+  //     // Login custom token with firebase
+  //     final firebaseToken = response.body["firebase_token"];
+  //     await FirebaseAuth.instance.signInWithCustomToken(firebaseToken);
 
-      // Save token app
-      final token = response.body["token"];
-      await AuthServices.setAuthBearerToken(token);
+  //     // Save token app
+  //     final token = response.body["token"];
+  //     await AuthServices.setAuthBearerToken(token);
 
-      // Keep login
-      await AuthServices.isAuthenticated();
+  //     // Keep login
+  //     await AuthServices.isAuthenticated();
 
-      // Redirect to home screen
-      Get.toNamed(ManagerRoutes.homeScreen);
-    } on FirebaseAuthException catch (e) {
-      rethrow;
-    } catch (e) {
-      rethrow;
-    }
-  }
+  //     // Redirect to home screen
+  //     Get.toNamed(ManagerRoutes.homeScreen);
+  //   } on FirebaseAuthException catch (e) {
+  //     rethrow;
+  //   } catch (e) {
+  //     rethrow;
+  //   }
+  // }
 
   // //VEHICLE DETAILS
   // //

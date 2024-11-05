@@ -2,14 +2,12 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-import 'package:kiwis_flutter/core/constants/constants.dart';
-
 class Debouncer {
   final int milliseconds;
   VoidCallback? action;
   Timer? _timer;
 
-  Debouncer({this.milliseconds = AppValues.defaultDebounceTimeInMilliSeconds});
+  Debouncer({this.milliseconds = 5});
 
   run(VoidCallback action) {
     if (_timer != null) {

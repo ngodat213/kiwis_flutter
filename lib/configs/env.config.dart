@@ -1,4 +1,4 @@
-import 'package:kiwis_flutter/core/constants/constants.dart';
+import 'package:kiwis_flutter/core/constants/app_export.dart';
 import 'package:logger/logger.dart';
 
 class EnvConfig {

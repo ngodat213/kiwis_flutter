@@ -1,4 +1,6 @@
-part of 'constants.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:kiwis_flutter/core/constants/app_export.dart';
 
 class UIHelper {
   /// Show Snack Bar
@@ -14,7 +16,7 @@ class UIHelper {
     String titleClose = 'close',
     bool isShowConfirm = true,
     String titleConfirm = 'confirm',
-    Color backgroundColor = AppColors.colorWhite,
+    Color backgroundColor = Colors.white,
     VoidCallback? onComfirm,
   }) {
     showDialog(
@@ -72,7 +74,7 @@ class UIHelper {
     String titleClose = 'close',
     bool isShowConfirm = true,
     String titleConfirm = 'confirm',
-    Color backgroundColor = AppColors.colorWhite,
+    Color backgroundColor = Colors.white,
     VoidCallback? onComfirm,
   }) {
     if (GetPlatform.isIOS) {
