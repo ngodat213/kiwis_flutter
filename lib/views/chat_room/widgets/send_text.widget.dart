@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kiwis_flutter/core/app_export.dart';
+import 'package:kiwis_flutter/core/constants/app_export.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class SendText extends StatelessWidget {

@@ -1,4 +1,4 @@
-import 'package:kiwis_flutter/core/app_export.dart';
+import 'package:kiwis_flutter/core/constants/app_export.dart';
 
 class SearchresultsgridItemModel {
   Rx<String>? postInOne;

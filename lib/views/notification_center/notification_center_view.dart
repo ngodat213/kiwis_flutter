@@ -5,7 +5,7 @@ import 'package:kiwis_flutter/views/notification_center/widgets/notification_ite
 import 'package:kiwis_flutter/widgets/app_bar/app_bar_leadingiconbutton.dart';
 import 'package:kiwis_flutter/widgets/app_bar/app_bar_title.dart';
 import 'package:kiwis_flutter/widgets/app_bar/app_bar_trainling_iconbutton.dart';
-import '../../core/app_export.dart';
+import '../../core/constants/app_export.dart';
 import '../../widgets/app_bar/custom_app_bar.dart';
 
 class NotificationCenterScreen extends GetWidget<NotificationCenterController> {

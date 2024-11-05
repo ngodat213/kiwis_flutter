@@ -1,26 +1,25 @@
 import 'package:flutter/material.dart';
-import '../core/app_export.dart';
 
 // ignore_for_file: must_be_immutable
 class CustomRadioButton extends StatelessWidget {
-  CustomRadioButton({
-    Key? key,
-    required this.onChange,
-    this.decoration,
-    this.alignment,
-    this.isRightCheck,
-    this.iconSize,
-    this.value,
-    this.groupValue,
-    this.text,
-    this.width,
-    this.padding,
-    this.textStyle,
-    this.overflow,
-    this.textAlignment,
-    this.gradient,
-    this.backgroundColor,
-    this.isExpandedText = false})
+  CustomRadioButton(
+      {Key? key,
+      required this.onChange,
+      this.decoration,
+      this.alignment,
+      this.isRightCheck,
+      this.iconSize,
+      this.value,
+      this.groupValue,
+      this.text,
+      this.width,
+      this.padding,
+      this.textStyle,
+      this.overflow,
+      this.textAlignment,
+      this.gradient,
+      this.backgroundColor,
+      this.isExpandedText = false})
       : super(
           key: key,
         );

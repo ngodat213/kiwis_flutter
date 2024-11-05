@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kiwis_flutter/views/next_point/models/chip_view_4_item.model.dart';
-import '../../../core/app_export.dart';
+import '../../../core/constants/app_export.dart';
 
 // ignore_for_file: must_be_immutable
 class Chipview4ItemWidget extends StatelessWidget {

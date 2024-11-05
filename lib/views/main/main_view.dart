@@ -1,7 +1,7 @@
 import 'package:crystal_navigation_bar/crystal_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
-import '../../core/app_export.dart';
+import '../../core/constants/app_export.dart';
 
 import 'package:kiwis_flutter/core/base/base.view.dart';
 import 'package:kiwis_flutter/views/main/main_controller.dart';

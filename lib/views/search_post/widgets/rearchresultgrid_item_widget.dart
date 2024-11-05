@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:kiwis_flutter/views/search_post/search_post_controller.dart';
 import 'package:kiwis_flutter/views/search_post/search_resultgrid_item_model.dart';
-import '../../../core/app_export.dart';
-import '../../../theme/custom_button_style.dart';
+import '../../../core/constants/app_export.dart';
+import '../../../core/constants/app.button_style.dart';
 import '../../../widgets/custom_elevated_button.dart';
 
 // ignore_for_file: must_be_immutable

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kiwis_flutter/core/app_export.dart';
+import 'package:kiwis_flutter/core/constants/app_export.dart';
 import 'package:kiwis_flutter/core/base/base.view.dart';
 import 'package:kiwis_flutter/views/sign_up/sign_up_controller.dart';
 import 'package:kiwis_flutter/widgets/custom_floating_text_field.dart';

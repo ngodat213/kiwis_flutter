@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kiwis_flutter/core/base/base.controller.dart';
 import 'package:kiwis_flutter/views/sign_up/models/sign_up_model.dart';
-import '../../../core/app_export.dart';
+import '../../core/constants/app_export.dart';
 
 class SignUpController extends BaseController {
   TextEditingController emailInputController = TextEditingController();

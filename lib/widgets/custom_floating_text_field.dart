@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:kiwis_flutter/core/app_export.dart';
+import 'package:kiwis_flutter/core/constants/app_export.dart';
 
 class CustomFloatingTextField extends StatelessWidget {
   CustomFloatingTextField(

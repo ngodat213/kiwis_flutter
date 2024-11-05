@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:kiwis_flutter/views/notification_center/models/notification_list_item.model.dart';
 import 'package:kiwis_flutter/views/notification_center/notification_center_controller.dart';
-import '../../../core/app_export.dart';
-import '../../../theme/custom_button_style.dart';
+import '../../../core/constants/app_export.dart';
+import '../../../core/constants/app.button_style.dart';
 import '../../../widgets/custom_elevated_button.dart';
 import '../../../widgets/custom_icon_button.dart';
 

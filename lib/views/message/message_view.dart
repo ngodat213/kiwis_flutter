@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kiwis_flutter/core/app_export.dart';
+import 'package:kiwis_flutter/core/constants/app_export.dart';
 
 import 'package:kiwis_flutter/core/base/base.view.dart';
 import 'package:kiwis_flutter/widgets/app_bar/app_bar_title.dart';

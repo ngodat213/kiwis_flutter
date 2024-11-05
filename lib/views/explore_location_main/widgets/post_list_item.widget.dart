@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:kiwis_flutter/views/explore_location_main/explore_location_main_controller.dart';
 import 'package:kiwis_flutter/views/explore_location_main/models/post_list_item.model.dart';
-import '../../../core/app_export.dart';
-import '../../../theme/custom_button_style.dart';
+import '../../../core/constants/app_export.dart';
+import '../../../core/constants/app.button_style.dart';
 import '../../../widgets/custom_elevated_button.dart';
 import '../../../widgets/custom_icon_button.dart';
 

@@ -4,7 +4,7 @@ import 'package:kiwis_flutter/views/invoce/models/invoce_one_item.model.dart';
 import 'package:kiwis_flutter/widgets/app_bar/app_bar_leadingiconbutton_one.dart';
 import 'package:kiwis_flutter/widgets/app_bar/app_bar_title.dart';
 import 'package:kiwis_flutter/widgets/app_bar/app_bar_trainling_iconbutton_two.dart';
-import '../../core/app_export.dart';
+import '../../core/constants/app_export.dart';
 import '../../widgets/app_bar/custom_app_bar.dart';
 import '../../widgets/custom_icon_button.dart';
 import 'widgets/invoce_one_item_widget.dart'; // ignore_for_file: must_be_immutable

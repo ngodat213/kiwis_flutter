@@ -1,4 +1,4 @@
-import 'package:kiwis_flutter/core/app_export.dart';
+import 'package:kiwis_flutter/core/constants/app_export.dart';
 import 'package:kiwis_flutter/localization/en_us/en_us_translations.dart';
 
 class AppLocalization extends Translations {

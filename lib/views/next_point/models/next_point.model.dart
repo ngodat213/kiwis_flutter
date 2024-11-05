@@ -1,4 +1,4 @@
-import 'package:kiwis_flutter/core/app_export.dart';
+import 'package:kiwis_flutter/core/constants/app_export.dart';
 import 'package:kiwis_flutter/views/next_point/models/chip_view_4_item.model.dart';
 
 class NextPointModel {

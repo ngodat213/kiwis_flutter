@@ -4,8 +4,8 @@ import 'package:kiwis_flutter/views/explore_location_main/models/post_list_item.
 import 'package:kiwis_flutter/views/explore_location_main/widgets/post_list_item.widget.dart';
 import 'package:kiwis_flutter/widgets/app_bar/app_bar_leadingiconbutton.dart';
 import 'package:kiwis_flutter/widgets/app_bar/app_bar_title.dart';
-import '../../core/app_export.dart';
-import '../../theme/custom_button_style.dart';
+import '../../core/constants/app_export.dart';
+import '../../core/constants/app.button_style.dart';
 import '../../widgets/app_bar/custom_app_bar.dart';
 import '../../widgets/custom_elevated_button.dart';
 import '../../widgets/custom_icon_button.dart';

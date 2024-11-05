@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../core/app_export.dart';
+import 'app_export.dart';
 
 extension on TextStyle {
   TextStyle get googleSans {

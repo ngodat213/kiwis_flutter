@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../core/app_export.dart';
+import '../../core/constants/app_export.dart';
 import '../custom_search_view.dart';
 
 class AppbarTitleSearchview extends StatelessWidget {

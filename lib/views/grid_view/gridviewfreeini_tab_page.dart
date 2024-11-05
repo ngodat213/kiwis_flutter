@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kiwis_flutter/views/grid_view/grid_view_controller.dart';
-import '../../core/app_export.dart';
+import '../../core/constants/app_export.dart';
 
 // ignore_for_file: must_be_immutable
 class GridviewfreeiniTabPage extends StatelessWidget {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kiwis_flutter/views/detail_post/detail_post_controller.dart';
 import 'package:kiwis_flutter/views/detail_post/models/detail_post.model.dart';
-import '../../../core/app_export.dart';
+import '../../../core/constants/app_export.dart';
 import '../../../widgets/custom_icon_button.dart';
 
 // ignore_for_file: must_be_immutable

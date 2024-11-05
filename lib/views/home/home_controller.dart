@@ -1,5 +1,5 @@
 import 'package:camera/camera.dart';
-import 'package:kiwis_flutter/core/app_export.dart';
+import 'package:kiwis_flutter/core/constants/app_export.dart';
 import 'package:kiwis_flutter/core/base/base.controller.dart';
 
 class HomeController extends BaseController {

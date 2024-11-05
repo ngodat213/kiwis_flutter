@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:kiwis_flutter/core/app_export.dart';
+import 'package:kiwis_flutter/core/constants/app_export.dart';
 import 'package:kiwis_flutter/views/chat_room/widgets/send_text.widget.dart';
 
 class SettingChatRoom extends StatelessWidget {

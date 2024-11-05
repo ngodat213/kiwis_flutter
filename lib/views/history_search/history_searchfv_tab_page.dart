@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kiwis_flutter/views/history_search/history_search_controller.dart';
 import 'package:kiwis_flutter/views/history_search/models/history_section_item.model.dart';
 import 'package:kiwis_flutter/views/history_search/widgets/list_section_item.widget.dart';
-import '../../core/app_export.dart';
+import '../../core/constants/app_export.dart';
 
 // ignore_for_file: must_be_immutable
 class HistorysearchfrTabPage extends StatelessWidget {

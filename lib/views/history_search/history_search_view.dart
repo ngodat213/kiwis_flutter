@@ -3,7 +3,7 @@ import 'package:kiwis_flutter/views/history_search/history_search_controller.dar
 import 'package:kiwis_flutter/views/history_search/history_searchfv_tab_page.dart';
 import 'package:kiwis_flutter/widgets/app_bar/app_bar_leading_image.dart';
 import 'package:kiwis_flutter/widgets/app_bar/app_bar_title.dart';
-import '../../core/app_export.dart';
+import '../../core/constants/app_export.dart';
 import '../../widgets/app_bar/custom_app_bar.dart';
 
 class HistorySearchScreen extends GetWidget<HistorySearchController> {

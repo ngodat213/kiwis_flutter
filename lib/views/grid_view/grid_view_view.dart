@@ -3,7 +3,7 @@ import 'package:kiwis_flutter/views/grid_view/grid_view_controller.dart';
 import 'package:kiwis_flutter/widgets/app_bar/app_bar_leadingiconbutton.dart';
 import 'package:kiwis_flutter/widgets/app_bar/app_bar_title.dart';
 import 'package:kiwis_flutter/widgets/app_bar/app_bar_trailing_image.dart';
-import '../../core/app_export.dart';
+import '../../core/constants/app_export.dart';
 import '../../widgets/app_bar/custom_app_bar.dart';
 import '../../widgets/custom_icon_button.dart';
 import 'gridviewfreeini_tab_page.dart'; // ignore_for_file: must_be_immutable
