@@ -5,6 +5,7 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:kiwis_flutter/core/constants/constants.dart';
 import 'package:kiwis_flutter/my_app.dart';
+import 'package:kiwis_flutter/services/services.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import 'firebase_options.dart';
 
@@ -22,6 +23,7 @@ void main() async {
         supportedLocales: AppLanguages.codes,
         assetLoader: const AssetLoaderRootBundleJson('assets/locales/'),
       );
+      await LocalStorageService.getPrefs();
 
       // Run app!
       runApp(

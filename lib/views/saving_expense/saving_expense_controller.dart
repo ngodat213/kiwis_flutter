@@ -1,8 +1,8 @@
 import 'package:get/get.dart';
 import 'package:kiwis_flutter/core/base/base.controller.dart';
 
-class EntriesController extends BaseController {
-  //TODO: Implement EntriesController
+class SavingExpenseController extends BaseController {
+  //TODO: Implement SavingExpenseController
 
   final count = 0.obs;
   @override

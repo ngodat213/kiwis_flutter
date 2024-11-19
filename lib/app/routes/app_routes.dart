@@ -16,7 +16,6 @@ abstract class Routes {
   static const GRID_VIEW = _Paths.GRID_VIEW;
   static const HISTORY_SEARCH = _Paths.HISTORY_SEARCH;
   static const INVOCE = _Paths.INVOCE;
-  static const MENU = _Paths.MENU;
   static const NEXT_POINT = _Paths.NEXT_POINT;
   static const NOTIFICATION_CENTER = _Paths.NOTIFICATION_CENTER;
   static const SEARCH_POST = _Paths.SEARCH_POST;
@@ -29,7 +28,7 @@ abstract class Routes {
   static const CHAT_ROOM = _Paths.CHAT_ROOM;
   static const EXPENSE = _Paths.EXPENSE;
   static const SPLASH = _Paths.SPLASH;
-  static const ENTRIES = _Paths.ENTRIES;
+  static const SAVING_EXPENSE = _Paths.SAVING_EXPENSE;
 }
 
 abstract class _Paths {
@@ -47,7 +46,6 @@ abstract class _Paths {
   static const GRID_VIEW = '/grid-view';
   static const HISTORY_SEARCH = '/history-search';
   static const INVOCE = '/invoce';
-  static const MENU = '/menu';
   static const NEXT_POINT = '/next-point';
   static const NOTIFICATION_CENTER = '/notification-center';
   static const SEARCH_POST = '/search-post';
@@ -60,5 +58,5 @@ abstract class _Paths {
   static const CHAT_ROOM = '/chat-room';
   static const EXPENSE = '/expense';
   static const SPLASH = '/splash';
-  static const ENTRIES = '/entries';
+  static const SAVING_EXPENSE = '/saving-expense';
 }

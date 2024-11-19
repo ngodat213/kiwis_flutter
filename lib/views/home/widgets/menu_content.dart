@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart' hide MenuController;
 import 'package:kiwis_flutter/core/base/base.view.dart';
-import 'package:kiwis_flutter/views/menu/menu_controller.dart';
+import 'package:kiwis_flutter/core/constants/app.button_style.dart';
+import 'package:kiwis_flutter/core/constants/app_export.dart';
+import 'package:kiwis_flutter/views/home/home_controller.dart';
 import 'package:kiwis_flutter/widgets/app_bar/app_bar_leadingiconbutton.dart';
 import 'package:kiwis_flutter/widgets/app_bar/app_bar_title.dart';
-import '../../core/constants/app_export.dart';
-import '../../core/constants/app.button_style.dart';
-import '../../widgets/app_bar/custom_app_bar.dart';
-import '../../widgets/custom_elevated_button.dart';
-import '../../widgets/custom_icon_button.dart';
+import 'package:kiwis_flutter/widgets/app_bar/custom_app_bar.dart';
+import 'package:kiwis_flutter/widgets/custom_elevated_button.dart';
+import 'package:kiwis_flutter/widgets/custom_icon_button.dart';
 
-class MenuScreen extends BaseView<MenuController> {
-  MenuScreen({super.key});
+class MenuContent extends BaseView<HomeController> {
+  MenuContent({super.key});
 
   @override
   bool get isNavigationBar => true;
@@ -47,6 +47,7 @@ class MenuScreen extends BaseView<MenuController> {
           ),
           SizedBox(height: 62.h),
           CustomElevatedButton(
+            onPressed: () => controller.onPressedLogout(),
             text: "lbl_logout".tr,
             buttonStyle: CustomButtonStyles.fillOnPrimaryTL28,
           )

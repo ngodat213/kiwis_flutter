@@ -88,7 +88,7 @@ class TextThemes {
         bodyMedium: TextStyle(
           color: appTheme.gray900,
           fontSize: 14.fSize,
-          fontFamily: 'Lemon',
+          fontFamily: 'Google Sans',
           fontWeight: FontWeight.w400,
         ),
         bodySmall: TextStyle(

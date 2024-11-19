@@ -3,19 +3,21 @@ class ApiResponse {
   int get totalPageCount => body["pagination"]["total_pages"];
   List get data => body["data"] ?? [];
   // Just a way of saying there was no error with the request and response return
-  bool get allGood => errors == null || errors?.length == 0;
-  bool hasError() => errors != null && ((errors?.length ?? 0) > 0);
+  bool get allGood => success!;
+  bool hasError() => error != null && ((error?.length ?? 0) > 0);
   bool hasData() => data.isNotEmpty;
   int? code;
   String? message;
+  bool? success;
   dynamic body;
-  List? errors;
+  String? error;
 
   ApiResponse({
     this.code,
     this.message,
     this.body,
-    this.errors,
+    this.success,
+    this.error,
   });
 
   toJson() {
@@ -23,16 +25,18 @@ class ApiResponse {
       'code': code,
       'message': message,
       'body': body,
-      'errors': errors,
+      'errors': error,
       'data': data
     };
   }
 
   factory ApiResponse.fromResponse(dynamic response) {
     //
-    int code = response.statusCode;
-    dynamic body = response.data; // Would mostly be a Map
-    List errors = [];
+    int code = response['statusCode'];
+    dynamic body = response['data']; // Would mostly be a Map
+    bool success = response['success'];
+
+    String error = '';
     String message = "";
 
     switch (code) {
@@ -48,7 +52,7 @@ class ApiResponse {
         message = body["message"] ?? "";
         print(
             "ERROR ==> Whoops! Something went wrong, please contact support.");
-        errors.add(message);
+        error = response.error;
         break;
     }
 
@@ -56,7 +60,8 @@ class ApiResponse {
       code: code,
       message: message,
       body: body,
-      errors: errors,
+      success: success,
+      error: error,
     );
   }
 }

@@ -6,6 +6,9 @@ abstract class AppValues {
   /// Time
   static const int defaultDebounceTimeInMilliSeconds = 1000;
 
+  /// SPLASH screen delay
+  static const int splashScreenDelaySeconds = 3;
+
   /// Logger
   static const int loggerLineLength = 120;
   static const int loggerErrorMethodCount = 8;

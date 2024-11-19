@@ -59,8 +59,7 @@ class BaseAPI {
     final userToken = await AuthServices.getAuthBearerToken();
     print('User token:($userToken)');
     return {
-      Headers.acceptHeader: "application/json",
-      Headers.wwwAuthenticateHeader: "Bearer $userToken",
+      "Authorization": "Bearer $userToken",
       // "lang": translator.activeLocale.languageCode,
     };
   }
@@ -83,11 +82,12 @@ class BaseAPI {
     print('params: $params');
     print('body: $body');
     try {
-      final mOptions = !includeHeaders
-          ? null
-          : Options(
-              headers: headers ?? await getHeaders(),
-            );
+      // final options = !includeHeaders
+      //     ? null
+      //     : Options(
+      //         headers: headers ?? await getHeaders(),
+      //         method: apiMethod[method],
+      //       );
 
       final cacheOptions = CacheOptions(
         store: MemCacheStore(),
@@ -98,11 +98,15 @@ class BaseAPI {
 
       Options options = Options();
       options.method = apiMethod[method];
-      options.headers = headers;
+      options.headers = includeHeaders
+          ? headers != null
+              ? headers
+              : await getHeaders()
+          : null;
       response = await _dio.request(domain + url,
           data: body,
           queryParameters: params,
-          options: mOptions?.copyWith(extra: cacheOptions.toExtra()));
+          options: options.copyWith(extra: cacheOptions.toExtra()));
     } on DioException catch (e) {
       /// If error is DioError, return [ApiStatus.FAILED]
       printLogError('Error [${apiMethod[method]} API]: $e');

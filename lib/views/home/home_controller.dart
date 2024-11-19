@@ -1,15 +1,22 @@
 import 'package:camera/camera.dart';
+import 'package:flutter/material.dart';
 import 'package:kiwis_flutter/core/constants/app_export.dart';
 import 'package:kiwis_flutter/core/base/base.controller.dart';
+import 'package:kiwis_flutter/requests/auth.request.dart';
+import 'package:kiwis_flutter/services/services.dart';
+import 'package:kiwis_flutter/views/home/widgets/menu_content.dart';
 
 class HomeController extends BaseController {
   /// Variables
+  AuthRequest _authRequest = AuthRequest();
 
   /// Handle
   @override
   void onInit() async {
     super.onInit();
+    showLoading();
     await initializeCamera();
+    hideLoading();
   }
 
   @override
@@ -26,6 +33,23 @@ class HomeController extends BaseController {
 
   void detailPostOnPressed() {
     Get.toNamed(Routes.DETAIL_POST);
+  }
+
+  void onPressedChangeLanguage() {
+    Get.toNamed(Routes.CHANGE_LANGUAGE);
+  }
+
+  Future<void> onPressedLogout() async {
+    await LocalStorageService.prefs?.clear();
+    Get.to(Routes.SIGN_IN);
+  }
+
+  void onPressedMenu(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) => MenuContent(),
+    );
   }
 
   /// Camera

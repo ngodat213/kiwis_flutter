@@ -23,7 +23,7 @@ class IconStatusListView extends GetView<ExpenseController> {
           _buildIconStatusWidget(
             icon: IconlyBold.plus,
             title: "Savings".tr,
-            onTap: controller.onTapSavingOnPressed,
+            onTap: () => controller.onTapSaving(context),
           ),
           _buildIconStatusWidget(
             icon: IconlyBold.notification,

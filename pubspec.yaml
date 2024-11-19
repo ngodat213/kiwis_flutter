@@ -66,7 +66,11 @@ dependencies:
   card_swiper: ^3.0.1
   camera: ^0.10.5+9
   syncfusion_flutter_calendar: ^27.1.57
-  
+  table_calendar: ^3.1.2
+  fl_chart: ^0.69.0
+  mobkit_dashed_border: ^0.0.7
+  animated_snack_bar: ^0.4.0
+
 dependency_overrides:
   flutter_svg: 1.1.6
   web3dart: ^2.3.5
@@ -92,10 +96,6 @@ flutter:
     - assets/rive/
     - .env
   fonts:
-    - family: Lemon
-      fonts:
-        - asset: assets/fonts/Lemon-Regular.ttf
-        
     - family: Google Sans
       fonts:
         - asset: assets/fonts/PloniBold.otf
@@ -110,6 +110,10 @@ flutter:
       fonts:
         - asset: assets/fonts/OleoScriptSwashCaps-Regular.ttf
           weight: 400
+
+    - family: Lemon
+      fonts:
+        - asset: assets/fonts/Lemon-Regular.ttf
           
 get_cli:
   sub_folder: false

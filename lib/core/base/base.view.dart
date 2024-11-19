@@ -4,6 +4,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:kiwis_flutter/core/constants/app_export.dart';
 import 'package:kiwis_flutter/core/base/base.controller.dart';
 import 'package:kiwis_flutter/core/constants/constants.dart';
+import 'package:kiwis_flutter/enums/page_state.enum.dart';
 
 abstract class BaseView<Controller extends BaseController>
     extends GetView<Controller> {
@@ -85,7 +86,11 @@ abstract class BaseView<Controller extends BaseController>
               width: 240.h,
               alignment: Alignment.bottomLeft,
             ),
-            SingleChildScrollView(child: body(context)),
+            SingleChildScrollView(
+              child: controller.pageState == PageState.LOADING
+                  ? Center(child: const CircularProgressIndicator())
+                  : body(context),
+            ),
           ],
         ),
       ),

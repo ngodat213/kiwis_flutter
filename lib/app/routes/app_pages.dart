@@ -10,8 +10,6 @@ import '../../views/chat_room/chat_room_binding.dart';
 import '../../views/chat_room/chat_room_view.dart';
 import '../../views/detail_post/detail_post_binding.dart';
 import '../../views/detail_post/detail_post_view.dart';
-import '../../views/entries/entries_binding.dart';
-import '../../views/entries/entries_view.dart';
 import '../../views/expense/expense_binding.dart';
 import '../../views/expense/expense_view.dart';
 import '../../views/history_search/history_search_binding.dart';
@@ -22,14 +20,14 @@ import '../../views/invoce/invoce_binding.dart';
 import '../../views/invoce/invoce_view.dart';
 import '../../views/main/main_binding.dart';
 import '../../views/main/main_view.dart';
-import '../../views/menu/menu_binding.dart';
-import '../../views/menu/menu_view.dart';
 import '../../views/message/message_binding.dart';
 import '../../views/message/message_view.dart';
 import '../../views/next_point/next_point_binding.dart';
 import '../../views/next_point/next_point_view.dart';
 import '../../views/notification_center/notification_center_binding.dart';
 import '../../views/notification_center/notification_center_view.dart';
+import '../../views/saving_expense/saving_expense_binding.dart';
+import '../../views/saving_expense/saving_expense_view.dart';
 import '../../views/search_post/search_post_binding.dart';
 import '../../views/search_post/search_post_view.dart';
 import '../../views/sign_in/sign_in_binding.dart';
@@ -76,11 +74,6 @@ class AppPages {
       name: _Paths.INVOCE,
       page: () => const InvoceScreen(),
       binding: InvoceBinding(),
-    ),
-    GetPage(
-      name: _Paths.MENU,
-      page: () => MenuScreen(),
-      binding: MenuBinding(),
     ),
     GetPage(
       name: _Paths.NEXT_POINT,
@@ -138,9 +131,9 @@ class AppPages {
       binding: SplashBinding(),
     ),
     GetPage(
-      name: _Paths.ENTRIES,
-      page: () => EntriesView(),
-      binding: EntriesBinding(),
+      name: _Paths.SAVING_EXPENSE,
+      page: () => SavingExpenseView(),
+      binding: SavingExpenseBinding(),
     ),
   ];
 }
