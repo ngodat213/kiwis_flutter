@@ -12,11 +12,43 @@ import 'package:kiwis_flutter/widgets/custom_icon_button.dart';
 class MenuContent extends BaseView<HomeController> {
   MenuContent({super.key});
 
-  @override
-  bool get isNavigationBar => true;
+  /// Section Widget
+  PreferredSizeWidget appBar(BuildContext context) {
+    return PreferredSize(
+      preferredSize: Size.fromHeight(Get.height * 0.13), // Set desired height
+      child: Container(
+        padding: EdgeInsets.only(top: 23),
+        margin: EdgeInsets.symmetric(
+            horizontal: 16.0, vertical: 16), // Adjust padding as needed
+        child: CustomAppBar(
+          leadingWidth: 44.h,
+          leading: AppbarLeadingIconbutton(
+            imagePath: ImageConstant.imgArrowLeftOnprimary,
+            onTap: () {
+              Get.back();
+            },
+          ),
+          title: AppbarTitle(
+            text: "Setting".tr,
+            margin: EdgeInsets.only(left: 16.h),
+          ),
+          actions: [
+            AppbarLeadingIconbutton(
+              imagePath: ImageConstant.svgGroup,
+              onTap: () {
+                controller.onPressedFriend(context);
+              },
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget body(BuildContext context) {
     return Container(
+      height: Get.height,
       width: double.maxFinite,
       margin: EdgeInsets.only(bottom: 48.h),
       padding: EdgeInsets.symmetric(horizontal: 24.h),
@@ -24,11 +56,19 @@ class MenuContent extends BaseView<HomeController> {
         mainAxisSize: MainAxisSize.min,
         children: [
           _buildHeaderSection(),
-          SizedBox(height: 16.h),
-          _buildSavedPlacesRow(),
+          // SizedBox(height: 16.h),
+          // _buildSavedPlacesRow(),
           SizedBox(height: 16.h),
           _buildPaymentSettingsRow(),
           _buildLanguageSettingsRow(),
+          SizedBox(
+            width: double.maxFinite,
+            child: _buildAboutSectionRow(
+              inboxOne: ImageConstant.svgPrivacy,
+              aboutOne: "msg_privacy_and_term".tr,
+              applicationvers: "msg_change_password".tr,
+            ),
+          ),
           SizedBox(
             width: double.maxFinite,
             child: _buildAboutSectionRow(
@@ -47,32 +87,11 @@ class MenuContent extends BaseView<HomeController> {
           ),
           SizedBox(height: 62.h),
           CustomElevatedButton(
-            onPressed: () => controller.onPressedLogout(),
+            onPressed: () => controller.onPressedLogout(context),
             text: "lbl_logout".tr,
             buttonStyle: CustomButtonStyles.fillOnPrimaryTL28,
           )
         ],
-      ),
-    );
-  }
-
-  /// Section Widget
-  Widget _buildAppBar() {
-    return Align(
-      alignment: Alignment.topCenter,
-      child: CustomAppBar(
-        leadingWidth: 68.h,
-        leading: AppbarLeadingIconbutton(
-          imagePath: ImageConstant.imgArrowLeftOnprimary,
-          margin: EdgeInsets.only(left: 24.h),
-          onTap: () {
-            onTapArrowleftone();
-          },
-        ),
-        title: AppbarTitle(
-          text: "lbl_menu".tr,
-          margin: EdgeInsets.only(left: 16.h),
-        ),
       ),
     );
   }
@@ -108,9 +127,11 @@ class MenuContent extends BaseView<HomeController> {
                     child: Row(
                       children: [
                         CustomImageView(
-                          imagePath: ImageConstant.imgAvatar,
+                          imagePath: controller.user.value.avatar?.imageUrl ??
+                              AppValues.defaultAvatar,
                           height: 60.h,
                           width: 60.h,
+                          fit: BoxFit.cover,
                           radius: BorderRadius.circular(
                             30.h,
                           ),
@@ -126,7 +147,7 @@ class MenuContent extends BaseView<HomeController> {
                                 style: theme.textTheme.labelLarge,
                               ),
                               Text(
-                                "lbl_samms".tr,
+                                "${controller.user.value.firstName}".tr,
                                 style: theme.textTheme.titleLarge,
                               )
                             ],

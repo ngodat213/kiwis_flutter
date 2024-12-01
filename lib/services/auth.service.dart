@@ -15,8 +15,8 @@ class AuthServices {
     return LocalStorageService.getBoolValue(AppStrings.authenticated) ?? false;
   }
 
-  static Future<bool> isAuthenticated() {
-    return LocalStorageService.savedBoolValue(AppStrings.authenticated, true);
+  static Future<bool> isAuthenticated({bool force = true}) {
+    return LocalStorageService.savedBoolValue(AppStrings.authenticated, force);
   }
 
   // Token
@@ -24,9 +24,20 @@ class AuthServices {
     return LocalStorageService.prefs!.getString(AppStrings.userAuthToken) ?? "";
   }
 
+  static Future<String> getAuthFirebaseToken() async {
+    return LocalStorageService.prefs!
+            .getString(AppStrings.userAuthFirebaseToken) ??
+        "";
+  }
+
   static Future<bool> setAuthBearerToken(token) async {
     return LocalStorageService.prefs!
         .setString(AppStrings.userAuthToken, token);
+  }
+
+  static Future<bool> setAuthFirebaseToken(firebaseToken) async {
+    return LocalStorageService.prefs!
+        .setString(AppStrings.userAuthFirebaseToken, firebaseToken);
   }
 
   //Locale
@@ -39,7 +50,7 @@ class AuthServices {
   }
 
   static UserModel? currentUser;
-  static Future<UserModel> getCurrentUser({bool force = false}) async {
+  static Future<UserModel?> getCurrentUser({bool force = false}) async {
     if (currentUser == null || force) {
       final userStringObject =
           LocalStorageService.prefs!.getString(AppStrings.userKey);
@@ -47,7 +58,7 @@ class AuthServices {
       currentUser = UserModel.fromJson(userObject);
       // print("CurrentUser: ${currentUser!.}");
     }
-    return currentUser!;
+    return currentUser;
   }
 
   // ///

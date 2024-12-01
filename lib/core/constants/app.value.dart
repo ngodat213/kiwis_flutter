@@ -5,6 +5,7 @@ abstract class AppValues {
 
   /// Time
   static const int defaultDebounceTimeInMilliSeconds = 1000;
+  static const String defaultAvatar = ImageConstant.imgAvatar;
 
   /// SPLASH screen delay
   static const int splashScreenDelaySeconds = 3;

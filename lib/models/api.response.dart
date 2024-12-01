@@ -46,13 +46,11 @@ class ApiResponse {
         } catch (error) {
           print("Message reading error ==> $error");
         }
-
         break;
       default:
-        message = body["message"] ?? "";
-        print(
-            "ERROR ==> Whoops! Something went wrong, please contact support.");
-        error = response.error;
+        message = response["message"] ?? "";
+        error = response["error"] ?? "";
+        print("ERROR ==> Whoops! $error");
         break;
     }
 

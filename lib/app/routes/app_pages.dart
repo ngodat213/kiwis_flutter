@@ -12,6 +12,8 @@ import '../../views/detail_post/detail_post_binding.dart';
 import '../../views/detail_post/detail_post_view.dart';
 import '../../views/expense/expense_binding.dart';
 import '../../views/expense/expense_view.dart';
+import '../../views/forgot_password/forgot_password_binding.dart';
+import '../../views/forgot_password/forgot_password_view.dart';
 import '../../views/history_search/history_search_binding.dart';
 import '../../views/history_search/history_search_view.dart';
 import '../../views/home/home_binding.dart';
@@ -134,6 +136,11 @@ class AppPages {
       name: _Paths.SAVING_EXPENSE,
       page: () => SavingExpenseView(),
       binding: SavingExpenseBinding(),
+    ),
+    GetPage(
+      name: _Paths.FORGOT_PASSWORD,
+      page: () => ForgotPasswordView(),
+      binding: ForgotPasswordBinding(),
     ),
   ];
 }

@@ -7,28 +7,50 @@ import 'package:kiwis_flutter/app/routes/app_pages.dart';
 import 'package:kiwis_flutter/core/base/base.controller.dart';
 import 'package:kiwis_flutter/models/api.response.dart';
 import 'package:kiwis_flutter/requests/auth.request.dart';
+import 'package:kiwis_flutter/requests/user.request.dart';
 import 'package:kiwis_flutter/services/services.dart';
 import 'package:kiwis_flutter/views/sign_in/models/sign_in_model.dart';
 
 class SignInController extends BaseController {
   AuthRequest _authRequest = AuthRequest();
+  UserRequest _userRequest = UserRequest();
   TextEditingController emailTxtController = TextEditingController();
   TextEditingController passwordTxtController = TextEditingController();
+  // Form key
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   Rx<SignInModel> signInModelObj = SignInModel().obs;
   RxBool isShowPassword = false.obs;
+
+  @override
+  void onInit() {
+    emailTxtController.text = kReleaseMode ? "" : "ngodat.it213@gmail.com";
+    passwordTxtController.text = kReleaseMode ? "" : "Code26102003#!@";
+    super.onInit();
+  }
+
+  @override
+  void onClose() {
+    super.onClose();
+    emailTxtController.dispose();
+    passwordTxtController.dispose();
+  }
 
   void onSignUpButtonPressed() {
     Get.toNamed(Routes.SIGN_UP);
   }
 
+  void onPressedForgotPassword() {
+    Get.toNamed(Routes.FORGOT_PASSWORD);
+  }
+
   void onSignInButtonPressed(BuildContext context) async {
     final email = emailTxtController.text;
     final password = passwordTxtController.text;
-
+    late ApiResponse apiResponse;
     try {
-      if (email != '' && password != '') {
-        final apiResponse =
+      if (formKey.currentState!.validate()) {
+        apiResponse =
             await _authRequest.loginRequest(email: email, password: password);
         if (apiResponse.allGood) {
           await _handleDeviceLogin(apiResponse, context);
@@ -38,11 +60,6 @@ class SignInController extends BaseController {
             type: AnimatedSnackBarType.warning,
           ).show(context);
         }
-      } else {
-        AnimatedSnackBar.material(
-          'Email and password is required'.tr,
-          type: AnimatedSnackBarType.info,
-        ).show(context);
       }
     } catch (err) {
       print(err);
@@ -58,18 +75,18 @@ class SignInController extends BaseController {
     BuildContext context,
   ) async {
     try {
-      final token = apiResponse.body;
-      final userCredential =
-          await fbAuth.FirebaseAuth.instance.signInWithCustomToken(token);
+      final firebaseToken = apiResponse.body['firebaseToken'];
+      final token = apiResponse.body['token'];
+      // Login with firebase
+      await _handleLoginWithFirebase(firebaseToken, context);
+      // Save token BE
+      await _handleLogin(token, context);
 
-      fbAuth.User? user = userCredential.user;
-
-      if (user != null) {
-        String? idToken = await user.getIdToken();
-        await AuthServices.setAuthBearerToken(idToken);
-        await AuthServices.isAuthenticated();
-        await _handleCurrentUser(idToken!, context);
-      }
+      Get.offAndToNamed(Routes.MAIN);
+      AnimatedSnackBar.material(
+        'Login success'.tr,
+        type: AnimatedSnackBarType.success,
+      ).show(context);
     } catch (err) {
       print(err);
       AnimatedSnackBar.material(
@@ -79,39 +96,45 @@ class SignInController extends BaseController {
     }
   }
 
-  Future<void> _handleCurrentUser(String idToken, BuildContext context) async {
+  Future<void> _handleLogin(String token, BuildContext context) async {
     try {
-      final apiResponse =
-          await _authRequest.curentUserRequest(idToken: idToken);
-
-      if (apiResponse.allGood) {
-        await AuthServices.saveUser(apiResponse.body);
-        Get.offAndToNamed(Routes.MAIN);
-        AnimatedSnackBar.material(
-          'Login success'.tr,
-          type: AnimatedSnackBarType.warning,
-        ).show(context);
-      }
+      await AuthServices.setAuthBearerToken(token);
+      await AuthServices.isAuthenticated();
+      await _handleCurrentUser(context);
     } catch (err) {
-      print(err);
-      AnimatedSnackBar.material(
-        'Get current error'.tr,
-        type: AnimatedSnackBarType.warning,
-      ).show(context);
+      throw Exception(err);
     }
   }
 
-  @override
-  void onInit() {
-    emailTxtController.text = kReleaseMode ? "" : "ngodat.it213@gmail.com";
-    passwordTxtController.text = kReleaseMode ? "" : "Code26102003";
-    super.onInit();
+  Future<void> _handleLoginWithFirebase(
+    String firebaseToken,
+    BuildContext context,
+  ) async {
+    try {
+      final userCredential = await fbAuth.FirebaseAuth.instance
+          .signInWithCustomToken(firebaseToken);
+
+      fbAuth.User? user = userCredential.user;
+      if (user != null) {
+        final idToken = await user.getIdToken();
+        await AuthServices.setAuthFirebaseToken(idToken);
+      }
+    } catch (err) {
+      throw Exception(err);
+    }
   }
 
-  @override
-  void onClose() {
-    super.onClose();
-    emailTxtController.dispose();
-    passwordTxtController.dispose();
+  Future<void> _handleCurrentUser(BuildContext context) async {
+    try {
+      final apiResponse = await _userRequest.getCurrentUser();
+
+      if (apiResponse.allGood) {
+        await AuthServices.saveUser(apiResponse.body);
+      } else {
+        throw Exception(apiResponse.error);
+      }
+    } catch (err) {
+      throw Exception(err);
+    }
   }
 }

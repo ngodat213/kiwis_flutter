@@ -1,8 +1,12 @@
+import 'dart:io';
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:kiwis_flutter/core/base/base.view.dart';
 import 'package:camera/camera.dart';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:kiwis_flutter/core/constants/app_export.dart';
+import 'package:kiwis_flutter/models/post.model.dart';
 import 'home_controller.dart';
 
 class HomeScreen extends BaseView<HomeController> {
@@ -20,12 +24,12 @@ class HomeScreen extends BaseView<HomeController> {
           Swiper(
             itemBuilder: (BuildContext context, int index) {
               if (index == 0) {
-                return _cameraWidget();
+                return _cameraWidget(context);
               }
-              return _postSection();
+              return _postSection(controller.posts[index - 1]);
             },
             scrollDirection: Axis.vertical,
-            itemCount: 3 + 1,
+            itemCount: controller.posts.length + 1,
             loop: false,
             fade: 0.1,
           ),
@@ -38,7 +42,7 @@ class HomeScreen extends BaseView<HomeController> {
     );
   }
 
-  Widget _postSection() {
+  Widget _postSection(PostModel post) {
     return AnimatedOpacity(
       opacity: 1.0,
       duration: Duration(milliseconds: 300),
@@ -53,7 +57,8 @@ class HomeScreen extends BaseView<HomeController> {
                 Row(
                   children: [
                     CustomImageView(
-                      imagePath: ImageConstant.imgAvatar,
+                      imagePath: post.user?.avatar?.imageUrl ??
+                          AppValues.defaultAvatar,
                       height: 40.h,
                       width: 40.h,
                       radius: BorderRadius.circular(
@@ -66,12 +71,12 @@ class HomeScreen extends BaseView<HomeController> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "11/11/2024",
+                            post.formatPostedAt(),
                             style: CustomTextStyles
                                 .labelLargeGoogleSansMediumOnPrimary,
                           ),
                           Text(
-                            "lbl_samms".tr,
+                            "${post.user?.lastName} ${post.user?.firstName}",
                             style: theme.textTheme.titleLarge,
                           )
                         ],
@@ -128,9 +133,10 @@ class HomeScreen extends BaseView<HomeController> {
                   children: [
                     CustomImageView(
                       radius: BorderRadius.circular(12.h),
-                      imagePath: ImageConstant.imgFrame47240200x342,
+                      imagePath: post.images?.first.imageUrl ?? "",
                       height: Get.width - 72.h,
                       width: Get.width - 72.h,
+                      fit: BoxFit.cover,
                     ),
                     Positioned(
                       bottom: 16.h,
@@ -180,7 +186,7 @@ class HomeScreen extends BaseView<HomeController> {
                 ),
                 SizedBox(height: 16.h),
                 Text(
-                  'Esse incididunt dolore incididunt qui minim eiusmod aliquip reprehenderit duis nisi. Amet dolor aute enim eiusmod aliquip veniam est sit officia. Magna anim nisi laborum sit non minim incididunt pariatur ullamco consectetur. Esse tempor est adipisicing minim sit irure consectetur irure.',
+                  post.caption ?? "",
                   maxLines: 3,
                   overflow: TextOverflow.ellipsis,
                   style: CustomTextStyles.labelLargeGoogleSansMedium.copyWith(
@@ -235,9 +241,11 @@ class HomeScreen extends BaseView<HomeController> {
                         ),
                         SizedBox(width: 24.h),
                         CustomImageView(
-                          imagePath: ImageConstant.imgAvatar,
+                          imagePath: controller.user.value.avatar?.imageUrl ??
+                              AppValues.defaultAvatar,
                           height: 40.h,
                           width: 40.h,
+                          fit: BoxFit.cover,
                           radius: BorderRadius.circular(
                             30.h,
                           ),
@@ -252,7 +260,7 @@ class HomeScreen extends BaseView<HomeController> {
                                 style: theme.textTheme.labelLarge,
                               ),
                               Text(
-                                "lbl_samms".tr,
+                                "${controller.user.value.firstName}".tr,
                                 style: theme.textTheme.titleLarge,
                               )
                             ],
@@ -305,7 +313,7 @@ class HomeScreen extends BaseView<HomeController> {
     );
   }
 
-  Widget _cameraWidget() {
+  Widget _cameraWidget(BuildContext context) {
     return Column(
       children: [
         SizedBox(height: Get.height * 0.2),
@@ -313,71 +321,175 @@ class HomeScreen extends BaseView<HomeController> {
           children: [
             // Camera Preview
             Obx(() {
-              if (controller.isCameraInitialized.value) {
+              if (controller.onPost.value) {
                 return Container(
-                  width: Get.width - 70.h,
                   height: Get.width - 70.h,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: CameraPreview(controller.cameraController),
+                  width: Get.width - 70.h,
+                  child: Stack(
+                    children: [
+                      Container(
+                        width: Get.width - 70.h,
+                        height: Get.width - 70.h,
+                        decoration: BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: BorderRadius.circular(20),
+                          image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: FileImage(
+                              File(controller.imageXFile.value.path),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: BackdropFilter(
+                            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                            child: Container(
+                              width: Get.width - 97.h,
+                              decoration: BoxDecoration(
+                                color: Colors.white.withOpacity(0.2),
+                                borderRadius: BorderRadius.circular(20),
+                                border: Border.all(
+                                  color: Colors.white.withOpacity(0.3),
+                                ),
+                              ),
+                              child: Padding(
+                                padding: EdgeInsets.only(left: 16.h),
+                                child: TextField(
+                                  controller: controller.captionTEC,
+                                  style: TextStyle(color: Colors.white),
+                                  decoration: InputDecoration(
+                                    hintText: 'Enter text',
+                                    hintStyle: TextStyle(color: Colors.white54),
+                                    border: InputBorder.none,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ).marginOnly(bottom: 16.h),
+                    ],
                   ),
                 );
               } else {
-                return Container(
-                  width: Get.width - 70.h,
-                  height: Get.width - 70.h,
-                  decoration: BoxDecoration(
-                    color: Colors.black,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                );
+                if (controller.isCameraInitialized.value) {
+                  return Container(
+                    width: Get.width - 70.h,
+                    height: Get.width - 70.h,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: CameraPreview(controller.cameraController),
+                    ),
+                  );
+                } else {
+                  return Container(
+                    width: Get.width - 70.h,
+                    height: Get.width - 70.h,
+                    decoration: BoxDecoration(
+                      color: Colors.black,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  );
+                }
               }
             }),
           ],
         ),
         SizedBox(height: 20.h),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            IconButton(
-              icon: Icon(
-                controller.isFlashOn.value ? Icons.flash_on : Icons.flash_off,
-                color: Colors.white,
-                size: 30,
-              ),
-              onPressed: controller.toggleFlash,
-            ),
-            GestureDetector(
-              onTap: controller.takePicture,
-              child: Container(
-                width: 70,
-                height: 70,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: Colors.white,
-                    width: 4,
-                  ),
-                ),
-                child: Container(
-                  margin: EdgeInsets.all(3),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ),
-            IconButton(
-              icon: Icon(
-                Icons.flip_camera_ios,
-                color: Colors.white,
-                size: 30,
-              ),
-              onPressed: controller.toggleRotate,
-            ),
-          ],
-        ),
+        Obx(
+          () {
+            return controller.onPost.value
+                ? Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Container(
+                        width: 60.h,
+                        height: 60.h,
+                        decoration: BoxDecoration(
+                          color: Colors.red,
+                          borderRadius: BorderRadius.circular(100),
+                        ),
+                        child: Center(
+                          child: IconButton(
+                            icon: Icon(
+                              Icons.close,
+                              color: Colors.white,
+                              size: 30,
+                            ),
+                            onPressed: controller.closeOnPost,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        width: 60.h,
+                        height: 60.h,
+                        decoration: BoxDecoration(
+                          color: Colors.green,
+                          borderRadius: BorderRadius.circular(100),
+                        ),
+                        child: Center(
+                          child: IconButton(
+                            icon: Icon(
+                              Icons.check,
+                              color: Colors.white,
+                              size: 30,
+                            ),
+                            onPressed: () => controller.onPressedPost(context),
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
+                : Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      IconButton(
+                        icon: Icon(
+                          controller.isFlashOn.value
+                              ? Icons.flash_on
+                              : Icons.flash_off,
+                          color: Colors.white,
+                          size: 30,
+                        ),
+                        onPressed: controller.toggleFlash,
+                      ),
+                      GestureDetector(
+                        onTap: controller.takePicture,
+                        child: Container(
+                          width: 70,
+                          height: 70,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: Colors.white,
+                              width: 4,
+                            ),
+                          ),
+                          child: Container(
+                            margin: EdgeInsets.all(3),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                      IconButton(
+                        icon: Icon(
+                          Icons.flip_camera_ios,
+                          color: Colors.white,
+                          size: 30,
+                        ),
+                        onPressed: controller.toggleRotate,
+                      ),
+                    ],
+                  );
+          },
+        )
       ],
     );
   }

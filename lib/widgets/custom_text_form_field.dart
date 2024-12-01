@@ -49,6 +49,7 @@ class CustomTextFormField extends StatelessWidget {
       this.borderDecoration,
       this.fillColor,
       this.filled = true,
+      this.labelText,
       this.validator})
       : super(
           key: key,
@@ -106,6 +107,8 @@ class CustomTextFormField extends StatelessWidget {
 
   final FormFieldValidator<String>? validator;
 
+  final String? labelText;
+
   @override
   Widget build(BuildContext context) {
     return alignment != null
@@ -117,7 +120,7 @@ class CustomTextFormField extends StatelessWidget {
 
   Widget get textFormFieldWidget => Container(
         width: width ?? double.maxFinite,
-        height: height ?? Get.height,
+        // height: height ?? Get.height,
         decoration: boxDecoration,
         child: TextFormField(
           scrollPadding: EdgeInsets.only(
@@ -147,6 +150,7 @@ class CustomTextFormField extends StatelessWidget {
       );
   InputDecoration get decoration => InputDecoration(
         hintText: hintText ?? "",
+        labelText: labelText,
         hintStyle: hintStyle ?? theme.textTheme.bodySmall,
         prefixIcon: prefix,
         prefixIconConstraints: prefixConstraints,

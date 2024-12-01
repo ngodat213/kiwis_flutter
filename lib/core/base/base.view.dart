@@ -67,31 +67,33 @@ abstract class BaseView<Controller extends BaseController>
   }
 
   Widget pageContent(BuildContext context) {
-    return SizedBox(
-      width: double.maxFinite,
-      child: Container(
-        height: Get.height,
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            CustomImageView(
-              imagePath: ImageConstant.imgEllipse2005,
-              height: 280.h,
-              width: 274.h,
-              alignment: Alignment.topRight,
-            ),
-            CustomImageView(
-              imagePath: ImageConstant.imgEllipse2006Green600516x342,
-              height: 340.h,
-              width: 240.h,
-              alignment: Alignment.bottomLeft,
-            ),
-            SingleChildScrollView(
-              child: controller.pageState == PageState.LOADING
-                  ? Center(child: const CircularProgressIndicator())
-                  : body(context),
-            ),
-          ],
+    return Obx(
+      () => SizedBox(
+        width: double.maxFinite,
+        child: Container(
+          height: Get.height,
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              CustomImageView(
+                imagePath: ImageConstant.imgEllipse2005,
+                height: 280.h,
+                width: 274.h,
+                alignment: Alignment.topRight,
+              ),
+              CustomImageView(
+                imagePath: ImageConstant.imgEllipse2006Green600516x342,
+                height: 340.h,
+                width: 240.h,
+                alignment: Alignment.bottomLeft,
+              ),
+              SingleChildScrollView(
+                child: controller.pageState == PageState.LOADING
+                    ? Center(child: const CircularProgressIndicator())
+                    : body(context),
+              ),
+            ],
+          ),
         ),
       ),
     );

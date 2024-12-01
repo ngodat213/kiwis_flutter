@@ -2,6 +2,7 @@ import 'package:kiwis_flutter/core/base/base.api.dart';
 import 'package:kiwis_flutter/core/constants/constants.dart';
 import 'package:kiwis_flutter/models/api.response.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:kiwis_flutter/services/services.dart';
 
 class AuthRequest {
   final BaseAPI _baseAPI = BaseAPI();
@@ -21,134 +22,117 @@ class AuthRequest {
     return ApiResponse.fromResponse(response.data);
   }
 
-  // Get current user
-  Future<ApiResponse> curentUserRequest({
-    required String idToken,
-  }) async {
-    var response = await _baseAPI.fetchData(
-      AppAPI.currentUser,
-      includeHeaders: true,
-    );
-    return ApiResponse.fromResponse(response.data);
-  }
-
   // Logout
-  Future<ApiResponse> logoutRequest({
-    required String idToken,
-  }) async {
+  Future<ApiResponse> revokeFirebaseTokenRequest() async {
+    String firebaseToken = await AuthServices.getAuthFirebaseToken();
     var response = await _baseAPI.fetchData(
-      AppAPI.currentUser,
+      AppAPI.revokeToken,
       includeHeaders: true,
+      headers: {
+        "Authorization": "Bearer $firebaseToken",
+      },
+      method: ApiMethod.POST,
     );
     return ApiResponse.fromResponse(response.data);
   }
 
-  // Future<ApiResponse> account2FaRequest({
-  //   required String email,
-  // }) async {
-  //   var response = await _baseAPI.fetchData(
-  //     ManagerAddress.account2FaUrl,
-  //     method: ApiMethod.GET,
-  //     body: {
-  //       "email": email,
-  //     },
-  //   );
-  //   return ApiResponse.fromResponse(response);
-  // }
+  // Register
+  Future<ApiResponse> registerRequest(
+    String email,
+    String password,
+    String firstName,
+    String lastName,
+  ) async {
+    var reponse = await _baseAPI.fetchData(
+      AppAPI.register,
+      method: ApiMethod.POST,
+      body: {
+        'email': email,
+        'password': password,
+        'firstName': firstName,
+        'lastName': lastName,
+      },
+    );
 
-  // Future<ApiResponse> register({
-  //   required String fullname,
-  //   required String email,
-  //   required String password,
-  // }) async {
-  //   var response = await _baseAPI.fetchData(
-  //     ManagerAddress.registerUrl,
-  //     method: ApiMethod.POST,
-  //     body: {
-  //       "fullname": fullname,
-  //       "email": email,
-  //       "password": password,
-  //     },
-  //   );
-  //   return ApiResponse.fromResponse(response);
-  // }
+    return ApiResponse.fromResponse(reponse.data);
+  }
 
-  // Future<ApiResponse> forgotPassword({
-  //   required String email,
-  // }) async {
-  //   var response = await _baseAPI.fetchData(
-  //     ManagerAddress.forgotPassword,
-  //     method: ApiMethod.POST,
-  //     body: {
-  //       "email": email,
-  //     },
-  //   );
-  //   return ApiResponse.fromResponse(response);
-  // }
+  Future<ApiResponse> refreshTokenRequest() async {
+    var response = await _baseAPI.fetchData(
+      AppAPI.refreshToken,
+      includeHeaders: true,
+      method: ApiMethod.POST,
+    );
+    return ApiResponse.fromResponse(response.data);
+  }
 
-  // Future<ApiResponse> verificationCode({
-  //   required String email,
-  //   required String code,
-  // }) async {
-  //   var response = await _baseAPI.fetchData(
-  //     ManagerAddress.verificationCode,
-  //     method: ApiMethod.POST,
-  //     body: {
-  //       "email": email,
-  //       "code": code,
-  //     },
-  //   );
-  //   return ApiResponse.fromResponse(response);
-  // }
+  Future<ApiResponse> verifyEmailRequest({
+    required String email,
+  }) async {
+    var response = await _baseAPI.fetchData(
+      AppAPI.verifyEmail,
+    );
+    return ApiResponse.fromResponse(response.data);
+  }
 
-  // Future<ApiResponse> uploadAvatar({
-  //   required String email,
-  //   required XFile pickedFile,
-  // }) async {
-  //   var response = await _baseAPI.fetchData(
-  //     ManagerAddress.uploadAvatar,
-  //     method: ApiMethod.POST,
-  //     body: {
-  //       "email": email,
-  //     },
-  //   );
-  //   return ApiResponse.fromResponse(response);
-  // }
+  Future<ApiResponse> verifyCodeRequest({
+    required String email,
+    required String code,
+  }) async {
+    var response = await _baseAPI.fetchData(
+      AppAPI.verifyCode,
+    );
+    return ApiResponse.fromResponse(response.data);
+  }
 
-  // Future<ApiResponse> updatePassword({
-  //   required String oldPassword,
-  //   required String newPassword,
-  // }) async {
-  //   var response = await _baseAPI.fetchData(
-  //     ManagerAddress.forgotPassword,
-  //     method: ApiMethod.POST,
-  //     body: {
-  //       "oldPassword": oldPassword,
-  //       "newPassword": newPassword,
-  //     },
-  //   );
-  //   return ApiResponse.fromResponse(response);
-  // }
+  Future<ApiResponse> changeAvatarRequest({
+    required String email,
+    required XFile photo,
+  }) async {
+    var response = await _baseAPI.fetchData(
+      AppAPI.changeAvatar,
+    );
+    return ApiResponse.fromResponse(response.data);
+  }
 
-  // Future<ApiResponse> updateProfile({
-  //   required String username,
-  //   required String email,
-  //   required String phone,
-  //   required String countryCode,
-  //   required String newPassword,
-  //   required XFile photo,
-  // }) async {
-  //   var response = await _baseAPI.fetchData(
-  //     ManagerAddress.forgotPassword,
-  //     method: ApiMethod.POST,
-  //     body: {
-  //       "username": username,
-  //       "email": email,
-  //       "phone": phone,
-  //       "country_code": countryCode,
-  //       "photo": photo,
-  //     },
-  //   );
-  //   return ApiResponse.fromResponse(response);
-  // }
+  Future<ApiResponse> updatePasswordRequest({
+    required String oldPassword,
+    required String newPassword,
+  }) async {
+    var response = await _baseAPI.fetchData(
+      AppAPI.updatePassword,
+    );
+    return ApiResponse.fromResponse(response.data);
+  }
+
+  Future<ApiResponse> updateProfileRequest({
+    required String username,
+    required String email,
+    required String phone,
+    required String countryCode,
+    required XFile photo,
+  }) async {
+    var response = await _baseAPI.fetchData(
+      AppAPI.updateProfile,
+    );
+    return ApiResponse.fromResponse(response.data);
+  }
+
+  Future<ApiResponse> deleteAccountRequest() async {
+    var response = await _baseAPI.fetchData(
+      AppAPI.deleteAccount,
+    );
+    return ApiResponse.fromResponse(response.data);
+  }
+
+  Future<ApiResponse> forgotPasswordRequest({
+    required String email,
+  }) async {
+    var response = await _baseAPI.fetchData(
+      AppAPI.forgotPassword,
+      method: ApiMethod.POST,
+      body: {"email": email},
+    );
+    return ApiResponse.fromResponse(response.data);
+  }
 }

@@ -6,6 +6,7 @@ import 'package:kiwis_flutter/views/sign_in/sign_in_controller.dart';
 import 'package:kiwis_flutter/widgets/custom_elevated_button.dart';
 import 'package:kiwis_flutter/widgets/custom_text_form_field.dart';
 import 'package:velocity_x/velocity_x.dart';
+import 'package:kiwis_flutter/helper/validation.dart';
 
 // ignore: must_be_immutable
 class SignInScreen extends BaseView<SignInController> {
@@ -67,20 +68,21 @@ class SignInScreen extends BaseView<SignInController> {
           ),
           SizedBox(height: 56.h),
           _buildEmailPasswordFields(
-            emailTextFieldController: controller.emailTxtController,
-            passwordTextFieldController: controller.passwordTxtController,
-            isShowPassword: controller.isShowPassword,
+            controller: controller,
           ),
-          Align(
-            alignment: Alignment.topRight,
-            child: "Forgot password"
-                .tr
-                .text
-                .textStyle(theme.textTheme.titleMedium)
-                .bold
-                .white
-                .make(),
-          ).pOnly(bottom: 32, top: 8),
+          GestureDetector(
+            onTap: () => controller.onPressedForgotPassword(),
+            child: Align(
+              alignment: Alignment.topRight,
+              child: "Forgot password"
+                  .tr
+                  .text
+                  .textStyle(theme.textTheme.titleMedium)
+                  .bold
+                  .white
+                  .make(),
+            ).pOnly(bottom: 32, top: 8),
+          ),
           CustomElevatedButton(
             height: 48,
             text: "lbl_sign_in_now".tr,
@@ -149,40 +151,49 @@ class SignInScreen extends BaseView<SignInController> {
 
 /// Section Widget
 Widget _buildEmailPasswordFields({
-  required TextEditingController emailTextFieldController,
-  required TextEditingController passwordTextFieldController,
-  required RxBool isShowPassword,
+  required SignInController controller,
 }) {
   return Container(
     width: double.maxFinite,
     decoration: BoxDecoration(
       borderRadius: BorderRadiusStyle.roundedBorder24,
     ),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        CustomTextFormField(
-          hintText: "Email",
-          height: 56,
-          contentPadding:
-              EdgeInsets.symmetric(horizontal: 23.h, vertical: 23.h),
-          boxDecoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(18.h),
+    child: Form(
+      key: controller.formKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          CustomTextFormField(
+            hintText: "Email",
+            height: 56 + 16,
+            contentPadding:
+                EdgeInsets.symmetric(horizontal: 23.h, vertical: 23.h),
+            boxDecoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(18.h),
+            ),
+            validator: Validators.validateEmail,
+            controller: controller.emailTxtController,
+          ).marginOnly(bottom: 8),
+          CustomTextFormField(
+            hintText: "Password",
+            height: 56 + 16,
+            textInputType: TextInputType.visiblePassword,
+            contentPadding:
+                EdgeInsets.symmetric(horizontal: 23.h, vertical: 23.h),
+            boxDecoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(18.h),
+            ),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Password is required';
+              }
+              return null;
+            },
+            controller: controller.passwordTxtController,
           ),
-          controller: emailTextFieldController,
-        ).marginOnly(bottom: 8),
-        CustomTextFormField(
-          hintText: "Password",
-          height: 56,
-          contentPadding:
-              EdgeInsets.symmetric(horizontal: 23.h, vertical: 23.h),
-          boxDecoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(18.h),
-          ),
-          controller: passwordTextFieldController,
-        ),
-      ],
+        ],
+      ),
     ),
   );
 }

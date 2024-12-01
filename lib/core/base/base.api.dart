@@ -127,8 +127,9 @@ class BaseAPI {
     return response;
   }
 
-  Future<BaseDataAPI> fileUpload(String url,
+  Future<Response> fileUpload(String url,
       {dynamic body,
+      bool includeHeaders = false,
       Map<String, dynamic>? headers,
       ApiMethod method = ApiMethod.POST,
       required Uint8List file}) async {
@@ -140,8 +141,9 @@ class BaseAPI {
 
     if (!(await Connectivity().checkConnectivity() !=
         ConnectivityResult.none)) {
-      return BaseDataAPI(
-        apiStatus: ApiStatus.INTERNET_UNAVAILABLE,
+      return Response(
+        statusCode: 400,
+        requestOptions: RequestOptions(path: url),
       );
     }
 
@@ -150,12 +152,12 @@ class BaseAPI {
     Response response;
     printLogYellow('API:${apiMethod[method]}|================--------------->');
     print('url: $domain$url');
-    print('header: $headers');
+    print('header: ${includeHeaders ? headers : await getHeaders()}');
     print('body: $body');
     try {
       Options options = Options();
       options.method = apiMethod[method];
-      options.headers = headers;
+      options.headers = includeHeaders ? headers ?? await getHeaders() : null;
       FormData formData = FormData.fromMap({
         'file': MultipartFile.fromBytes(file, filename: 'upload.png'),
       });
@@ -166,22 +168,28 @@ class BaseAPI {
       printLogError('Error [${apiMethod[method]} API]: $e');
       printLogYellow(
           'END API ${apiMethod[method]}<---------------================|');
-      return BaseDataAPI(apiStatus: ApiStatus.FAILED);
+      return Response(
+        statusCode: 400,
+        requestOptions: RequestOptions(path: url),
+      );
     }
     // If response.data is DioError, return [ApiStatus.FAILED]
     if (response.data is DioException) {
       printLogError('Error [${apiMethod[method]} API]: ${response.data}');
       printLogYellow('END API GET<---------------================|');
-      return BaseDataAPI(apiStatus: ApiStatus.FAILED);
+      return Response(
+        statusCode: 400,
+        requestOptions: RequestOptions(path: url),
+      );
     }
     // If response.data is not null, return [response.data ,ApiStatus.SUCCEEDED]
     printLogSusscess('Success [${apiMethod[method]} API]: ${response.data}');
     printLogYellow(
         'END API ${apiMethod[method]}<---------------================|');
-    return BaseDataAPI(object: response.data, apiStatus: ApiStatus.SUCCEEDED);
+    return response;
   }
 
-  Future<BaseDataAPI> fetchFormData(
+  Future<Response> fetchFormData(
     String url, {
     required Uint8List file,
     Map<String, dynamic>? headers,
@@ -193,7 +201,10 @@ class BaseAPI {
     /// continue to fetch data
     if (!(await Connectivity().checkConnectivity() !=
         ConnectivityResult.none)) {
-      return BaseDataAPI(apiStatus: ApiStatus.INTERNET_UNAVAILABLE);
+      return Response(
+        statusCode: 400,
+        requestOptions: RequestOptions(path: url),
+      );
     }
 
     /// Continue to fetch data
@@ -208,14 +219,20 @@ class BaseAPI {
       });
       response = await _dio.put(domain + url, data: formData, options: options);
     } on DioException catch (err) {
-      return BaseDataAPI(apiStatus: ApiStatus.FAILED);
+      return Response(
+        statusCode: 400,
+        requestOptions: RequestOptions(path: url),
+      );
     }
 
     if (response.data is DioException) {
-      return BaseDataAPI(apiStatus: ApiStatus.FAILED);
+      return Response(
+        statusCode: 400,
+        requestOptions: RequestOptions(path: url),
+      );
     }
 
-    return BaseDataAPI(object: response.data, apiStatus: ApiStatus.SUCCEEDED);
+    return response;
   }
 
   Response fromDioError(DioException ex) {

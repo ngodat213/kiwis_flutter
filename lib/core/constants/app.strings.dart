@@ -5,6 +5,7 @@ class AppStrings {
 
   //START DON'T TOUNCH
   //for app usage
+  static String userAuthFirebaseToken = "auth_firebase_token";
   static String firstTimeOnApp = "first_time";
   static String authenticated = "authenticated";
   static String userAuthToken = "auth_token";
