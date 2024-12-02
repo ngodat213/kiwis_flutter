@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kiwis_flutter/core/constants/app_export.dart';
 
 import 'package:kiwis_flutter/core/base/base.view.dart';
+import 'package:kiwis_flutter/models/group.model.dart';
 import 'package:kiwis_flutter/widgets/app_bar/app_bar_title.dart';
 import 'package:kiwis_flutter/widgets/app_bar/app_bar_trainling_iconbutton.dart';
 import 'package:kiwis_flutter/widgets/app_bar/custom_app_bar.dart';
@@ -30,45 +31,9 @@ class MessageScreen extends BaseView<MessageController> {
                 padding: EdgeInsets.symmetric(horizontal: 32.h),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        Get.toNamed(Routes.CHAT_ROOM);
-                      },
-                      child: SizedBox(
-                        width: double.maxFinite,
-                        child: _buildAboutSectionRow(
-                          inboxOne: ImageConstant.imgAvatar,
-                          aboutOne: "Hydra Coder".tr,
-                          applicationvers: "Qua chưa đang ở dâu".tr,
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: double.maxFinite,
-                      child: _buildAboutSectionRow(
-                        inboxOne: ImageConstant.svgPrivacy,
-                        aboutOne: "msg_privacy_and_term".tr,
-                        applicationvers: "msg_change_password".tr,
-                      ),
-                    ),
-                    SizedBox(
-                      width: double.maxFinite,
-                      child: _buildAboutSectionRow(
-                        inboxOne: ImageConstant.svgPrivacy,
-                        aboutOne: "msg_privacy_and_term".tr,
-                        applicationvers: "msg_change_password".tr,
-                      ),
-                    ),
-                    SizedBox(
-                      width: double.maxFinite,
-                      child: _buildAboutSectionRow(
-                        inboxOne: ImageConstant.svgPrivacy,
-                        aboutOne: "msg_privacy_and_term".tr,
-                        applicationvers: "msg_change_password".tr,
-                      ),
-                    ),
-                  ],
+                  children: controller.groupList
+                      .map((e) => _buildGroupItem(e))
+                      .toList(),
                 ),
               ),
             ),
@@ -111,69 +76,71 @@ class MessageScreen extends BaseView<MessageController> {
   }
 
   /// Common widget
-  Widget _buildAboutSectionRow({
-    required String inboxOne,
-    required String aboutOne,
-    required String applicationvers,
-  }) {
-    return Container(
-      padding: EdgeInsets.only(
-        top: 16.h,
-        bottom: 14.h,
-      ),
-      decoration: BoxDecoration(
-        border: Border(
-          bottom: BorderSide(
-            color: theme.colorScheme.onPrimary.withOpacity(0.05),
-            width: 1.h,
+  Widget _buildGroupItem(GroupModel group) {
+    return GestureDetector(
+      onTap: () => controller.onPressedChanel(group.groupId!),
+      child: SizedBox(
+        width: double.maxFinite,
+        child: Container(
+          padding: EdgeInsets.only(
+            top: 16.h,
+            bottom: 14.h,
+          ),
+          decoration: BoxDecoration(
+            border: Border(
+              bottom: BorderSide(
+                color: theme.colorScheme.onPrimary.withOpacity(0.05),
+                width: 1.h,
+              ),
+            ),
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Align(
+                alignment: Alignment.center,
+                child: Container(
+                  height: 48.h,
+                  width: 48.h,
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.onPrimary,
+                    borderRadius: BorderRadiusStyle.roundedBorder24,
+                  ),
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      CustomImageView(
+                        imagePath: group.groupAvatarUrl(),
+                        fit: BoxFit.cover,
+                        height: 47.h,
+                        width: 47.h,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(width: 16.h),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      group.groupName(),
+                      style: theme.textTheme.titleSmall!.copyWith(
+                          color: theme.colorScheme.onPrimary.withOpacity(1)),
+                    ),
+                    SizedBox(height: 2.h),
+                    Text(
+                      group.lastMessage(),
+                      style: theme.textTheme.bodySmall!.copyWith(
+                          color: theme.colorScheme.onPrimary.withOpacity(0.5)),
+                    )
+                  ],
+                ),
+              ),
+            ],
           ),
         ),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Align(
-            alignment: Alignment.center,
-            child: Container(
-              height: 48.h,
-              width: 48.h,
-              decoration: BoxDecoration(
-                color: theme.colorScheme.onPrimary,
-                borderRadius: BorderRadiusStyle.roundedBorder24,
-              ),
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  CustomImageView(
-                    imagePath: inboxOne,
-                    fit: BoxFit.cover,
-                    height: 47.h,
-                    width: 47.h,
-                  ),
-                ],
-              ),
-            ),
-          ),
-          SizedBox(width: 16.h),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  aboutOne,
-                  style: theme.textTheme.titleSmall!.copyWith(
-                      color: theme.colorScheme.onPrimary.withOpacity(1)),
-                ),
-                SizedBox(height: 2.h),
-                Text(
-                  applicationvers,
-                  style: theme.textTheme.bodySmall!.copyWith(
-                      color: theme.colorScheme.onPrimary.withOpacity(0.5)),
-                )
-              ],
-            ),
-          ),
-        ],
       ),
     );
   }

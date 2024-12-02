@@ -8,6 +8,7 @@ class GroupRequest {
   Future<ApiResponse> getGroupRequest() async {
     var response = await _baseAPI.fetchData(
       AppAPI.baseGroup,
+      includeHeaders: true,
     );
     return ApiResponse.fromResponse(response.data);
   }
