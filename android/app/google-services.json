@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "693145877062",
+    "project_id": "kiwis-flutter",
+    "storage_bucket": "kiwis-flutter.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:693145877062:android:0d97ba1d11d52e7f14a847",
+        "android_client_info": {
+          "package_name": "com.ecourse.kiwis"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDLQRqqV6xiZmPqUTgx0eVaFgvWsQVwwl8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
