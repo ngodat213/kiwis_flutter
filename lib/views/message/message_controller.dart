@@ -8,12 +8,21 @@ class MessageController extends BaseController {
   final GroupRequest _groupRequest = GroupRequest();
 
   // Variables
-  List<GroupModel> groupList = [];
+  RxList<GroupModel> groups = <GroupModel>[].obs;
 
   @override
   void onInit() {
     super.onInit();
-    getGroupList();
+    initGroups();
+  }
+
+  Future<void> initGroups() async {
+    final response = await _groupRequest.getGroupRequest();
+    if (response.allGood) {
+      for (var e in response.body) {
+        groups.value.add(GroupModel.fromJson(e));
+      }
+    }
   }
 
   @override
@@ -21,16 +30,7 @@ class MessageController extends BaseController {
     super.onClose();
   }
 
-  Future<void> getGroupList() async {
-    var response = await _groupRequest.getGroupRequest();
-    if (response.allGood) {
-      for (var e in response.body) {
-        this.groupList.add(GroupModel.fromJson(e));
-      }
-    }
-  }
-
-  void onPressedChanel(String idChannel) {
-    Get.toNamed(Routes.CHAT_ROOM, arguments: idChannel);
+  void onPressedChanel(GroupModel group) {
+    Get.toNamed(Routes.CHAT_ROOM, arguments: group);
   }
 }

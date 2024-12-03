@@ -41,15 +41,19 @@ class ChatRoomView extends BaseView<ChatRoomController> {
           ),
           SizedBox(width: 8.h),
           CustomTextFormField(
+            controller: controller.messageTEC,
             height: Get.height * 0.06,
             width: Get.width * 0.7,
             hintText: "Message",
             suffix: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(
-                  IconlyBold.send,
-                  color: appTheme.blue300,
+                TextButton(
+                  onPressed: () => controller.sendMessage(),
+                  child: Icon(
+                    IconlyBold.send,
+                    color: appTheme.blue300,
+                  ),
                 ),
               ],
             ),
@@ -84,7 +88,8 @@ class ChatRoomView extends BaseView<ChatRoomController> {
             },
           ),
           title: AppbarTitle(
-            text: "DMT".tr,
+            text: controller.group.value.name?.tr ??
+                controller.group.value.members!.first.user!.fullName,
             margin: EdgeInsets.only(left: 16.h),
           ),
           actions: [

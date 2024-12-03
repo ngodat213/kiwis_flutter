@@ -2,6 +2,7 @@ import 'package:kiwis_flutter/core/constants/app.value.dart';
 import 'package:kiwis_flutter/models/cloudinary_image.model.dart';
 import 'package:kiwis_flutter/models/friend_data.model.dart';
 import 'package:kiwis_flutter/models/member.model.dart';
+import 'package:kiwis_flutter/models/message.model.dart';
 
 class GroupModel {
   String? groupId;
@@ -12,7 +13,7 @@ class GroupModel {
   CloudinaryImageModel? avatar;
   FriendDataModel? createdBy;
   List<MemberModel>? members;
-  // List<Null>? messages;
+  List<MessageModel>? messages;
   // List<Null>? plans;
   // List<Null>? realtimePosts;
 
@@ -32,7 +33,7 @@ class GroupModel {
 
   bool isGroupChat() => type == 'GROUP';
 
-  String groupName() => name ?? members!.first.user!.firstName!;
+  String groupName() => name ?? members!.first.user!.fullName;
 
   String groupAvatarUrl() {
     if (avatar?.imageUrl != null) {
@@ -44,9 +45,9 @@ class GroupModel {
   }
 
   String lastMessage() {
-    // if (messages?.isNotEmpty ?? false) {
-    //   return messages!.last.content!;
-    // }
+    if (messages?.isNotEmpty ?? false) {
+      return messages!.last.text!;
+    }
     return '';
   }
 
@@ -68,12 +69,12 @@ class GroupModel {
         members!.add(new MemberModel.fromJson(v));
       });
     }
-    // if (json['messages'] != null) {
-    //   messages = <Null>[];
-    //   json['messages'].forEach((v) {
-    //     messages!.add(new Null.fromJson(v));
-    //   });
-    // }
+    if (json['messages'] != null) {
+      messages = <MessageModel>[];
+      json['messages'].forEach((v) {
+        messages!.add(new MessageModel.fromJson(v));
+      });
+    }
     // if (json['plans'] != null) {
     //   plans = <Null>[];
     //   json['plans'].forEach((v) {
@@ -104,9 +105,9 @@ class GroupModel {
     if (this.members != null) {
       data['members'] = this.members!.map((v) => v.toJson()).toList();
     }
-    // if (this.messages != null) {
-    //   data['messages'] = this.messages!.map((v) => v.toJson()).toList();
-    // }
+    if (this.messages != null) {
+      data['messages'] = this.messages!.map((v) => v.toJson()).toList();
+    }
     // if (this.plans != null) {
     //   data['plans'] = this.plans!.map((v) => v.toJson()).toList();
     // }

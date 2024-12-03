@@ -4,8 +4,15 @@ class AppAPI {
   AppAPI._();
   // static const String domain = 'http://172.20.10.4:1111/api/'; // hostpost
   // static const String domain = 'http://10.100.3.149:1111/api/'; // CMCC
-  static const String domainApi = 'http://192.168.0.101:1111/api/'; // home
-  static const String domainSocket = 'http://192.168.0.101:2222'; // home
+  static const String domainApi = 'http://192.168.0.102:1111/api/'; // home
+  static const String domainSocket = 'http://192.168.0.102:2222'; // home
+
+  /// Socket
+  static const String socketRegister = 'register';
+  static const String socketGroupMessage = 'send_group_message';
+  static const String socketReceiveGroupMessage = 'receive_group_message';
+  static const String socketDisconnect = 'disconnect';
+  static const String socketConnect = 'connect';
 
   /// Auth
   static const String baseAuth = '${domainApi}auth';
@@ -54,4 +61,7 @@ class AppAPI {
   static const String createMember = '${domainApi}member';
   static const String editMember = '${domainApi}member';
   static const String deleteMember = '${domainApi}member';
+
+  /// Message
+  static const String message = '${domainApi}message';
 }

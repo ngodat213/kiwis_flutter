@@ -1,21 +1,21 @@
+import 'package:kiwis_flutter/core/constants/constants.dart';
+import 'package:kiwis_flutter/models/message.model.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class ManagerSocket {
   // Private constructor for singleton pattern
   ManagerSocket._();
 
-  static final ManagerSocket instance = ManagerSocket._();
-
   // Socket instance
-  IO.Socket? _socket;
+  static IO.Socket? socket;
 
   // Initialize the socket connection
-  void initSocket({required String domain, String? userId}) {
+  static void initSocket({required String domain, String? userId}) {
     print("Initializing socket with userId: $userId");
 
     try {
       // Build the socket connection
-      _socket = IO.io(
+      socket = IO.io(
         domain,
         IO.OptionBuilder()
             .setPath('/socket.io')
@@ -26,25 +26,27 @@ class ManagerSocket {
       );
 
       // Connect to the socket
-      _socket?.connect();
+      socket?.connect();
+
+      // Register
+      socket?.emit(AppAPI.socketRegister, {
+        'userId': userId!,
+      });
 
       // Set up socket event listeners
-      _socket?.on('connect', (_) {
+      socket?.on(AppAPI.socketConnect, (_) {
         print('Connected to socket server');
       });
 
-      _socket?.on('disconnect', (_) {
+      socket?.on(AppAPI.socketDisconnect, (_) {
         print('Disconnected from socket server');
       });
 
-      _socket?.on('receive_message', (data) {
-        print('Received message: $data');
-        // Handle incoming message logic here
-      });
-
-      _socket?.on('receive_group_message', (data) {
+      socket?.on(AppAPI.socketReceiveGroupMessage, (data) {
         print('Received group message: $data');
-        // Handle incoming group message logic here
+        // final message = MessageModel.fromJson(data);
+        // final group = groups.firstWhere((e) => e.groupId == message.groupId);
+        // group.messages?.add(message);
       });
 
       print('Socket initialized successfully');
@@ -53,19 +55,9 @@ class ManagerSocket {
     }
   }
 
-  // Send a message to a user
-  void sendMessage(String senderId, String recipientId, String messageText) {
-    _socket?.emit('send_message', {
-      'senderId': senderId,
-      'recipientId': recipientId,
-      'messageText': messageText,
-    });
-    print('Message sent: $messageText');
-  }
-
   // Send a message to a group
-  void sendGroupMessage(String senderId, String groupId, String messageText) {
-    _socket?.emit('send_group_message', {
+  static void sendMessage(String senderId, String groupId, String messageText) {
+    socket?.emit(AppAPI.socketGroupMessage, {
       'senderId': senderId,
       'groupId': groupId,
       'messageText': messageText,
@@ -74,8 +66,8 @@ class ManagerSocket {
   }
 
   // Disconnect the socket
-  void disconnect() {
-    _socket?.disconnect();
+  static void disconnect() {
+    socket?.disconnect();
     print('Socket disconnected');
   }
 }

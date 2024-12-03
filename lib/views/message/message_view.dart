@@ -31,9 +31,8 @@ class MessageScreen extends BaseView<MessageController> {
                 padding: EdgeInsets.symmetric(horizontal: 32.h),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
-                  children: controller.groupList
-                      .map((e) => _buildGroupItem(e))
-                      .toList(),
+                  children:
+                      controller.groups.map((e) => _buildGroupItem(e)).toList(),
                 ),
               ),
             ),
@@ -78,7 +77,7 @@ class MessageScreen extends BaseView<MessageController> {
   /// Common widget
   Widget _buildGroupItem(GroupModel group) {
     return GestureDetector(
-      onTap: () => controller.onPressedChanel(group.groupId!),
+      onTap: () => controller.onPressedChanel(group),
       child: SizedBox(
         width: double.maxFinite,
         child: Container(
@@ -121,22 +120,31 @@ class MessageScreen extends BaseView<MessageController> {
               ),
               SizedBox(width: 16.h),
               Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      group.groupName(),
-                      style: theme.textTheme.titleSmall!.copyWith(
-                          color: theme.colorScheme.onPrimary.withOpacity(1)),
-                    ),
-                    SizedBox(height: 2.h),
-                    Text(
-                      group.lastMessage(),
-                      style: theme.textTheme.bodySmall!.copyWith(
-                          color: theme.colorScheme.onPrimary.withOpacity(0.5)),
-                    )
-                  ],
-                ),
+                child: group.lastMessage() == ''
+                    ? Text(
+                        group.lastMessage(),
+                        style: theme.textTheme.bodySmall!.copyWith(
+                            color:
+                                theme.colorScheme.onPrimary.withOpacity(0.5)),
+                      )
+                    : Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            group.groupName(),
+                            style: theme.textTheme.titleSmall!.copyWith(
+                                color:
+                                    theme.colorScheme.onPrimary.withOpacity(1)),
+                          ),
+                          SizedBox(height: 2.h),
+                          Text(
+                            group.lastMessage(),
+                            style: theme.textTheme.bodySmall!.copyWith(
+                                color: theme.colorScheme.onPrimary
+                                    .withOpacity(0.5)),
+                          )
+                        ],
+                      ),
               ),
             ],
           ),
