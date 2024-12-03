@@ -15,6 +15,8 @@ class FriendDataModel {
     this.avatar,
   });
 
+  String get fullName => "$firstName $lastName";
+
   FriendDataModel.fromJson(Map<String, dynamic> json) {
     userId = json['userId'];
     firstName = json['firstName'];

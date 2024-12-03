@@ -5,6 +5,8 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:kiwis_flutter/app/routes/app_pages.dart';
 import 'package:kiwis_flutter/core/base/base.controller.dart';
+import 'package:kiwis_flutter/core/constants/constants.dart';
+import 'package:kiwis_flutter/core/manager/manager.socket.dart';
 import 'package:kiwis_flutter/models/api.response.dart';
 import 'package:kiwis_flutter/requests/auth.request.dart';
 import 'package:kiwis_flutter/requests/user.request.dart';
@@ -130,6 +132,10 @@ class SignInController extends BaseController {
 
       if (apiResponse.allGood) {
         await AuthServices.saveUser(apiResponse.body);
+        ManagerSocket.initSocket(
+          domain: AppAPI.domainSocket,
+          userId: apiResponse.body['userId'],
+        );
       } else {
         throw Exception(apiResponse.error);
       }

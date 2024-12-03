@@ -24,11 +24,10 @@ class SplashController extends BaseController {
         final response = await _userRequest.getCurrentUser();
         if (response.allGood) {
           AuthServices.saveUser(response.body);
-          ManagerSocket.instance.initSocket(
+          ManagerSocket.initSocket(
             domain: AppAPI.domainSocket,
             userId: response.body['userId'],
           );
-
           Get.offNamed(Routes.MAIN);
         } else {
           Get.offNamed(Routes.SIGN_IN);
