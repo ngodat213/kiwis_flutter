@@ -1,6 +1,5 @@
 import 'package:kiwis_flutter/core/base/base.controller.dart';
 import 'package:kiwis_flutter/core/constants/app_export.dart';
-import 'package:kiwis_flutter/core/manager/manager.socket.dart';
 import 'package:kiwis_flutter/models/group.model.dart';
 import 'package:kiwis_flutter/requests/group.request.dart';
 

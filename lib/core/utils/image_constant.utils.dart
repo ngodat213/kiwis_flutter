@@ -333,6 +333,8 @@ class ImageConstant {
 
   static String svgInbox = '$svgPath/warning circle.svg';
 
+  static String svgStack = '$svgPath/stack1.svg';
+
   static const imgVisa = '$imagePath/img_visa.svg';
 
   static const imgUserYellow80001 = '$imagePath/img_user_yellow_800_01.svg';

@@ -156,8 +156,7 @@ class MessageScreen extends BaseView<MessageController> {
   /// Section Widget
   Widget _buildHeaderSection() {
     return Container(
-      margin: EdgeInsets.symmetric(
-          horizontal: 16.0, vertical: 16), // Adjust padding as needed
+      margin: EdgeInsets.symmetric(horizontal: 16.0, vertical: 16),
       child: CustomAppBar(
         title: AppbarTitle(
           text: "Message".tr,

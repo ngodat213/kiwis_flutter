@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:kiwis_flutter/core/constants/app_export.dart';
-import 'package:kiwis_flutter/widgets/app_bar/app_bar_leadingiconbutton.dart';
-import 'package:kiwis_flutter/widgets/app_bar/app_bar_title.dart';
+import 'package:kiwis_flutter/views/chat_room/chat_room_controller.dart';
 import 'package:kiwis_flutter/widgets/app_bar/app_bar_trainling_iconbutton.dart';
-import 'package:kiwis_flutter/widgets/app_bar/custom_app_bar.dart';
+import 'package:kiwis_flutter/widgets/base_appbar.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-class SettingChatRoomContent extends StatelessWidget {
+class SettingChatRoomContent extends GetView<ChatRoomController> {
   const SettingChatRoomContent({super.key});
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: appBar(context),
+        appBar: baseAppBar(context: context, title: "Setting".tr),
         body: Container(
           margin: EdgeInsets.symmetric(horizontal: 16.h),
           width: Get.width,
@@ -23,10 +22,15 @@ class SettingChatRoomContent extends StatelessWidget {
               CustomImageView(
                 width: 100.h,
                 height: 100.h,
-                imagePath: ImageConstant.imgAvatar,
+                imagePath: controller.getAvatarGroup(),
               ),
               SizedBox(height: 8.h),
-              "DMT".tr.text.textStyle(theme.textTheme.titleLarge).bold.make(),
+              controller
+                  .getGroupName()
+                  .text
+                  .textStyle(theme.textTheme.titleLarge)
+                  .bold
+                  .make(),
               SizedBox(height: 16.h),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -74,32 +78,41 @@ class SettingChatRoomContent extends StatelessWidget {
                 width: double.maxFinite,
                 child: _buildAboutSectionRow(
                   inboxOne: ImageConstant.svgInbox,
-                  aboutOne: "Group Name".tr,
-                  applicationvers: "msg_application_version".tr,
+                  aboutOne: controller.isGroupChat()
+                      ? "Group Name".tr
+                      : "Edit name".tr,
+                  applicationvers: controller.isGroupChat()
+                      ? "Change group name".tr
+                      : "Change name".tr,
                 ),
               ),
+              controller.isGroupChat()
+                  ? SizedBox(
+                      width: double.maxFinite,
+                      child: _buildAboutSectionRow(
+                        inboxOne: ImageConstant.svgGroup,
+                        aboutOne: "Add member".tr,
+                        applicationvers: "msg_application_version".tr,
+                      ),
+                    )
+                  : SizedBox(),
               SizedBox(
                 width: double.maxFinite,
                 child: _buildAboutSectionRow(
-                  inboxOne: ImageConstant.svgInbox,
-                  aboutOne: "Add member".tr,
-                  applicationvers: "msg_application_version".tr,
-                ),
-              ),
-              SizedBox(
-                width: double.maxFinite,
-                child: _buildAboutSectionRow(
-                  inboxOne: ImageConstant.svgInbox,
+                  inboxOne: ImageConstant.svgStack,
                   aboutOne: "Gallery".tr,
-                  applicationvers: "msg_application_version".tr,
+                  applicationvers: "All images".tr,
                 ),
               ),
               SizedBox(
                 width: double.maxFinite,
                 child: _buildAboutSectionRow(
                   inboxOne: ImageConstant.svgInbox,
-                  aboutOne: "Out group".tr,
-                  applicationvers: "msg_application_version".tr,
+                  aboutOne:
+                      controller.isGroupChat() ? "Out group".tr : "Block".tr,
+                  applicationvers: controller.isGroupChat()
+                      ? "Out group".tr
+                      : "You will unfollow this user".tr,
                 ),
               ),
             ],
@@ -172,30 +185,6 @@ class SettingChatRoomContent extends StatelessWidget {
             ),
           ),
         ],
-      ),
-    );
-  }
-
-  /// Section Widget
-  PreferredSizeWidget appBar(BuildContext context) {
-    return PreferredSize(
-      preferredSize: Size.fromHeight(Get.height * 0.09), // Set desired height
-      child: Container(
-        margin: EdgeInsets.symmetric(
-            horizontal: 16.0, vertical: 16), // Adjust padding as needed
-        child: CustomAppBar(
-          leadingWidth: 44.h,
-          leading: AppbarLeadingIconbutton(
-            imagePath: ImageConstant.imgArrowLeftOnprimary,
-            onTap: () {
-              Get.back();
-            },
-          ),
-          title: AppbarTitle(
-            text: "DMT".tr,
-            margin: EdgeInsets.only(left: 16.h),
-          ),
-        ),
       ),
     );
   }

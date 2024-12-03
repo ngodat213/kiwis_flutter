@@ -34,6 +34,20 @@ class ChatRoomController extends BaseController {
     messageTEC.clear();
   }
 
+  String getGroupName() {
+    return group.value.name ?? group.value.members!.first.user!.fullName;
+  }
+
+  String getAvatarGroup() {
+    return group.value.avatar?.imageUrl ??
+        group.value.members!.first.user!.avatar?.imageUrl ??
+        AppValues.defaultAvatar;
+  }
+
+  bool isGroupChat() {
+    return group.value.isGroupChat();
+  }
+
   void listenMessage() {
     ManagerSocket.socket?.on(AppAPI.socketReceiveGroupMessage, (data) {
       print('Received group message: $data');
