@@ -23,7 +23,7 @@ class MessageScreen extends BaseView<MessageController> {
         children: [
           Align(
             alignment: Alignment.topCenter,
-            child: _buildHeaderSection(),
+            child: _buildHeaderSection(context),
           ),
           Expanded(
             child: SingleChildScrollView(
@@ -154,7 +154,7 @@ class MessageScreen extends BaseView<MessageController> {
   }
 
   /// Section Widget
-  Widget _buildHeaderSection() {
+  Widget _buildHeaderSection(BuildContext context) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 16.0, vertical: 16),
       child: CustomAppBar(
@@ -169,7 +169,7 @@ class MessageScreen extends BaseView<MessageController> {
             margin: EdgeInsets.only(right: 8.h),
           ),
           AppbarTrailingIconbutton(
-            // onTap: () => controller.showModalSettingChatRoomSheet(context),
+            onTap: () => controller.onPressedCreateGroup(context),
             imagePath: ImageConstant.svgMore,
             margin: EdgeInsets.only(right: 8.h),
           ),

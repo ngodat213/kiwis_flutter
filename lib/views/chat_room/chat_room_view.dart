@@ -9,6 +9,7 @@ import 'package:kiwis_flutter/widgets/app_bar/app_bar_title.dart';
 import 'package:kiwis_flutter/widgets/app_bar/app_bar_trainling_iconbutton.dart';
 import 'package:kiwis_flutter/widgets/app_bar/custom_app_bar.dart';
 import 'package:kiwis_flutter/widgets/custom_text_form_field.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import 'chat_room_controller.dart';
 
@@ -120,7 +121,10 @@ class ChatRoomView extends BaseView<ChatRoomController> {
             child: SizedBox(
               height: Get.height * 0.78,
               child: Obx(() {
-                return ListView.builder(
+                return ScrollablePositionedList.builder(
+                  itemScrollController: controller.scrollController,
+                  initialScrollIndex: controller.group.value.messages!.length,
+                  shrinkWrap: true,
                   padding: const EdgeInsets.all(8.0),
                   itemCount: controller.group.value.messages!.length,
                   itemBuilder: (context, index) {

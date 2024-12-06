@@ -73,7 +73,9 @@ class AuthServices {
           currentUser.toJson(),
         ),
       );
-
+      if (AuthServices.currentUser == null) {
+        AuthServices.currentUser = currentUser;
+      }
       return currentUser;
     } catch (error) {
       print("saveUser error ==> $error");
