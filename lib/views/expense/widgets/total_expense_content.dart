@@ -2,7 +2,6 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:kiwis_flutter/core/base/base.view.dart';
 import 'package:kiwis_flutter/views/expense/expense_controller.dart';
-import 'package:kiwis_flutter/views/expense/widgets/latest_entries_content.dart';
 import 'package:kiwis_flutter/views/expense/widgets/latest_entry_item.dart';
 import 'package:kiwis_flutter/widgets/app_bar/app_bar_leadingiconbutton.dart';
 import 'package:kiwis_flutter/widgets/app_bar/app_bar_title.dart';

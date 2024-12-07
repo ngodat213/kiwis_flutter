@@ -39,7 +39,7 @@ class HomeController extends BaseController {
     showLoading();
     await initializeCamera();
     await getPosts();
-    user.value = await AuthServices.getCurrentUser() ?? UserModel();
+    user.value = AuthServices.currentUser!;
     hideLoading();
   }
 

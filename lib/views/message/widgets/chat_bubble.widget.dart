@@ -47,13 +47,13 @@ class ChatBubble extends StatelessWidget {
                   ? CrossAxisAlignment.end
                   : CrossAxisAlignment.start,
               children: [
-                if (isGroup)
-                  (message.sender!.firstName! + ' ' + message.sender!.lastName!)
-                      .text
-                      .white
+                Visibility(
+                  visible: isGroup && !message.isMe() && showAvatar,
+                  child: message.sender!.fullName.text.white
                       .textStyle(theme.textTheme.labelMedium)
                       .make()
-                      .pOnly(right: 16.h, bottom: 4.h),
+                      .pOnly(right: 16.h, bottom: 4.h, left: 8.h),
+                ),
                 message.text!.tr.text.white
                     .textStyle(theme.textTheme.labelMedium)
                     .make()

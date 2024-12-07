@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -17,11 +18,12 @@ extension ImageTypeExtension on String {
   }
 }
 
-enum ImageType { svg, png, network, file, unknown }
+enum ImageType { svg, png, network, file, unknown, memory }
 
 class CustomImageView extends StatelessWidget {
   CustomImageView(
       {this.imagePath,
+      this.imageType,
       this.height,
       this.width,
       this.color,
@@ -31,6 +33,7 @@ class CustomImageView extends StatelessWidget {
       this.radius,
       this.margin,
       this.border,
+      this.imageBytes,
       this.placeHolder = 'assets/images/image_not_found.png'});
 
   ///[imagePath] is required parameter for showing image
@@ -45,6 +48,8 @@ class CustomImageView extends StatelessWidget {
   final EdgeInsetsGeometry? margin;
   final BorderRadius? radius;
   final BoxBorder? border;
+  final ImageType? imageType;
+  final Uint8List? imageBytes;
   @override
   Widget build(BuildContext context) {
     return alignment != null
@@ -90,6 +95,14 @@ class CustomImageView extends StatelessWidget {
   }
 
   Widget _buildImageView() {
+    if (imageBytes != null) {
+      return Image.memory(
+        imageBytes!,
+        height: height,
+        width: width,
+        fit: fit ?? BoxFit.cover,
+      );
+    }
     if (imagePath != null) {
       switch (imagePath!.imageType) {
         case ImageType.svg:

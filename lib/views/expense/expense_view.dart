@@ -7,7 +7,6 @@ import 'package:kiwis_flutter/views/expense/widgets/icon_status_listview.dart';
 import 'package:kiwis_flutter/views/expense/widgets/latest_entries_listview.dart';
 import 'package:kiwis_flutter/views/expense/widgets/total_salary_listview.dart';
 import 'package:kiwis_flutter/widgets/app_bar/app_bar_title.dart';
-import 'package:kiwis_flutter/widgets/app_bar/app_bar_trainling_iconbutton.dart';
 import 'package:kiwis_flutter/widgets/app_bar/custom_app_bar.dart';
 
 import 'expense_controller.dart';

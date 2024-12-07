@@ -129,6 +129,7 @@ class ImageConstant {
   static const imgFlagAmber400 = '$imagePath/img_flag_amber_400.png';
 
   static String svgCircle = '$svgPath/circle.svg';
+  static String svgCheckCircle = '$svgPath/check1.svg';
 
 //   change_password images
   static const imgCheckmarkGreen600 = '$imagePath/img_checkmark_green_600.svg';
@@ -332,6 +333,8 @@ class ImageConstant {
   static String svgDollar = '$svgPath/dollar.svg';
 
   static String svgInbox = '$svgPath/warning circle.svg';
+
+  static String svgStack = '$svgPath/stack1.svg';
 
   static const imgVisa = '$imagePath/img_visa.svg';
 

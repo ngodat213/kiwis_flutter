@@ -1,19 +1,69 @@
+import 'dart:io';
+
+import 'package:animated_snack_bar/animated_snack_bar.dart';
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:kiwis_flutter/core/base/base.controller.dart';
 import 'package:kiwis_flutter/core/constants/app_export.dart';
+import 'package:kiwis_flutter/core/constants/constants.dart';
 import 'package:kiwis_flutter/core/manager/manager.socket.dart';
+import 'package:kiwis_flutter/models/friendship.model.dart';
 import 'package:kiwis_flutter/models/group.model.dart';
+import 'package:kiwis_flutter/models/message.model.dart';
+import 'package:kiwis_flutter/models/user.models.dart';
 import 'package:kiwis_flutter/requests/group.request.dart';
+import 'package:kiwis_flutter/services/services.dart';
+import 'package:kiwis_flutter/views/message/widgets/calander_content.dart';
+import 'package:kiwis_flutter/views/message/widgets/chat_room.content.dart';
+import 'package:kiwis_flutter/views/message/widgets/create_group.content.dart';
+import 'package:kiwis_flutter/views/message/widgets/group_name_content.dart';
+import 'package:kiwis_flutter/views/message/widgets/members.content.dart';
+import 'package:kiwis_flutter/views/message/widgets/setting_chat_room_content.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class MessageController extends BaseController {
+  /// Message content
   final GroupRequest _groupRequest = GroupRequest();
+  final ImagePicker _imagePicker = ImagePicker();
+  // Controller create group content
+  final TextEditingController createGroupNameTEC = TextEditingController();
+  RxList<FriendshipModel> selectedFriends = <FriendshipModel>[].obs;
+  // Controller chat room content
+  final ItemScrollController scrollController = ItemScrollController();
+  final TextEditingController messageTEC = TextEditingController();
+  final TextEditingController editGroupNameTEC = TextEditingController();
 
   // Variables
+  // Message content
+  Rx<UserModel> user = UserModel().obs;
   RxList<GroupModel> groups = <GroupModel>[].obs;
+  // Chat room content
+  RxInt selectedIndex = 0.obs;
+  Rx<MessageModel> currentMessage = MessageModel().obs;
+  RxBool isOnchangeAvatar = false.obs;
+  Rx<File> editGroupAvatar = File('').obs;
 
   @override
   void onInit() {
     super.onInit();
+    user.value = AuthServices.currentUser!;
     initGroups();
+    listenerGroup();
+  }
+
+  @override
+  void onClose() {
+    super.onClose();
+  }
+
+  /// Message methods
+  void onPressedChanel(BuildContext context, int index) {
+    selectedIndex.value = index;
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) => ChatRoomContent(),
+    );
   }
 
   Future<void> initGroups() async {
@@ -25,12 +75,220 @@ class MessageController extends BaseController {
     }
   }
 
-  @override
-  void onClose() {
-    super.onClose();
+  void listenerGroup() {
+    ManagerSocket.socket?.on(AppAPI.socketReceiveGroupMessage, (data) {
+      print('Received group message: $data');
+      final message = MessageModel.fromJson(data);
+      final group = groups.value[selectedIndex.value];
+      group.messages?.add(message);
+      groups.refresh();
+    });
   }
 
-  void onPressedChanel(GroupModel group) {
-    Get.toNamed(Routes.CHAT_ROOM, arguments: group);
+  /// Create group methods
+  void onPressedRemoveFriend(FriendshipModel user) {
+    if (selectedFriends.contains(user)) {
+      selectedFriends.remove(user);
+    } else {
+      selectedFriends.add(user);
+    }
+  }
+
+  Future<void> handleCreateGroup(BuildContext context) async {
+    try {
+      if (selectedFriends.isEmpty || selectedFriends.length < 2) {
+        AnimatedSnackBar.material(
+          "Please select at least 2 friends",
+          type: AnimatedSnackBarType.warning,
+        ).show(context);
+      } else {
+        final members = selectedFriends.map((e) => e.user!.userId!).toList();
+        members.add(user.value.userId!);
+
+        final response = await _groupRequest.createGroupRequest(
+          name: createGroupNameTEC.text,
+          members: members,
+        );
+        if (response.allGood) {
+          Get.back();
+          AnimatedSnackBar.material(
+            "Group created successfully",
+            type: AnimatedSnackBarType.success,
+          ).show(context);
+        } else {
+          AnimatedSnackBar.material(
+            response.error!,
+            type: AnimatedSnackBarType.error,
+          ).show(context);
+        }
+      }
+    } catch (err) {
+      AnimatedSnackBar.material(
+        err.toString(),
+        type: AnimatedSnackBarType.error,
+      ).show(context);
+    }
+  }
+
+  void onPressedCreateGroup(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) => MenberSettingContent(
+        title: "Create group",
+        onTap: () => handleCreateGroup(context),
+        isCreate: true,
+      ),
+    );
+  }
+
+  /// Chat room methods
+  Future<void> pickAvatar() async {
+    final image = await _imagePicker.pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      editGroupAvatar.value = File(image.path);
+      isOnchangeAvatar.value = true;
+    }
+  }
+
+  Future<void> handleChangeGroupName(BuildContext context) async {
+    try {
+      final response = await _groupRequest.editGroupRequest(
+        groupId: groups.value[selectedIndex.value].groupId!,
+        name: editGroupNameTEC.text,
+        file: editGroupAvatar.value.readAsBytesSync(),
+      );
+
+      if (response.allGood) {
+        final GroupModel group = GroupModel.fromJson(response.body);
+        isOnchangeAvatar.value = false;
+        editGroupAvatar.value = File('');
+        editGroupNameTEC.clear();
+        // Update group
+        groups.value[selectedIndex.value].name = group.name;
+        groups.value[selectedIndex.value].avatar = group.avatar;
+        groups.refresh();
+
+        Get.back();
+        AnimatedSnackBar.material(
+          "Group name changed successfully",
+          type: AnimatedSnackBarType.success,
+        ).show(context);
+      } else {
+        AnimatedSnackBar.material(
+          response.error!,
+          type: AnimatedSnackBarType.error,
+        ).show(context);
+      }
+    } catch (err) {
+      AnimatedSnackBar.material(
+        err.toString(),
+        type: AnimatedSnackBarType.error,
+      ).show(context);
+    }
+  }
+
+  Future<void> handleLeaveGroup(BuildContext context) async {
+    try {
+      final response = await _groupRequest.leaveGroupRequest(
+        groupId: groups.value[selectedIndex.value].groupId!,
+      );
+      if (response.allGood) {
+        Get.back();
+        AnimatedSnackBar.material(
+          "Leave group successfully",
+          type: AnimatedSnackBarType.success,
+        ).show(context);
+      } else {
+        AnimatedSnackBar.material(
+          response.error!,
+          type: AnimatedSnackBarType.error,
+        ).show(context);
+      }
+    } catch (err) {
+      AnimatedSnackBar.material(
+        err.toString(),
+        type: AnimatedSnackBarType.error,
+      ).show(context);
+    }
+  }
+
+  void sendMessage() {
+    ManagerSocket.sendMessage(
+      user.value.userId!,
+      groups.value[selectedIndex.value].groupId!,
+      messageTEC.text,
+    );
+    messageTEC.clear();
+  }
+
+  String getGroupName() {
+    final group = groups.value[selectedIndex.value];
+    return group.name ?? group.members!.first.user!.fullName;
+  }
+
+  String getAvatarGroup() {
+    final group = groups.value[selectedIndex.value];
+    if (group.avatar != null) {
+      return group.avatar!.imageUrl!;
+    } else if (isGroupChat()) {
+      return AppValues.defaultAvatar;
+    }
+    return group.members!.first.user!.avatar?.imageUrl ??
+        AppValues.defaultAvatar;
+  }
+
+  bool isGroupChat() {
+    final group = groups.value[selectedIndex.value];
+    return group.isGroupChat();
+  }
+
+  void showModalCalenderSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) => CalenderContent(),
+    );
+  }
+
+  void showModalSettingChatRoomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) => SettingChatRoomContent(),
+    );
+  }
+
+  /// Setting chat room methods
+  void showModalGroupNameSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) => GroupNameContent(),
+    );
+  }
+
+  void showModalMembersContent(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) => MembersContent(),
+    );
+  }
+
+  void showModalMemberSettingSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) => MenberSettingContent(
+        title: "Add member",
+        onTap: () => handleCreateGroup(context),
+        isCreate: false,
+      ),
+    );
+  }
+
+  void addMember(FriendshipModel user) {
+    selectedFriends.add(user);
   }
 }

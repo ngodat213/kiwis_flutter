@@ -82,13 +82,6 @@ class BaseAPI {
     print('params: $params');
     print('body: $body');
     try {
-      // final options = !includeHeaders
-      //     ? null
-      //     : Options(
-      //         headers: headers ?? await getHeaders(),
-      //         method: apiMethod[method],
-      //       );
-
       final cacheOptions = CacheOptions(
         store: MemCacheStore(),
         maxStale: const Duration(hours: 1), // set the cache duration
@@ -131,6 +124,7 @@ class BaseAPI {
       {dynamic body,
       bool includeHeaders = false,
       Map<String, dynamic>? headers,
+      Map<String, dynamic>? params,
       ApiMethod method = ApiMethod.POST,
       required Uint8List file}) async {
     /// Check internet connection is available
@@ -157,12 +151,21 @@ class BaseAPI {
     try {
       Options options = Options();
       options.method = apiMethod[method];
-      options.headers = includeHeaders ? headers ?? await getHeaders() : null;
+      options.headers = includeHeaders
+          ? headers != null
+              ? headers
+              : await getHeaders()
+          : null;
       FormData formData = FormData.fromMap({
         'file': MultipartFile.fromBytes(file, filename: 'upload.png'),
+        ...body,
       });
-      response =
-          await _dio.request(domain + url, data: formData, options: options);
+      response = await _dio.request(
+        domain + url,
+        data: formData,
+        queryParameters: params,
+        options: options,
+      );
     } on DioException catch (e) {
       /// If error is DioError, return [ApiStatus.FAILED]
       printLogError('Error [${apiMethod[method]} API]: $e');
