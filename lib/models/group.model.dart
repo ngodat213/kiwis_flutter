@@ -31,7 +31,7 @@ class GroupModel {
     // this.realtimePosts
   });
 
-  bool isGroupChat() => type == 'GROUP';
+  bool isGroupChat() => type?.compareTo('GROUP') == 0;
 
   String groupName() => name ?? members!.first.user!.fullName;
 

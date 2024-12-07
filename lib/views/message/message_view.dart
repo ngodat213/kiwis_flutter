@@ -29,10 +29,16 @@ class MessageScreen extends BaseView<MessageController> {
             child: SingleChildScrollView(
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 32.h),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children:
-                      controller.groups.map((e) => _buildGroupItem(e)).toList(),
+                child: Obx(
+                  () => ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: controller.groups.length,
+                    itemBuilder: (context, index) => _buildGroupItem(
+                      context,
+                      controller.groups[index],
+                      index,
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -42,42 +48,10 @@ class MessageScreen extends BaseView<MessageController> {
     );
   }
 
-  /// Section Widget
-  Widget _buildButtonLarge() {
-    return Container(
-      padding: EdgeInsets.all(16.h),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.onPrimary,
-        borderRadius: BorderRadiusStyle.circleBorder28,
-      ),
-      width: double.maxFinite,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Padding(
-            padding: EdgeInsets.only(left: 12.h),
-            child: Text(
-              "lbl_typing".tr,
-              style: theme.textTheme.titleMedium,
-            ),
-          ),
-          CustomImageView(
-            imagePath: ImageConstant.imgClosePrimary,
-            height: 24.h,
-            width: 26.h,
-            radius: BorderRadius.circular(
-              12.h,
-            ),
-          )
-        ],
-      ),
-    );
-  }
-
   /// Common widget
-  Widget _buildGroupItem(GroupModel group) {
+  Widget _buildGroupItem(BuildContext context, GroupModel group, int index) {
     return GestureDetector(
-      onTap: () => controller.onPressedChanel(group),
+      onTap: () => controller.onPressedChanel(context, index),
       child: SizedBox(
         width: double.maxFinite,
         child: Container(
@@ -113,6 +87,7 @@ class MessageScreen extends BaseView<MessageController> {
                         fit: BoxFit.cover,
                         height: 47.h,
                         width: 47.h,
+                        radius: BorderRadius.circular(100),
                       ),
                     ],
                   ),
@@ -122,10 +97,9 @@ class MessageScreen extends BaseView<MessageController> {
               Expanded(
                 child: group.lastMessage() == ''
                     ? Text(
-                        group.lastMessage(),
-                        style: theme.textTheme.bodySmall!.copyWith(
-                            color:
-                                theme.colorScheme.onPrimary.withOpacity(0.5)),
+                        group.groupName(),
+                        style: theme.textTheme.titleSmall!.copyWith(
+                            color: theme.colorScheme.onPrimary.withOpacity(1)),
                       )
                     : Column(
                         crossAxisAlignment: CrossAxisAlignment.start,

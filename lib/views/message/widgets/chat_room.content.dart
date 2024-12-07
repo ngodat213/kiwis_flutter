@@ -3,7 +3,8 @@ import 'package:iconly/iconly.dart';
 
 import 'package:kiwis_flutter/core/constants/app_export.dart';
 import 'package:kiwis_flutter/core/base/base.view.dart';
-import 'package:kiwis_flutter/views/chat_room/widgets/chat_bubble.widget.dart';
+import 'package:kiwis_flutter/views/message/widgets/chat_bubble.widget.dart';
+import 'package:kiwis_flutter/views/message/message_controller.dart';
 import 'package:kiwis_flutter/widgets/app_bar/app_bar_leadingiconbutton.dart';
 import 'package:kiwis_flutter/widgets/app_bar/app_bar_title.dart';
 import 'package:kiwis_flutter/widgets/app_bar/app_bar_trainling_iconbutton.dart';
@@ -11,10 +12,8 @@ import 'package:kiwis_flutter/widgets/app_bar/custom_app_bar.dart';
 import 'package:kiwis_flutter/widgets/custom_text_form_field.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
-import 'chat_room_controller.dart';
-
-class ChatRoomView extends BaseView<ChatRoomController> {
-  ChatRoomView({super.key});
+class ChatRoomContent extends BaseView<MessageController> {
+  ChatRoomContent({super.key});
 
   Widget? floatingActionButton(BuildContext context) {
     return Container(
@@ -76,8 +75,9 @@ class ChatRoomView extends BaseView<ChatRoomController> {
   /// Section Widget
   PreferredSizeWidget appBar(BuildContext context) {
     return PreferredSize(
-      preferredSize: Size.fromHeight(Get.height * 0.1),
+      preferredSize: Size.fromHeight(Get.height * 0.13),
       child: Container(
+        padding: EdgeInsets.only(top: 23),
         margin: EdgeInsets.symmetric(horizontal: 16.0, vertical: 16),
         child: CustomAppBar(
           leadingWidth: 44.h,
@@ -87,9 +87,11 @@ class ChatRoomView extends BaseView<ChatRoomController> {
               Get.back();
             },
           ),
-          title: AppbarTitle(
-            text: controller.getGroupName(),
-            margin: EdgeInsets.only(left: 16.h),
+          title: Obx(
+            () => AppbarTitle(
+              text: controller.getGroupName(),
+              margin: EdgeInsets.only(left: 16.h),
+            ),
           ),
           actions: [
             AppbarTrailingIconbutton(
@@ -123,12 +125,14 @@ class ChatRoomView extends BaseView<ChatRoomController> {
               child: Obx(() {
                 return ScrollablePositionedList.builder(
                   itemScrollController: controller.scrollController,
-                  initialScrollIndex: controller.group.value.messages!.length,
-                  shrinkWrap: true,
+                  initialScrollIndex: controller.groups
+                      .value[controller.selectedIndex.value].messages!.length,
                   padding: const EdgeInsets.all(8.0),
-                  itemCount: controller.group.value.messages!.length,
+                  itemCount: controller.groups
+                      .value[controller.selectedIndex.value].messages!.length,
                   itemBuilder: (context, index) {
-                    final messages = controller.group.value.messages!;
+                    final messages = controller
+                        .groups.value[controller.selectedIndex.value].messages!;
                     final currentMessage = messages[index];
                     final isGroupStart = index == 0 ||
                         messages[index - 1].senderId != currentMessage.senderId;
@@ -138,7 +142,7 @@ class ChatRoomView extends BaseView<ChatRoomController> {
                     return ChatBubble(
                       message: currentMessage,
                       showAvatar: isGroupStart,
-                      isGroup: currentMessage.isGroup(),
+                      isGroup: controller.isGroupChat(),
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular((isGroupStart ? 8 : 8)),
                         topRight: Radius.circular(

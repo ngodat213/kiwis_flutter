@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kiwis_flutter/core/constants/app_export.dart';
 import 'package:kiwis_flutter/views/expense/expense_controller.dart';
-import 'package:kiwis_flutter/views/expense/widgets/latest_entries_content.dart';
 import 'package:kiwis_flutter/views/expense/widgets/latest_entry_item.dart';
 import 'package:kiwis_flutter/widgets/app_bar/app_bar_trainling_iconbutton.dart';
 

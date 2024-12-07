@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:kiwis_flutter/core/constants/app_export.dart';
-import 'package:kiwis_flutter/widgets/app_bar/app_bar_leadingiconbutton.dart';
-import 'package:kiwis_flutter/widgets/app_bar/app_bar_title.dart';
 import 'package:kiwis_flutter/widgets/app_bar/app_bar_trainling_iconbutton.dart';
-import 'package:kiwis_flutter/widgets/app_bar/custom_app_bar.dart';
 import 'package:kiwis_flutter/widgets/base_appbar.dart';
 
 class CalenderContent extends StatelessWidget {

@@ -5,38 +5,128 @@ import 'package:kiwis_flutter/widgets/base_appbar.dart';
 import 'package:kiwis_flutter/widgets/custom_text_form_field.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-class CreateGroupContent extends GetView<MessageController> {
-  const CreateGroupContent({super.key});
+class MenberSettingContent extends GetView<MessageController> {
+  final String title;
+  final Function() onTap;
+  final bool isCreate;
+
+  const MenberSettingContent({
+    super.key,
+    required this.title,
+    required this.onTap,
+    required this.isCreate,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: baseAppBar(
         context: context,
-        title: "Create group".tr,
+        title: title,
+        actions: [
+          "Create"
+              .tr
+              .text
+              .textStyle(theme.textTheme.titleSmall)
+              .bold
+              .make()
+              .onTap(() {
+            onTap();
+          }),
+        ],
       ),
       body: SafeArea(
         child: Container(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              "Group name"
-                  .tr
-                  .text
-                  .textStyle(theme.textTheme.titleLarge)
-                  .bold
-                  .make(),
-              SizedBox(height: 8),
-              CustomTextFormField(
-                hintText: "Group name",
-                height: 56 + 16,
-                contentPadding:
-                    EdgeInsets.symmetric(horizontal: 23.h, vertical: 23.h),
-                boxDecoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(18.h),
+              Visibility(
+                visible: isCreate,
+                child: Column(
+                  children: [
+                    "Group name"
+                        .tr
+                        .text
+                        .textStyle(theme.textTheme.titleLarge)
+                        .bold
+                        .make(),
+                    SizedBox(height: 8),
+                    CustomTextFormField(
+                      hintText: "Group name",
+                      height: 56 + 16,
+                      contentPadding: EdgeInsets.symmetric(
+                          horizontal: 23.h, vertical: 23.h),
+                      boxDecoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(18.h),
+                      ),
+                      controller: controller.createGroupNameTEC,
+                    ).marginOnly(bottom: 16),
+                  ],
                 ),
-                controller: controller.groupNameTEC,
-              ).marginOnly(bottom: 16),
+              ),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Obx(
+                  () => Row(
+                    children: controller.selectedFriends.map((friend) {
+                      return GestureDetector(
+                        onTap: () {
+                          controller.onPressedRemoveFriend(friend);
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: Column(
+                            children: [
+                              Container(
+                                height: 52.h,
+                                width: 52.h,
+                                child: Stack(
+                                  children: [
+                                    CustomImageView(
+                                      imagePath:
+                                          friend.user?.avatar?.imageUrl ??
+                                              AppValues.defaultAvatar,
+                                      height: 47.h,
+                                      width: 47.h,
+                                      radius: BorderRadius.circular(100),
+                                      fit: BoxFit.cover,
+                                    ),
+                                    Positioned(
+                                      right: 0,
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(100),
+                                        ),
+                                        child: CustomImageView(
+                                          color: Colors.black,
+                                          imagePath:
+                                              ImageConstant.imgClosePrimary,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(height: 8),
+                              friend.user!.fullName.text
+                                  .textStyle(
+                                    theme.textTheme.titleSmall!.copyWith(
+                                      color: theme.colorScheme.onPrimary
+                                          .withOpacity(1),
+                                    ),
+                                  )
+                                  .make(),
+                            ],
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                ),
+              ),
+              SizedBox(height: 16),
               "Recommend friends"
                   .tr
                   .text
@@ -52,13 +142,15 @@ class CreateGroupContent extends GetView<MessageController> {
                   final friend = controller.user.value.friends![index];
                   return ListTile(
                     onTap: () {
-                      controller.selectedFriends.add(friend.user!.userId!);
+                      controller.onPressedRemoveFriend(friend);
                     },
                     leading: CustomImageView(
                       imagePath: friend.user?.avatar?.imageUrl ??
                           AppValues.defaultAvatar,
                       height: 47.h,
                       width: 47.h,
+                      radius: BorderRadius.circular(100),
+                      fit: BoxFit.cover,
                     ),
                     title: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -75,15 +167,14 @@ class CreateGroupContent extends GetView<MessageController> {
                       ],
                     ),
                     trailing: Obx(
-                      () => controller.selectedFriends
-                              .contains(friend.user!.userId)
+                      () => controller.selectedFriends.contains(friend)
                           ? CustomImageView(
-                              imagePath: ImageConstant.svgCircle,
+                              imagePath: ImageConstant.svgCheckCircle,
                               height: 24.h,
                               width: 24.h,
                             )
                           : CustomImageView(
-                              imagePath: ImageConstant.svgCheckCircle,
+                              imagePath: ImageConstant.svgCircle,
                               height: 24.h,
                               width: 24.h,
                             ),

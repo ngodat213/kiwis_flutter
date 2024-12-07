@@ -1,5 +1,4 @@
 import 'package:kiwis_flutter/core/constants/constants.dart';
-import 'package:kiwis_flutter/models/message.model.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class ManagerSocket {
