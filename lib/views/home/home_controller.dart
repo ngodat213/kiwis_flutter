@@ -282,4 +282,8 @@ class HomeController extends BaseController {
       ).show(context);
     }
   }
+
+  void onPressedMyPlan() {
+    Get.toNamed(Routes.PLAN);
+  }
 }

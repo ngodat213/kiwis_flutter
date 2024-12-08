@@ -3,8 +3,11 @@ import 'dart:async';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:kiwis_flutter/core/constants/constants.dart';
 import 'package:kiwis_flutter/my_app.dart';
+import 'package:kiwis_flutter/services/geolocator.service.dart';
+import 'package:kiwis_flutter/services/map.service.dart';
 import 'package:kiwis_flutter/services/services.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import 'firebase_options.dart';
@@ -24,6 +27,9 @@ void main() async {
         assetLoader: const AssetLoaderRootBundleJson('assets/locales/'),
       );
       await LocalStorageService.getPrefs();
+
+      await Get.putAsync(() => GeolocatorService().init());
+      await Get.putAsync(() => MapService().init());
 
       // Run app!
       runApp(

@@ -36,7 +36,12 @@ dependencies:
   intl: ^0.18.1
 
   # Google
-  google_maps_flutter: ^2.2.3
+  google_maps_flutter: ^2.10.0
+  geolocator: ^13.0.2
+  vietmap_flutter_gl: ^3.1.1
+  vietmap_flutter_plugin: ^0.3.0
+  location: ^6.0.2
+
   google_fonts: 5.1.0
 
   # Firebase
@@ -79,6 +84,8 @@ dependencies:
   animated_snack_bar: ^0.4.0
   image: ^4.3.0
   scrollable_positioned_list: ^0.3.8
+  cloud_firestore: ^5.5.1
+ 
 
 dependency_overrides:
   flutter_svg: 1.1.6

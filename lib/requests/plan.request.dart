@@ -2,21 +2,35 @@ import 'package:kiwis_flutter/core/base/base.api.dart';
 import 'package:kiwis_flutter/core/constants/constants.dart';
 import 'package:kiwis_flutter/models/api.response.dart';
 
-class TripRequest {
+class PlanRequest {
   final BaseAPI _baseAPI = BaseAPI();
 
   Future<ApiResponse> getPlanRequest() async {
     var response = await _baseAPI.fetchData(
-      AppAPI.planSetComplete,
+      AppAPI.basePlan,
       includeHeaders: true,
     );
     return ApiResponse.fromResponse(response.data);
   }
 
-  Future<ApiResponse> createPlan() async {
+  Future<ApiResponse> createPlan(
+    String title,
+    String description,
+    String budget,
+    DateTime startDay,
+    DateTime endDay,
+  ) async {
     var response = await _baseAPI.fetchData(
       AppAPI.basePlan,
+      method: ApiMethod.POST,
       includeHeaders: true,
+      body: {
+        "name": title,
+        "description": description,
+        "totalCost": int.parse(budget),
+        "startDate": startDay.toIso8601String(),
+        "endDate": endDay.toIso8601String(),
+      },
     );
     return ApiResponse.fromResponse(response.data);
   }

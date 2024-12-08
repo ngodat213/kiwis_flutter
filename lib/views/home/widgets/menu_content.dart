@@ -64,9 +64,12 @@ class MenuContent extends BaseView<HomeController> {
           SizedBox(
             width: double.maxFinite,
             child: _buildAboutSectionRow(
-              inboxOne: ImageConstant.svgPrivacy,
-              aboutOne: "msg_privacy_and_term".tr,
+              inboxOne: ImageConstant.svgCalander,
+              aboutOne: "My plan".tr,
               applicationvers: "msg_change_password".tr,
+              onTap: () {
+                controller.onPressedMyPlan();
+              },
             ),
           ),
           SizedBox(
@@ -75,6 +78,16 @@ class MenuContent extends BaseView<HomeController> {
               inboxOne: ImageConstant.svgPrivacy,
               aboutOne: "msg_privacy_and_term".tr,
               applicationvers: "msg_change_password".tr,
+              onTap: () {},
+            ),
+          ),
+          SizedBox(
+            width: double.maxFinite,
+            child: _buildAboutSectionRow(
+              inboxOne: ImageConstant.svgPrivacy,
+              aboutOne: "msg_privacy_and_term".tr,
+              applicationvers: "msg_change_password".tr,
+              onTap: () {},
             ),
           ),
           SizedBox(
@@ -83,6 +96,7 @@ class MenuContent extends BaseView<HomeController> {
               inboxOne: ImageConstant.svgInbox,
               aboutOne: "lbl_about".tr,
               applicationvers: "msg_application_version".tr,
+              onTap: () {},
             ),
           ),
           SizedBox(height: 62.h),
@@ -404,68 +418,55 @@ class MenuContent extends BaseView<HomeController> {
   }
 
   /// Common widget
+  /// Common widget
   Widget _buildAboutSectionRow({
     required String inboxOne,
     required String aboutOne,
     required String applicationvers,
+    required Function() onTap,
   }) {
-    return Container(
-      padding: EdgeInsets.only(
-        top: 16.h,
-        bottom: 14.h,
-      ),
-      decoration: BoxDecoration(
-        border: Border(
-          bottom: BorderSide(
-            color: theme.colorScheme.onPrimary.withOpacity(0.05),
-            width: 1.h,
-          ),
-        ),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Align(
-            alignment: Alignment.center,
-            child: Container(
-              height: 48.h,
-              width: 48.h,
-              decoration: BoxDecoration(
-                color: theme.colorScheme.onPrimary,
-                borderRadius: BorderRadiusStyle.roundedBorder24,
-              ),
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  CustomImageView(
-                    imagePath: inboxOne,
-                    height: 24.h,
-                    width: 26.h,
-                  ),
-                ],
-              ),
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border(
+            bottom: BorderSide(
+              color: theme.colorScheme.onPrimary.withOpacity(0.05),
+              width: 1.h,
             ),
           ),
-          SizedBox(width: 16.h),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+        ),
+        child: ListTile(
+          contentPadding: EdgeInsets.symmetric(horizontal: 0),
+          title: Text(
+            aboutOne,
+            style: theme.textTheme.titleSmall!
+                .copyWith(color: theme.colorScheme.onPrimary.withOpacity(1)),
+          ),
+          subtitle: Text(
+            applicationvers,
+            style: theme.textTheme.bodySmall!
+                .copyWith(color: theme.colorScheme.onPrimary.withOpacity(0.5)),
+          ),
+          leading: Container(
+            height: 48.h,
+            width: 48.h,
+            decoration: BoxDecoration(
+              color: theme.colorScheme.onPrimary,
+              borderRadius: BorderRadiusStyle.roundedBorder24,
+            ),
+            child: Stack(
+              alignment: Alignment.center,
               children: [
-                Text(
-                  aboutOne,
-                  style: theme.textTheme.titleSmall!.copyWith(
-                      color: theme.colorScheme.onPrimary.withOpacity(1)),
+                CustomImageView(
+                  imagePath: inboxOne,
+                  height: 24.h,
+                  width: 26.h,
                 ),
-                SizedBox(height: 2.h),
-                Text(
-                  applicationvers,
-                  style: theme.textTheme.bodySmall!.copyWith(
-                      color: theme.colorScheme.onPrimary.withOpacity(0.5)),
-                )
               ],
             ),
           ),
-        ],
+        ),
       ),
     );
   }

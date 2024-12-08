@@ -35,7 +35,7 @@ class EntriesView extends BaseView<ExpenseController> {
           ),
           actions: [
             AppbarTrailingIconbutton(
-              imagePath: ImageConstant.imgPlus,
+              imagePath: ImageConstant.svgPlus,
               margin: EdgeInsets.only(right: 8.h),
             ),
           ],

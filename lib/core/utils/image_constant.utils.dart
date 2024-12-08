@@ -101,7 +101,7 @@ class ImageConstant {
 
   static const imgMaster = '$imagePath/img_master.svg';
 
-  static const imgPlus = '$imagePath/img_plus.svg';
+  static String svgPlus = '$svgPath/plus.svg';
 
   static const imgVisaLightBlue900 = '$imagePath/img_visa_light_blue_900.svg';
 

@@ -26,6 +26,8 @@ import '../../views/next_point/next_point_binding.dart';
 import '../../views/next_point/next_point_view.dart';
 import '../../views/notification_center/notification_center_binding.dart';
 import '../../views/notification_center/notification_center_view.dart';
+import '../../views/plan/plan_binding.dart';
+import '../../views/plan/plan_view.dart';
 import '../../views/saving_expense/saving_expense_binding.dart';
 import '../../views/saving_expense/saving_expense_view.dart';
 import '../../views/search_post/search_post_binding.dart';
@@ -134,6 +136,11 @@ class AppPages {
       name: _Paths.FORGOT_PASSWORD,
       page: () => ForgotPasswordView(),
       binding: ForgotPasswordBinding(),
+    ),
+    GetPage(
+      name: _Paths.PLAN,
+      page: () => PlanView(),
+      binding: PlanBinding(),
     ),
   ];
 }

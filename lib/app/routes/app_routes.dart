@@ -30,6 +30,7 @@ abstract class Routes {
   static const SPLASH = _Paths.SPLASH;
   static const SAVING_EXPENSE = _Paths.SAVING_EXPENSE;
   static const FORGOT_PASSWORD = _Paths.FORGOT_PASSWORD;
+  static const PLAN = _Paths.PLAN;
 }
 
 abstract class _Paths {
@@ -61,4 +62,5 @@ abstract class _Paths {
   static const SPLASH = '/splash';
   static const SAVING_EXPENSE = '/saving-expense';
   static const FORGOT_PASSWORD = '/forgot-password';
+  static const PLAN = '/plan';
 }
