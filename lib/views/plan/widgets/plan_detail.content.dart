@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:kiwis_flutter/core/constants/app_export.dart';
 import 'package:kiwis_flutter/views/plan/plan_controller.dart';
+import 'package:kiwis_flutter/views/plan/widgets/location.card.dart';
 import 'package:kiwis_flutter/widgets/base_appbar.dart';
 import 'package:kiwis_flutter/widgets/custom_elevated_button.dart';
-import 'package:kiwis_flutter/widgets/custom_text_form_field.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class PlanDetailContent extends GetView<PlanController> {
@@ -22,11 +23,15 @@ class PlanDetailContent extends GetView<PlanController> {
               .textStyle(theme.textTheme.titleSmall)
               .bold
               .make()
-              .onTap(() {
-            controller.createPlan(context);
-          }),
+              .onTap(() => controller.updateAllPlanLocation()),
         ],
       ),
+      floatingActionButton: CustomElevatedButton(
+        width: Get.width * 0.9,
+        text: "Start now",
+        onPressed: () => controller.onPressedChooseLocation(context),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: SizedBox(
         width: double.maxFinite,
         child: Container(
@@ -54,57 +59,130 @@ class PlanDetailContent extends GetView<PlanController> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        "Title"
-                            .tr
-                            .text
-                            .bold
-                            .textStyle(theme.textTheme.titleLarge)
-                            .make()
-                            .pOnly(bottom: 8),
-                        CustomTextFormField(
-                          contentPadding: EdgeInsets.symmetric(
+                        Container(
+                          width: Get.width,
+                          padding: EdgeInsets.symmetric(
                               horizontal: 23.h, vertical: 23.h),
-                          controller: controller.titleTEC,
-                          hintText: controller.currentPlan.value!.name,
+                          decoration: BoxDecoration(
+                            color: theme.colorScheme.onPrimary,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: VStack([
+                            HStack([
+                              controller.currentPlan.value!.name!.text.bold
+                                  .textStyle(theme.textTheme.titleLarge)
+                                  .make(),
+                              Spacer(),
+                              (controller.currentPlan.value!.totalCost!
+                                          .toString() +
+                                      ' VNĐ')
+                                  .text
+                                  .bold
+                                  .textStyle(theme.textTheme.titleSmall)
+                                  .make(),
+                            ]),
+                            // controller.currentPlan.value!.description!.text.textStyle(theme.textTheme.bodySmall).make(),
+                            controller.currentPlan.value!.planLocations!.isEmpty
+                                ? "No location"
+                                    .tr
+                                    .text
+                                    .textStyle(theme.textTheme.bodySmall)
+                                    .make()
+                                : '${controller.currentPlan.value!.planLocations!.length} locations'
+                                    .tr
+                                    .text
+                                    .textStyle(theme.textTheme.bodySmall)
+                                    .make(),
+                            SizedBox(height: 10),
+
+                            SizedBox(height: 32),
+                            HStack([
+                              '${DateFormat('dd/MM/yyyy').format(controller.currentPlan.value!.startDate ?? DateTime.now())} - ${DateFormat('dd/MM/yyyy').format(controller.currentPlan.value!.endDate ?? DateTime.now())}'
+                                  .text
+                                  .textStyle(theme.textTheme.bodySmall)
+                                  .make(),
+                              Spacer(),
+                              'Edit plan'
+                                  .tr
+                                  .text
+                                  .textStyle(theme.textTheme.titleSmall)
+                                  .make()
+                                  .onTap(() {
+                                controller.onTapEditPlan(context);
+                              }),
+                            ]),
+                          ]),
                         ),
                         SizedBox(height: 10),
-                        "Description"
-                            .tr
-                            .text
-                            .bold
-                            .textStyle(theme.textTheme.titleLarge)
-                            .make()
-                            .pOnly(bottom: 8),
-                        CustomTextFormField(
-                          contentPadding: EdgeInsets.symmetric(
-                              horizontal: 23.h, vertical: 23.h),
-                          controller: controller.descriptionTEC,
-                          hintText: "Description",
-                        ),
+                        HStack([
+                          'Locations'
+                              .tr
+                              .text
+                              .textStyle(theme.textTheme.titleLarge)
+                              .bold
+                              .make(),
+                          Spacer(),
+                          TextButton(
+                            onPressed: () {
+                              controller.onPressedChooseLocation(context);
+                            },
+                            child: 'Add location'
+                                .tr
+                                .text
+                                .textStyle(theme.textTheme.titleSmall)
+                                .make(),
+                          ),
+                        ]),
                         SizedBox(height: 10),
-                        "Budget"
-                            .tr
-                            .text
-                            .bold
-                            .textStyle(theme.textTheme.titleLarge)
-                            .make()
-                            .pOnly(bottom: 8),
-                        CustomTextFormField(
-                          contentPadding: EdgeInsets.symmetric(
-                              horizontal: 23.h, vertical: 23.h),
-                          controller: controller.budgetTEC,
-                          hintText: controller.currentPlan.value!.totalCost
-                              .toString(),
-                        ),
-                        SizedBox(height: 10),
-                        // ListView.builder(
-                        //   itemCount: controller
-                        //       .currentPlan.value!.planLocations!.length,
-                        //   itemBuilder: (context, index) {
-                        //     return;
-                        //   },
-                        // ),
-                        SizedBox(height: 150),
+                        Obx(() {
+                          if (controller
+                              .currentPlan.value!.planLocations!.isEmpty) {
+                            return Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  CustomImageView(
+                                    imagePath: ImageConstant.imgNoData,
+                                    width: Get.width * 0.5,
+                                    height: Get.width * 0.5,
+                                  ),
+                                  "No location"
+                                      .tr
+                                      .text
+                                      .bold
+                                      .textStyle(theme.textTheme.titleLarge)
+                                      .make(),
+                                ],
+                              ),
+                            );
+                          }
+                          return Expanded(
+                            child: ListView.builder(
+                              itemCount: controller
+                                  .currentPlan.value!.planLocations!.length,
+                              itemBuilder: (context, index) {
+                                return LocationCard(
+                                  index: index,
+                                  isLast: index ==
+                                      controller.currentPlan.value!
+                                              .planLocations!.length -
+                                          1,
+                                  name: controller.currentPlan.value!
+                                      .planLocations![index].name!,
+                                  estimatedCost: controller.currentPlan.value!
+                                      .planLocations![index].estimatedCost
+                                      .toString(),
+                                  estimatedTime: controller.currentPlan.value!
+                                      .planLocations![index].estimatedTime
+                                      .toString(),
+                                  address: controller.currentPlan.value!
+                                      .planLocations![index].address!,
+                                ).marginOnly(bottom: 10);
+                              },
+                            ),
+                          );
+                        }),
                       ],
                     ),
                   ),

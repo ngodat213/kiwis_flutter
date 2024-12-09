@@ -50,6 +50,8 @@ class CustomTextFormField extends StatelessWidget {
       this.fillColor,
       this.filled = true,
       this.labelText,
+      this.labelStyle,
+      this.onChanged,
       this.validator})
       : super(
           key: key,
@@ -109,6 +111,10 @@ class CustomTextFormField extends StatelessWidget {
 
   final String? labelText;
 
+  final TextStyle? labelStyle;
+
+  final Function(String)? onChanged;
+
   @override
   Widget build(BuildContext context) {
     return alignment != null
@@ -134,6 +140,7 @@ class CustomTextFormField extends StatelessWidget {
               FocusManager.instance.primaryFocus?.unfocus();
             }
           },
+          onChanged: onChanged,
           autofocus: autofocus!,
           style: textStyle ?? CustomTextStyles.titleSmallGoogleSansMediumMedium,
           obscureText: obscureText!,
@@ -151,6 +158,7 @@ class CustomTextFormField extends StatelessWidget {
   InputDecoration get decoration => InputDecoration(
         hintText: hintText ?? "",
         labelText: labelText,
+        labelStyle: labelStyle ?? theme.textTheme.bodySmall,
         hintStyle: hintStyle ?? theme.textTheme.bodySmall,
         prefixIcon: prefix,
         prefixIconConstraints: prefixConstraints,

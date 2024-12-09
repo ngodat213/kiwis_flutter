@@ -4,6 +4,8 @@ class ImageConstant {
   static const imagePath = 'assets/images';
   static const svgPath = 'assets/svgs';
 
+  static const imgNoData = '$imagePath/empty2.png';
+
 // sign_up images
   static const imgUser24x24 = '$imagePath/img_user_24x24.svg';
 

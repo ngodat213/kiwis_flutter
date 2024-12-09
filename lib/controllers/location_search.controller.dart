@@ -75,6 +75,14 @@ class LocationSearchController extends GetxController {
     } catch (e) {
       print('Lỗi khi tìm kiếm địa điểm: $e');
       searchResults.clear();
+      Get.snackbar(
+        'Lỗi',
+        'Không thể tìm kiếm địa điểm',
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+        snackPosition: SnackPosition.BOTTOM,
+        margin: EdgeInsets.all(10),
+      );
     } finally {
       isSearching.value = false;
     }
@@ -122,9 +130,35 @@ class LocationSearchController extends GetxController {
         // Xóa kết quả tìm kiếm
         searchResults.clear();
         currentQuery.value = '';
+
+        Get.snackbar(
+          'Thành công',
+          'Đã chọn địa điểm',
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+          snackPosition: SnackPosition.BOTTOM,
+          margin: EdgeInsets.all(10),
+        );
+      } else {
+        Get.snackbar(
+          'Lỗi',
+          'Không thể lấy tọa độ địa điểm',
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+          snackPosition: SnackPosition.BOTTOM,
+          margin: EdgeInsets.all(10),
+        );
       }
     } catch (e) {
-      print('Lỗi khi chọn địa đi��m: $e');
+      print('Lỗi khi chọn địa điểm: $e');
+      Get.snackbar(
+        'Lỗi',
+        'Không thể chọn địa điểm',
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+        snackPosition: SnackPosition.BOTTOM,
+        margin: EdgeInsets.all(10),
+      );
     }
   }
 }

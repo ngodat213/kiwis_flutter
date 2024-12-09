@@ -3,7 +3,10 @@ import 'dart:async';
 import 'package:kiwis_flutter/core/constants/app.button_style.dart';
 import 'package:kiwis_flutter/core/constants/app_export.dart';
 import 'package:kiwis_flutter/views/plan/plan_controller.dart';
+import 'package:kiwis_flutter/views/plan/widgets/addlocation.content.dart';
+import 'package:kiwis_flutter/widgets/base_appbar.dart';
 import 'package:kiwis_flutter/widgets/custom_elevated_button.dart';
+import 'package:kiwis_flutter/widgets/custom_text_form_field.dart';
 import 'package:vietmap_flutter_gl/vietmap_flutter_gl.dart' as vietMapGl;
 import 'package:flutter/material.dart';
 import '../../../services/map.service.dart';
@@ -20,6 +23,28 @@ class ChooseLocationContent extends GetView<PlanController> {
     final mapService = MapService.to;
 
     return Scaffold(
+      appBar: baseAppBar(
+        context: context,
+        title: "".tr,
+        actions: [
+          CustomTextFormField(
+            width: Get.width * 0.7,
+            hintText: 'Tìm kiếm địa điểm...',
+            prefix: Icon(Icons.search),
+            contentPadding: EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 12,
+            ),
+            onChanged: (value) {
+              if (value.length >= 3) {
+                LocationSearchController.to.searchLocation(value);
+              } else {
+                LocationSearchController.to.searchResults.clear();
+              }
+            },
+          ),
+        ],
+      ),
       body: Stack(
         children: [
           // Map View
@@ -61,45 +86,11 @@ class ChooseLocationContent extends GetView<PlanController> {
 
           // Search Bar và Results
           Positioned(
-            top: 40,
+            top: 0,
             left: 60,
             right: 16,
             child: Column(
               children: [
-                // Search Bar
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(8),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
-                        blurRadius: 10,
-                        offset: Offset(0, 3),
-                      ),
-                    ],
-                  ),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      hintText: 'Tìm kiếm địa điểm...',
-                      prefixIcon: Icon(Icons.search),
-                      border: InputBorder.none,
-                      contentPadding: EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 12,
-                      ),
-                    ),
-                    onChanged: (value) {
-                      if (value.length >= 3) {
-                        LocationSearchController.to.searchLocation(value);
-                      } else {
-                        LocationSearchController.to.searchResults.clear();
-                      }
-                    },
-                  ),
-                ),
-
-                // Search Results
                 Obx(() {
                   final results = LocationSearchController.to.searchResults;
                   if (results.isEmpty) return SizedBox.shrink();
@@ -163,8 +154,7 @@ class ChooseLocationContent extends GetView<PlanController> {
                   children: [
                     Visibility(
                       visible: controller.currentLocation.value != null,
-                      child: controller.currentLocation.value!.name
-                          .toString()
+                      child: (controller.currentLocation.value?.name ?? "")
                           .text
                           .black
                           .textStyle(theme.textTheme.titleMedium)
@@ -173,8 +163,7 @@ class ChooseLocationContent extends GetView<PlanController> {
                     SizedBox(height: 10),
                     Visibility(
                       visible: controller.currentLocation.value != null,
-                      child: controller.currentLocation.value!.address
-                          .toString()
+                      child: (controller.currentLocation.value?.address ?? "")
                           .text
                           .black
                           .center
@@ -184,13 +173,8 @@ class ChooseLocationContent extends GetView<PlanController> {
                     SizedBox(height: 20),
                     CustomElevatedButton(
                       buttonStyle: CustomButtonStyles.fillGreen,
-                      onPressed: hasLocation
-                          ? () {
-                              // Trả về vị trí đã chọn
-                              Get.back(
-                                  result: mapService.selectedLocation.value);
-                            }
-                          : null,
+                      onPressed: () =>
+                          controller.onPressChooseLocation(context),
                       text: "Choose location".tr,
                     ),
                   ],

@@ -66,7 +66,7 @@ class PlanModel {
     createdBy = json['createdBy'] != null
         ? FriendDataModel.fromJson(json['createdBy'])
         : null;
-    group = json['group'];
+    group = json['group'] != null ? GroupModel.fromJson(json['group']) : null;
     thumbnail = json['thumbnail'];
     // if (json['realtimeImages'] != null) {
     //   realtimeImages = <Null>[];
@@ -105,7 +105,7 @@ class PlanModel {
     if (this.createdBy != null) {
       data['createdBy'] = this.createdBy!.toJson();
     }
-    data['group'] = this.group;
+    data['group'] = this.group?.toJson();
     data['thumbnail'] = this.thumbnail;
     // if (this.realtimeImages != null) {
     //   data['realtimeImages'] =

@@ -91,15 +91,9 @@ class BaseAPI {
 
       Options options = Options();
       options.method = apiMethod[method];
-      options.headers = includeHeaders
-          ? headers != null
-              ? headers
-              : await getHeaders()
-          : null;
+      options.headers = await getHeaders();
       response = await _dio.request(domain + url,
-          data: body,
-          queryParameters: params,
-          options: options.copyWith(extra: cacheOptions.toExtra()));
+          data: body, queryParameters: params, options: options);
     } on DioException catch (e) {
       /// If error is DioError, return [ApiStatus.FAILED]
       printLogError('Error [${apiMethod[method]} API]: $e');

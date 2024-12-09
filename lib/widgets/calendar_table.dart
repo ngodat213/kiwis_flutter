@@ -9,13 +9,16 @@ class CustomTableCalendar extends StatelessWidget {
   final Rx<DateTime?> focusedDay;
   final Rx<DateTime?> startDay;
   final Rx<DateTime?> endDay;
-
+  final DateTime? startSelectedDay;
+  final DateTime? endSelectedDay;
   CustomTableCalendar({
     required this.firstDay,
     required this.lastDay,
     required this.focusedDay,
     required this.startDay,
     required this.endDay,
+    this.startSelectedDay,
+    this.endSelectedDay,
   });
 
   @override
@@ -27,7 +30,10 @@ class CustomTableCalendar extends StatelessWidget {
         focusedDay: focusedDay.value ?? DateTime.now(),
         selectedDayPredicate: (day) {
           // Đánh dấu các ngày được chọn
-          if (endDay.value != null) {
+          if (startSelectedDay != null && endSelectedDay != null) {
+            return day.isAfter(startSelectedDay!.subtract(Duration(days: 1))) &&
+                day.isBefore(endSelectedDay!.add(Duration(days: 1)));
+          } else if (endDay.value != null) {
             return day.isAfter(startDay.value!.subtract(Duration(days: 1))) &&
                 day.isBefore(endDay.value!.add(Duration(days: 1)));
           }

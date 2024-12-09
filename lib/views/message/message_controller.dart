@@ -19,6 +19,8 @@ import 'package:kiwis_flutter/views/message/widgets/create_group.content.dart';
 import 'package:kiwis_flutter/views/message/widgets/group_name_content.dart';
 import 'package:kiwis_flutter/views/message/widgets/members.content.dart';
 import 'package:kiwis_flutter/views/message/widgets/setting_chat_room_content.dart';
+import 'package:kiwis_flutter/views/plan/plan_view.dart';
+import 'package:kiwis_flutter/views/plan/widgets/plan_create.content.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class MessageController extends BaseController {
@@ -149,6 +151,13 @@ class MessageController extends BaseController {
       editGroupAvatar.value = File(image.path);
       isOnchangeAvatar.value = true;
     }
+  }
+
+  void onPressedCreatePlan() {
+    Get.toNamed(
+      Routes.PLAN,
+      arguments: groups.value[selectedIndex.value].groupId!,
+    );
   }
 
   Future<void> handleChangeGroupName(BuildContext context) async {

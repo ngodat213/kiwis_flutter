@@ -26,6 +26,8 @@ import '../../views/next_point/next_point_binding.dart';
 import '../../views/next_point/next_point_view.dart';
 import '../../views/notification_center/notification_center_binding.dart';
 import '../../views/notification_center/notification_center_view.dart';
+import '../../views/on_plan/on_plan_binding.dart';
+import '../../views/on_plan/on_plan_view.dart';
 import '../../views/plan/plan_binding.dart';
 import '../../views/plan/plan_view.dart';
 import '../../views/saving_expense/saving_expense_binding.dart';
@@ -141,6 +143,11 @@ class AppPages {
       name: _Paths.PLAN,
       page: () => PlanView(),
       binding: PlanBinding(),
+    ),
+    GetPage(
+      name: _Paths.ON_PLAN,
+      page: () => const OnPlanView(),
+      binding: OnPlanBinding(),
     ),
   ];
 }

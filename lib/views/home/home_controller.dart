@@ -218,12 +218,9 @@ class HomeController extends BaseController {
 
   Future<void> onPressedLogout(BuildContext context) async {
     try {
-      final reponse = await _authRequest.revokeFirebaseTokenRequest();
-      if (reponse.allGood) {
-        await _clearLocalStorage();
-
-        Get.offAndToNamed(Routes.SIGN_IN);
-      }
+      await _authRequest.revokeFirebaseTokenRequest();
+      await _clearLocalStorage();
+      Get.offAndToNamed(Routes.SIGN_IN);
     } catch (err) {
       print(err);
       Get.offAndToNamed(Routes.SIGN_IN);

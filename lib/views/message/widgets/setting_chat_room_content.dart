@@ -42,18 +42,23 @@ class SettingChatRoomContent extends GetView<MessageController> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Column(
-                      children: [
-                        AppbarTrailingIconbutton(
-                          imagePath: ImageConstant.svgCalander,
-                          margin: EdgeInsets.only(right: 8.h),
+                    GestureDetector(
+                      onTap: () => controller.onPressedCreatePlan(),
+                      child: Container(
+                        child: Column(
+                          children: [
+                            AppbarTrailingIconbutton(
+                              imagePath: ImageConstant.svgCalander,
+                              margin: EdgeInsets.only(right: 8.h),
+                            ),
+                            "Create plan"
+                                .tr
+                                .text
+                                .textStyle(theme.textTheme.labelMedium)
+                                .make(),
+                          ],
                         ),
-                        "Create plan"
-                            .tr
-                            .text
-                            .textStyle(theme.textTheme.labelMedium)
-                            .make(),
-                      ],
+                      ),
                     ),
                     SizedBox(width: 16.h),
                     Column(

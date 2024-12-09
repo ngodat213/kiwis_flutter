@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kiwis_flutter/core/constants/app_export.dart';
+import 'package:kiwis_flutter/models/plan.model.dart';
 import 'package:kiwis_flutter/views/plan/plan_controller.dart';
 import 'package:kiwis_flutter/widgets/base_appbar.dart';
 import 'package:kiwis_flutter/widgets/calendar_table.dart';
@@ -7,14 +8,20 @@ import 'package:kiwis_flutter/widgets/custom_text_form_field.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class PlanCreateContent extends GetView<PlanController> {
-  const PlanCreateContent({super.key});
+  const PlanCreateContent({
+    super.key,
+    this.isEdit = false,
+    this.plan,
+  });
+  final bool isEdit;
+  final PlanModel? plan;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: baseAppBar(
         context: context,
-        title: "Create plan".tr,
+        title: isEdit == true ? "Edit plan".tr : "Create plan".tr,
         actions: [
           "Save"
               .tr
@@ -23,7 +30,11 @@ class PlanCreateContent extends GetView<PlanController> {
               .bold
               .make()
               .onTap(() {
-            controller.createPlan(context);
+            if (isEdit) {
+              controller.editPlan(context);
+            } else {
+              controller.createPlan(context);
+            }
           }),
         ],
       ),
@@ -126,7 +137,7 @@ class PlanCreateContent extends GetView<PlanController> {
                           hintText: "Budget",
                           height: 64,
                           contentPadding: EdgeInsets.symmetric(
-                              horizontal: 23.h, vertical: 12.h),
+                              horizontal: 23.h, vertical: 23.h),
                           boxDecoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(18.h),
                           ),
