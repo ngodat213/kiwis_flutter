@@ -153,7 +153,7 @@ class ChatRoomContent extends BaseView<MessageController> {
 
                     return ChatBubble(
                       message: currentMessage,
-                      showAvatar: isGroupStart,
+                      showAvatar: isGroupStart || currentMessage.isComment(),
                       isGroup: controller.isGroupChat(),
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular((isGroupStart ? 8 : 8)),

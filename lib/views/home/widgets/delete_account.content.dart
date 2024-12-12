@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:kiwis_flutter/core/constants/app_export.dart';
 import 'package:kiwis_flutter/views/home/home_controller.dart';
 import 'package:kiwis_flutter/widgets/custom_elevated_button.dart';
-import 'package:kiwis_flutter/widgets/custom_text_form_field.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class DeleteAccountContent extends GetView<HomeController> {

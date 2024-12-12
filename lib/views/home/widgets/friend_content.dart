@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:iconly/iconly.dart';
 import 'package:kiwis_flutter/core/base/base.view.dart';
 import 'package:kiwis_flutter/core/constants/app_export.dart';
 import 'package:kiwis_flutter/views/home/home_controller.dart';

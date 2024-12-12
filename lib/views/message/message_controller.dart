@@ -221,9 +221,9 @@ class MessageController extends BaseController {
   void sendMessage() {
     if (messageTEC.text.isNotEmpty) {
       ManagerSocket.sendMessage(
-        user.value.userId!,
-        groups.value[currentGroupIndex.value].groupId!,
-        messageTEC.text,
+        senderId: user.value.userId!,
+        groupId: groups.value[currentGroupIndex.value].groupId!,
+        messageText: messageTEC.text,
       );
       messageTEC.clear();
     }

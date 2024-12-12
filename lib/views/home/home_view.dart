@@ -20,6 +20,8 @@ class HomeScreen extends BaseView<HomeController> {
         children: [
           Obx(() {
             return Swiper(
+              itemWidth: Get.width - 72.h,
+              itemHeight: Get.width - 72.h,
               itemBuilder: (BuildContext context, int index) {
                 if (index == 0) {
                   return CameraWidget();

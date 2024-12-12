@@ -54,12 +54,38 @@ class ManagerSocket {
     }
   }
 
+  static void sendPost({
+    required String postId,
+  }) {
+    socket?.emit(AppAPI.socketSendPost, {
+      'postId': postId,
+    });
+  }
+
+  static void sendComment({
+    required String senderId,
+    required String postId,
+    required String messageText,
+  }) {
+    socket?.emit(AppAPI.socketSendComment, {
+      'senderId': senderId,
+      'postId': postId,
+      'messageText': messageText,
+    });
+  }
+
   // Send a message to a group
-  static void sendMessage(String senderId, String groupId, String messageText) {
+  static void sendMessage({
+    required String senderId,
+    required String groupId,
+    required String messageText,
+    String? postId,
+  }) {
     socket?.emit(AppAPI.socketGroupMessage, {
       'senderId': senderId,
       'groupId': groupId,
       'messageText': messageText,
+      'postId': postId,
     });
     print('Group message sent: $messageText');
   }
@@ -67,6 +93,5 @@ class ManagerSocket {
   // Disconnect the socket
   static void disconnect() {
     socket?.disconnect();
-    print('Socket disconnected');
   }
 }

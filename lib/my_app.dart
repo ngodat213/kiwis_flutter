@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
       locale: Get.deviceLocale,
       getPages: AppPages.routes,
       fallbackLocale: Locale('en', 'US'),
-      title: 'kiwis_flutter',
+      title: 'Kiwis',
       initialRoute: AppPages.INITIAL,
     );
   }

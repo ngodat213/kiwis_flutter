@@ -3,9 +3,12 @@ import 'dart:io';
 import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_confetti/flutter_confetti.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:kiwis_flutter/core/constants/app_export.dart';
 import 'package:kiwis_flutter/core/base/base.controller.dart';
+import 'package:kiwis_flutter/core/constants/constants.dart';
+import 'package:kiwis_flutter/core/manager/manager.socket.dart';
 import 'package:kiwis_flutter/models/post.model.dart';
 import 'package:kiwis_flutter/models/user.models.dart';
 import 'package:kiwis_flutter/requests/auth.request.dart';
@@ -29,6 +32,8 @@ class HomeController extends BaseController {
 
   // Home content variables
   late CameraController cameraController;
+  final ConfettiController confettiController = ConfettiController();
+  final TextEditingController commentTEC = TextEditingController();
   final TextEditingController captionTEC = TextEditingController();
   final TextEditingController firstNameTEC = TextEditingController();
   final TextEditingController lastNameTEC = TextEditingController();
@@ -39,6 +44,7 @@ class HomeController extends BaseController {
 
   final Rx<UserModel> user = UserModel().obs;
   final RxBool isFlashOn = false.obs;
+  final RxBool isRotate = false.obs;
   final RxBool onPost = false.obs;
   final RxBool isDeleteAccount = false.obs;
   final RxBool isOnchangeAvatar = false.obs;
@@ -49,12 +55,14 @@ class HomeController extends BaseController {
   final RxList<dynamic> friends = RxList<dynamic>([]);
   final RxList<PostModel> posts = RxList<PostModel>([]);
   List<CameraDescription> cameras = [];
+  List<String> emojis = ['😊', '😂', '❤️', '😍', '🤔', '🔥'];
 
   /// Handle
   @override
   void onInit() async {
     super.onInit();
     showLoading();
+    listenPost();
     await initializeCamera();
     await getPosts();
     user.value = AuthServices.currentUser!;
@@ -63,6 +71,14 @@ class HomeController extends BaseController {
 
   @override
   void onClose() {
+    commentTEC.dispose();
+    captionTEC.dispose();
+    firstNameTEC.dispose();
+    lastNameTEC.dispose();
+    currentPasswordTEC.dispose();
+    newPasswordTEC.dispose();
+    confirmPasswordTEC.dispose();
+    friendIdTEC.dispose();
     if (cameraController.value.isInitialized) {
       cameraController.dispose();
     }
@@ -70,8 +86,15 @@ class HomeController extends BaseController {
   }
 
   /// Home content
+  void listenPost() {
+    ManagerSocket.socket?.on(AppAPI.socketReceivePost, (data) {
+      final PostModel post = PostModel.fromJson(data);
+      posts.value.insert(0, post);
+      posts.refresh();
+    });
+  }
 
-  Future<void> onPressedPost(BuildContext context) async {
+  Future<void> handlePost(BuildContext context) async {
     try {
       if (imageXFile.value.path.isNotEmpty) {
         final response = await _uploadRealtimeRequest.uploadRealtimeRequest(
@@ -81,6 +104,14 @@ class HomeController extends BaseController {
         if (response.allGood) {
           captionTEC.clear();
           onPost.value = false;
+
+          final PostModel post = PostModel.fromJson(response.body);
+          posts.value.insert(0, post);
+          posts.refresh();
+
+          ManagerSocket.sendPost(
+            postId: post.realtimePostId!,
+          );
         } else {
           AnimatedSnackBar.material(
             response.error!,
@@ -133,7 +164,10 @@ class HomeController extends BaseController {
       }
 
       cameraController = CameraController(
-          cameras[selectedCameraIndex.value], ResolutionPreset.high);
+        cameras[selectedCameraIndex.value],
+        ResolutionPreset.high,
+        enableAudio: false,
+      );
 
       await cameraController.initialize();
       isCameraInitialized.value = true;
@@ -154,19 +188,12 @@ class HomeController extends BaseController {
   }
 
   void toggleFlash() async {
-    try {
-      isFlashOn.value = !isFlashOn.value;
-      await cameraController.setFlashMode(
-        isFlashOn.value ? FlashMode.auto : FlashMode.off,
-      );
-    } catch (e) {
-      print("Error toggling flash: $e");
-      isFlashOn.value = !isFlashOn.value; // Revert flash state if toggle fails
-    }
+    isFlashOn.value = !isFlashOn.value;
   }
 
   Future<void> toggleRotate() async {
     try {
+      isRotate.value = !isRotate.value;
       isCameraInitialized.value = false;
       selectedCameraIndex.value =
           (selectedCameraIndex.value + 1) % cameras.length;
@@ -187,10 +214,35 @@ class HomeController extends BaseController {
     }
   }
 
+  Future<void> sendComment(String postId) async {
+    if (commentTEC.text.isNotEmpty) {
+      ManagerSocket.sendComment(
+        senderId: user.value.userId!,
+        postId: postId,
+        messageText: commentTEC.text,
+      );
+      commentTEC.clear();
+    }
+  }
+
+  Future<void> sendEmoji(BuildContext context, String emoji) async {
+    Confetti.launch(
+      context,
+      options: ConfettiOptions(particleCount: 20),
+      particleBuilder: (index) => Emoji(emoji: emoji),
+    );
+  }
+
   Future<void> takePicture() async {
-    if (!isCameraInitialized.value) return null;
+    if (!isCameraInitialized.value) return;
 
     try {
+      // Bật flash trước khi chụp
+
+      if (isFlashOn.value) {
+        await cameraController.setFlashMode(FlashMode.torch);
+      }
+
       // Chụp ảnh và lưu vào file
       final XFile originalImage = await cameraController.takePicture();
       final File originalFile = File(originalImage.path);
@@ -203,11 +255,14 @@ class HomeController extends BaseController {
       }
 
       // Lật ảnh theo chiều ngang
-      final img.Image flippedImage = img.flipHorizontal(image);
+      img.Image? flippedImage;
+      if (isRotate.value) {
+        flippedImage = img.flipHorizontal(image);
+      }
 
       // Transform kích thước ảnh (ví dụ: 200x200)
       final img.Image resizedImage = img.copyResize(
-        flippedImage,
+        flippedImage ?? image,
         width: 200,
         height: 200,
       );
@@ -221,9 +276,12 @@ class HomeController extends BaseController {
       // Cập nhật giá trị imageXFile
       imageXFile.value = XFile(resizedFile.path);
       onPost.value = true;
+
+      // Tắt flash sau khi chụp
+      await cameraController.setFlashMode(FlashMode.off);
     } catch (e) {
       print("Error taking picture: $e");
-      return null;
+      return;
     }
   }
 

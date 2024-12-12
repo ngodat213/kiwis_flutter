@@ -5,6 +5,7 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:kiwis_flutter/core/constants/app_export.dart';
 import 'package:kiwis_flutter/views/home/home_controller.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 class CameraWidget extends GetView<HomeController> {
   const CameraWidget({super.key});
@@ -20,8 +21,9 @@ class CameraWidget extends GetView<HomeController> {
             Obx(() {
               if (controller.onPost.value) {
                 return Container(
+                  height: Get.width - 70.h,
                   width: Get.width - 70.h,
-                  child: Column(
+                  child: Stack(
                     children: [
                       Container(
                         width: Get.width - 70.h,
@@ -37,35 +39,39 @@ class CameraWidget extends GetView<HomeController> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 10.h),
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
-                        child: BackdropFilter(
-                          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                          child: Container(
-                            width: Get.width - 97.h,
-                            decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.2),
-                              borderRadius: BorderRadius.circular(20),
-                              border: Border.all(
-                                color: Colors.white.withOpacity(0.3),
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: BackdropFilter(
+                            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                            child: Container(
+                              width: Get.width - 97.h,
+                              decoration: BoxDecoration(
+                                color: Colors.white.withOpacity(0.2),
+                                borderRadius: BorderRadius.circular(20),
+                                border: Border.all(
+                                  color: Colors.white.withOpacity(0.3),
+                                ),
                               ),
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.only(left: 16.h),
-                              child: TextField(
-                                controller: controller.captionTEC,
-                                style: TextStyle(color: Colors.white),
-                                decoration: InputDecoration(
-                                  hintText: 'Enter text',
-                                  hintStyle: TextStyle(color: Colors.white54),
-                                  border: InputBorder.none,
+                              child: Padding(
+                                padding: EdgeInsets.only(left: 16.h),
+                                child: TextField(
+                                  controller: controller.captionTEC,
+                                  maxLines: 1,
+                                  maxLength: 30,
+                                  style: TextStyle(color: Colors.white),
+                                  decoration: InputDecoration(
+                                    hintText: 'Enter text',
+                                    hintStyle: TextStyle(color: Colors.white54),
+                                    border: InputBorder.none,
+                                  ),
                                 ),
                               ),
                             ),
                           ),
                         ),
-                      ),
+                      ).marginOnly(bottom: 16.h),
                     ],
                   ),
                 );
@@ -100,41 +106,48 @@ class CameraWidget extends GetView<HomeController> {
                 ? Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Container(
-                        width: 60.h,
-                        height: 60.h,
-                        decoration: BoxDecoration(
-                          color: Colors.red,
-                          borderRadius: BorderRadius.circular(100),
+                      GestureDetector(
+                        onTap: controller.closeOnPost,
+                        child: Container(
+                          width: 60.h,
+                          height: 60.h,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(100),
+                          ),
+                          child: Center(
+                            child: IconButton(
+                              icon: Icon(
+                                Icons.close,
+                                color: Colors.white,
+                                size: 30,
+                              ),
+                              onPressed: controller.closeOnPost,
+                            ),
+                          ),
                         ),
-                        child: Center(
-                          child: IconButton(
-                            icon: Icon(
-                              Icons.close,
+                      ),
+                      GestureDetector(
+                        onTap: () => controller.handlePost(context),
+                        child: Container(
+                          width: 80,
+                          height: 80,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(100),
+                            color:
+                                theme.colorScheme.onPrimary.withOpacity(0.05),
+                          ),
+                          child: Center(
+                            child: Icon(
+                              Icons.check,
                               color: Colors.white,
                               size: 30,
                             ),
-                            onPressed: controller.closeOnPost,
                           ),
                         ),
                       ),
                       Container(
                         width: 60.h,
                         height: 60.h,
-                        decoration: BoxDecoration(
-                          color: Colors.green,
-                          borderRadius: BorderRadius.circular(100),
-                        ),
-                        child: Center(
-                          child: IconButton(
-                            icon: Icon(
-                              Icons.check,
-                              color: Colors.white,
-                              size: 30,
-                            ),
-                            onPressed: () => controller.onPressedPost(context),
-                          ),
-                        ),
                       ),
                     ],
                   )
@@ -154,8 +167,8 @@ class CameraWidget extends GetView<HomeController> {
                       GestureDetector(
                         onTap: controller.takePicture,
                         child: Container(
-                          width: 70,
-                          height: 70,
+                          width: 80,
+                          height: 80,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             border: Border.all(

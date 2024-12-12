@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:iconly/iconly.dart';
 import 'package:kiwis_flutter/core/constants/app_export.dart';
 import 'package:kiwis_flutter/models/post.model.dart';
 import 'package:kiwis_flutter/views/home/home_controller.dart';
+import 'package:kiwis_flutter/widgets/custom_text_form_field.dart';
 
 class PostItem extends GetView<HomeController> {
   const PostItem({super.key, required this.post});
@@ -14,7 +16,7 @@ class PostItem extends GetView<HomeController> {
       duration: Duration(milliseconds: 300),
       child: Column(
         children: [
-          SizedBox(height: Get.height * 0.2),
+          SizedBox(height: Get.height * 0.18),
           Container(
             margin: EdgeInsets.symmetric(horizontal: 24.h),
             padding: EdgeInsets.symmetric(horizontal: 12.h, vertical: 16.h),
@@ -68,30 +70,9 @@ class PostItem extends GetView<HomeController> {
                               ),
                             ),
                           ),
-                          SizedBox(width: 8.h),
-                          GestureDetector(
-                            onTap: controller.detailPostOnPressed,
-                            child: Container(
-                              width: 40.h,
-                              height: 40.h,
-                              padding: EdgeInsets.all(8.h),
-                              decoration: BoxDecoration(
-                                color: Color(0x0DFFFFFF),
-                                borderRadius: BorderRadius.circular(100),
-                              ),
-                              child: CustomImageView(
-                                imagePath: ImageConstant.svgArrowRight,
-                                height: 40.h,
-                                width: 40.h,
-                                radius: BorderRadius.circular(
-                                  30.h,
-                                ),
-                              ),
-                            ),
-                          ),
                         ],
                       ),
-                    )
+                    ),
                   ],
                 ),
                 SizedBox(height: 24.h),
@@ -105,49 +86,41 @@ class PostItem extends GetView<HomeController> {
                       fit: BoxFit.cover,
                     ),
                     Positioned(
-                      bottom: 16.h,
-                      right: 16.h,
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 40.h,
-                            height: 40.h,
-                            padding: EdgeInsets.all(8.h),
-                            decoration: BoxDecoration(
-                              color: Colors.black38,
-                              borderRadius: BorderRadius.circular(100),
+                      bottom: 0,
+                      child: Visibility(
+                        visible:
+                            post.user?.userId != controller.user.value.userId,
+                        child: Container(
+                          width: Get.width - 94.h,
+                          height: 50.h,
+                          margin: EdgeInsets.symmetric(
+                              horizontal: 12.h, vertical: 12.h),
+                          decoration: BoxDecoration(
+                            color: Colors.black.withOpacity(0.5),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: CustomTextFormField(
+                            controller: controller.commentTEC,
+                            hintText: "Send a comment".tr,
+                            maxLines: 1,
+                            contentPadding: EdgeInsets.symmetric(
+                              horizontal: 12.h,
+                              vertical: 12.h,
                             ),
-                            child: CustomImageView(
-                              imagePath: ImageConstant.svgHeart,
-                              height: 40.h,
-                              width: 40.h,
-                              color: Colors.white,
-                              radius: BorderRadius.circular(
-                                30.h,
+                            suffix: GestureDetector(
+                              onTap: () {
+                                controller.sendComment(post.realtimePostId!);
+                              },
+                              child: Icon(
+                                IconlyBold.send,
+                                color: Colors.white,
+                                size: 20,
                               ),
                             ),
                           ),
-                          SizedBox(width: 8.h),
-                          Container(
-                            width: 40.h,
-                            height: 40.h,
-                            padding: EdgeInsets.all(8.h),
-                            decoration: BoxDecoration(
-                              color: Colors.black38,
-                              borderRadius: BorderRadius.circular(100),
-                            ),
-                            child: CustomImageView(
-                              imagePath: ImageConstant.svgComment,
-                              height: 40.h,
-                              width: 40.h,
-                              radius: BorderRadius.circular(
-                                30.h,
-                              ),
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
-                    ),
+                    )
                   ],
                 ),
                 SizedBox(height: 16.h),
@@ -160,12 +133,38 @@ class PostItem extends GetView<HomeController> {
                   ),
                 ),
                 SizedBox(height: 16.h),
+                Visibility(
+                  visible: post.user?.userId != controller.user.value.userId,
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          for (var emoji in controller.emojis)
+                            GestureDetector(
+                              onTap: () {
+                                controller.sendEmoji(context, emoji);
+                              },
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8.0),
+                                child: Text(
+                                  emoji,
+                                  style: TextStyle(
+                                      fontSize: 30), // Kích thước của emoji
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
         ],
       ),
     );
-    ;
   }
 }

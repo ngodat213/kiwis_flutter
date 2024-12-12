@@ -7,7 +7,6 @@ import 'package:kiwis_flutter/widgets/app_bar/app_bar_leadingiconbutton.dart';
 import 'package:kiwis_flutter/widgets/app_bar/app_bar_title.dart';
 import 'package:kiwis_flutter/widgets/app_bar/custom_app_bar.dart';
 import 'package:kiwis_flutter/widgets/custom_elevated_button.dart';
-import 'package:kiwis_flutter/widgets/custom_icon_button.dart';
 import 'selection_row.widget.dart';
 
 class MenuContent extends BaseView<HomeController> {

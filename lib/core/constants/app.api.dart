@@ -13,6 +13,9 @@ class AppAPI {
   static const String socketReceiveGroupMessage = 'receive_group_message';
   static const String socketDisconnect = 'disconnect';
   static const String socketConnect = 'connect';
+  static const String socketSendComment = 'send_comment';
+  static const String socketReceivePost = 'receive_post';
+  static const String socketSendPost = 'send_post';
 
   /// Auth
   static const String baseAuth = '${domainApi}auth';
