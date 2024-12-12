@@ -37,6 +37,13 @@ class GeolocatorService extends GetxService {
     super.onClose();
   }
 
+  Stream<Position> get positionStream => Geolocator.getPositionStream(
+        locationSettings: LocationSettings(
+          accuracy: LocationAccuracy.high,
+          distanceFilter: 5, // Cập nhật mỗi khi di chuyển 10 mét
+        ),
+      );
+
   // Kiểm tra và yêu cầu quyền truy cập vị trí
   Future<bool> _checkPermission() async {
     bool serviceEnabled;

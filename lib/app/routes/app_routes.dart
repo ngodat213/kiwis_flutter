@@ -31,7 +31,7 @@ abstract class Routes {
   static const SAVING_EXPENSE = _Paths.SAVING_EXPENSE;
   static const FORGOT_PASSWORD = _Paths.FORGOT_PASSWORD;
   static const PLAN = _Paths.PLAN;
-  static const ON_PLAN = _Paths.VIEWS + _Paths.ON_PLAN;
+  static const ON_PLAN = _Paths.ON_PLAN;
 }
 
 abstract class _Paths {

@@ -152,7 +152,7 @@ class BaseAPI {
           : null;
       FormData formData = FormData.fromMap({
         'file': MultipartFile.fromBytes(file, filename: 'upload.png'),
-        ...body,
+        if (body != null && body.isNotEmpty) ...body,
       });
       response = await _dio.request(
         domain + url,

@@ -3,8 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:kiwis_flutter/core/constants/app_export.dart';
 import 'package:kiwis_flutter/core/base/base.controller.dart';
-import 'package:kiwis_flutter/core/constants/constants.dart';
 import 'package:kiwis_flutter/enums/page_state.enum.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 abstract class BaseView<Controller extends BaseController>
     extends GetView<Controller> {
@@ -89,7 +89,12 @@ abstract class BaseView<Controller extends BaseController>
               ),
               SingleChildScrollView(
                 child: controller.pageState == PageState.LOADING
-                    ? Center(child: const CircularProgressIndicator())
+                    ? Center(
+                        child: LoadingAnimationWidget.threeRotatingDots(
+                          color: appTheme.primary,
+                          size: 200,
+                        ),
+                      )
                     : body(context),
               ),
             ],

@@ -38,15 +38,17 @@ class MembersContent extends GetView<MessageController> {
                 ListView.builder(
                   itemCount: controller
                           .groups
-                          .value[controller.selectedIndex.value]
+                          .value[controller.currentGroupIndex.value]
                           .members
                           ?.length ??
                       0,
                   physics: AlwaysScrollableScrollPhysics(),
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
-                    final member = controller.groups
-                        .value[controller.selectedIndex.value].members![index];
+                    final member = controller
+                        .groups
+                        .value[controller.currentGroupIndex.value]
+                        .members![index];
                     return ListTile(
                       leading: CustomImageView(
                         imagePath: member.user?.avatar?.imageUrl ??

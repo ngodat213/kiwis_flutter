@@ -4,8 +4,8 @@ class AppAPI {
   AppAPI._();
   // static const String domain = 'http://172.20.10.4:1111/api/'; // hostpost
   // static const String domain = 'http://10.100.3.149:1111/api/'; // CMCC
-  static const String domainApi = 'http://192.168.0.105:1111/api/'; // home
-  static const String domainSocket = 'http://192.168.0.105:2222'; // home
+  static const String domainApi = 'http://192.168.0.103:1111/api/'; // home
+  static const String domainSocket = 'http://192.168.0.103:2222'; // home
 
   /// Socket
   static const String socketRegister = 'register';
@@ -26,7 +26,6 @@ class AppAPI {
   static const String refreshToken = '${baseAuth}/refresh-token';
   static const String verifyEmail = '${baseAuth}/verify-email';
   static const String verifyCode = '${baseAuth}/verify-code';
-  static const String changeAvatar = '${baseAuth}/change-avatar';
   static const String updatePassword = '${baseAuth}/update-password';
   static const String updateProfile = '${baseAuth}/update-profile';
   static const String deleteAccount = '${baseAuth}/delete-account';
@@ -36,6 +35,8 @@ class AppAPI {
   static const String baseUser = '${domainApi}user';
   static const String userCurrent = '${baseUser}/current';
   static const String userFriend = '${baseUser}/friend';
+  static const String updateDisplayName = '${baseUser}/update-user';
+  static const String userChangeAvatar = '${baseUser}/change-avatar';
 
   /// Upload Realtime
   static const String uploadRealtime = '${domainApi}upload-realtime';

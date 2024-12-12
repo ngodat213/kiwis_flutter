@@ -1,6 +1,7 @@
 import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:kiwis_flutter/app/routes/app_pages.dart';
 import 'package:kiwis_flutter/controllers/location_search.controller.dart';
 import 'package:kiwis_flutter/core/base/base.controller.dart';
 import 'package:kiwis_flutter/core/constants/app.theme_helper.dart';
@@ -232,6 +233,10 @@ class PlanController extends BaseController {
     } catch (e) {
       print(e);
     }
+  }
+
+  Future<void> toOnPlan() async {
+    Get.toNamed(Routes.ON_PLAN, arguments: currentPlan.value!.planId);
   }
 
   /// Plan cotent

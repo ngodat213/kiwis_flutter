@@ -5,8 +5,8 @@ import 'on_plan_controller.dart';
 class OnPlanBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut<OnPlanController>(
-      () => OnPlanController(),
+    Get.put<OnPlanController>(
+      OnPlanController(),
     );
   }
 }

@@ -2,28 +2,18 @@ import 'package:get/get.dart';
 
 import '../../views/change_language/change_language_binding.dart';
 import '../../views/change_language/change_language_view.dart';
-import '../../views/change_listview_buttomsheet/change_language_buttomsheet_binding.dart';
-import '../../views/change_listview_buttomsheet/change_language_buttomsheet_view.dart';
 import '../../views/change_password/change_password_binding.dart';
 import '../../views/change_password/change_password_view.dart';
-import '../../views/detail_post/detail_post_binding.dart';
-import '../../views/detail_post/detail_post_view.dart';
 import '../../views/expense/expense_binding.dart';
 import '../../views/expense/expense_view.dart';
 import '../../views/forgot_password/forgot_password_binding.dart';
 import '../../views/forgot_password/forgot_password_view.dart';
-import '../../views/history_search/history_search_binding.dart';
-import '../../views/history_search/history_search_view.dart';
 import '../../views/home/home_binding.dart';
 import '../../views/home/home_view.dart';
-import '../../views/invoce/invoce_binding.dart';
-import '../../views/invoce/invoce_view.dart';
 import '../../views/main/main_binding.dart';
 import '../../views/main/main_view.dart';
 import '../../views/message/message_binding.dart';
 import '../../views/message/message_view.dart';
-import '../../views/next_point/next_point_binding.dart';
-import '../../views/next_point/next_point_view.dart';
 import '../../views/notification_center/notification_center_binding.dart';
 import '../../views/notification_center/notification_center_view.dart';
 import '../../views/on_plan/on_plan_binding.dart';
@@ -50,39 +40,14 @@ class AppPages {
 
   static List<GetPage> routes = [
     GetPage(
-      name: _Paths.DETAIL_POST,
-      page: () => DetailPostScreen(),
-      binding: DetailPostBinding(),
-    ),
-    GetPage(
       name: _Paths.CHANGE_LANGUAGE,
       page: () => ChangeLanguageScreen(),
       binding: ChangeLanguageBinding(),
     ),
     GetPage(
-      name: _Paths.CHANGE_LANGUAGE_BUTTOMSHEET,
-      page: () => ChangeListviewBottomsheet(Get.find()),
-      binding: ChangeListViewButtomsheetBinding(),
-    ),
-    GetPage(
       name: _Paths.CHANGE_PASSWORD,
       page: () => ChangePasswordScreen(),
       binding: ChangePasswordBinding(),
-    ),
-    GetPage(
-      name: _Paths.HISTORY_SEARCH,
-      page: () => const HistorySearchScreen(),
-      binding: HistorySearchBinding(),
-    ),
-    GetPage(
-      name: _Paths.INVOCE,
-      page: () => const InvoceScreen(),
-      binding: InvoceBinding(),
-    ),
-    GetPage(
-      name: _Paths.NEXT_POINT,
-      page: () => const NextPointScreen(),
-      binding: NextPointBinding(),
     ),
     GetPage(
       name: _Paths.NOTIFICATION_CENTER,
@@ -146,7 +111,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.ON_PLAN,
-      page: () => const OnPlanView(),
+      page: () => OnPlanView(),
       binding: OnPlanBinding(),
     ),
   ];

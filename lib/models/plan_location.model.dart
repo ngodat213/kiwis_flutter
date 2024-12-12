@@ -30,7 +30,7 @@ class PlanLocationModel {
       this.updatedAt,
       this.deletedAt});
 
-  get LatLng => LatLng(latitude ?? 0, longitude ?? 0);
+  LatLng get latLng => LatLng(latitude ?? 0, longitude ?? 0);
 
   PlanLocationModel.fromJson(Map<String, dynamic> json) {
     planLocationId = json['planLocationId'];

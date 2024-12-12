@@ -1,3 +1,4 @@
+import 'package:kiwis_flutter/core/constants/app_export.dart';
 import 'package:kiwis_flutter/models/cloudinary_image.model.dart';
 import 'package:kiwis_flutter/models/friendship.model.dart';
 
@@ -11,7 +12,7 @@ class UserModel {
   bool? emailVerified;
   String? createdAt;
   String? updatedAt;
-  Null deletedAt;
+  String? deletedAt;
   CloudinaryImageModel? avatar;
   List<FriendshipModel>? friends;
   // List<Null>? groups;
@@ -34,6 +35,10 @@ class UserModel {
     // this.plans,
     // this.postFeeds.
   });
+
+  String get avatarUrl => avatar?.imageUrl ?? AppValues.defaultAvatar;
+
+  String get displayName => "$firstName $lastName";
 
   UserModel.fromJson(Map<String, dynamic> json) {
     userId = json['userId'];

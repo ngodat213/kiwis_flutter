@@ -8,6 +8,7 @@ import 'package:kiwis_flutter/widgets/app_bar/app_bar_title.dart';
 import 'package:kiwis_flutter/widgets/app_bar/custom_app_bar.dart';
 import 'package:kiwis_flutter/widgets/custom_elevated_button.dart';
 import 'package:kiwis_flutter/widgets/custom_icon_button.dart';
+import 'selection_row.widget.dart';
 
 class MenuContent extends BaseView<HomeController> {
   MenuContent({super.key});
@@ -45,6 +46,14 @@ class MenuContent extends BaseView<HomeController> {
     );
   }
 
+  Widget? floatingActionButton(BuildContext context) {
+    return CustomElevatedButton(
+      onPressed: () => controller.onPressedLogout(context),
+      text: "lbl_logout".tr,
+      buttonStyle: CustomButtonStyles.fillOnPrimaryTL28,
+    ).marginSymmetric(horizontal: 32, vertical: 16);
+  }
+
   @override
   Widget body(BuildContext context) {
     return Container(
@@ -59,11 +68,22 @@ class MenuContent extends BaseView<HomeController> {
           // SizedBox(height: 16.h),
           // _buildSavedPlacesRow(),
           SizedBox(height: 16.h),
-          _buildPaymentSettingsRow(),
-          _buildLanguageSettingsRow(),
+          // _buildPaymentSettingsRow(),
+          // _buildLanguageSettingsRow(),
           SizedBox(
             width: double.maxFinite,
-            child: _buildAboutSectionRow(
+            child: SelectionRowWidget(
+              inboxOne: ImageConstant.svgSetting,
+              aboutOne: "Account settings".tr,
+              applicationvers: "msg_change_password".tr,
+              onTap: () {
+                controller.onPressedAccount(context);
+              },
+            ),
+          ),
+          SizedBox(
+            width: double.maxFinite,
+            child: SelectionRowWidget(
               inboxOne: ImageConstant.svgCalander,
               aboutOne: "My plan".tr,
               applicationvers: "msg_change_password".tr,
@@ -74,25 +94,17 @@ class MenuContent extends BaseView<HomeController> {
           ),
           SizedBox(
             width: double.maxFinite,
-            child: _buildAboutSectionRow(
+            child: SelectionRowWidget(
               inboxOne: ImageConstant.svgPrivacy,
               aboutOne: "msg_privacy_and_term".tr,
               applicationvers: "msg_change_password".tr,
               onTap: () {},
             ),
           ),
+
           SizedBox(
             width: double.maxFinite,
-            child: _buildAboutSectionRow(
-              inboxOne: ImageConstant.svgPrivacy,
-              aboutOne: "msg_privacy_and_term".tr,
-              applicationvers: "msg_change_password".tr,
-              onTap: () {},
-            ),
-          ),
-          SizedBox(
-            width: double.maxFinite,
-            child: _buildAboutSectionRow(
+            child: SelectionRowWidget(
               inboxOne: ImageConstant.svgInbox,
               aboutOne: "lbl_about".tr,
               applicationvers: "msg_application_version".tr,
@@ -100,11 +112,6 @@ class MenuContent extends BaseView<HomeController> {
             ),
           ),
           SizedBox(height: 62.h),
-          CustomElevatedButton(
-            onPressed: () => controller.onPressedLogout(context),
-            text: "lbl_logout".tr,
-            buttonStyle: CustomButtonStyles.fillOnPrimaryTL28,
-          )
         ],
       ),
     );
@@ -135,336 +142,52 @@ class MenuContent extends BaseView<HomeController> {
               Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 24.h),
-                    width: double.maxFinite,
-                    child: Row(
-                      children: [
-                        CustomImageView(
-                          imagePath: controller.user.value.avatar?.imageUrl ??
-                              AppValues.defaultAvatar,
-                          height: 60.h,
-                          width: 60.h,
-                          fit: BoxFit.cover,
-                          radius: BorderRadius.circular(
-                            30.h,
-                          ),
-                        ),
-                        SizedBox(width: 16.h),
-                        SizedBox(width: 16.h),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "lbl_hello".tr,
-                                style: theme.textTheme.labelLarge,
-                              ),
-                              Text(
-                                "${controller.user.value.firstName}".tr,
-                                style: theme.textTheme.titleLarge,
-                              )
-                            ],
-                          ),
-                        ),
-                        SizedBox(width: 16.h),
-                        CustomImageView(
-                          imagePath: ImageConstant.svgBell,
-                          height: 20.h,
-                          width: 20.h,
-                        )
-                      ],
-                    ),
-                  )
-                ],
-              )
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  /// Section Widget
-  Widget _buildSavedPlacesRow() {
-    return SizedBox(
-      width: double.maxFinite,
-      child: Row(
-        children: [
-          Expanded(
-            child: Container(
-              padding: EdgeInsets.all(16.h),
-              decoration: BoxDecoration(
-                color: appTheme.green600,
-                borderRadius: BorderRadiusStyle.roundedBorder24,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CustomIconButton(
-                    height: 48.h,
-                    width: 48.h,
-                    padding: EdgeInsets.all(12.h),
-                    decoration: IconButtonStyleHelper.fillOnPrimaryTL24,
-                    child: CustomImageView(
-                      imagePath: ImageConstant.svgStar,
-                    ),
-                  ),
-                  SizedBox(width: 12.h),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "lbl_saved_place".tr,
-                          style: theme.textTheme.bodySmall,
-                        ),
-                        Text(
-                          "lbl_1000".tr,
-                          style: theme.textTheme.titleLarge,
-                        )
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ),
-          SizedBox(width: 16.h),
-          Expanded(
-            child: Container(
-              padding: EdgeInsets.all(16.h),
-              decoration: BoxDecoration(
-                color: theme.colorScheme.primary,
-                borderRadius: BorderRadiusStyle.roundedBorder24,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CustomIconButton(
-                    height: 48.h,
-                    width: 48.h,
-                    padding: EdgeInsets.all(12.h),
-                    decoration: IconButtonStyleHelper.fillOnPrimaryTL24,
-                    child: CustomImageView(
-                      imagePath: ImageConstant.svgDollar,
-                    ),
-                  ),
-                  Expanded(
-                    child: Container(
+                  Obx(() {
+                    return Container(
+                      padding: EdgeInsets.symmetric(horizontal: 24.h),
                       width: double.maxFinite,
-                      padding: EdgeInsets.only(right: 4.h),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
+                      child: Row(
                         children: [
-                          Text(
-                            "lbl_total_payout".tr,
-                            style: theme.textTheme.bodySmall,
+                          CustomImageView(
+                            imagePath: controller.user.value.avatar?.imageUrl ??
+                                AppValues.defaultAvatar,
+                            height: 60.h,
+                            width: 60.h,
+                            fit: BoxFit.cover,
+                            radius: BorderRadius.circular(
+                              30.h,
+                            ),
                           ),
-                          Text(
-                            "lbl_10002".tr,
-                            style: theme.textTheme.titleLarge,
+                          SizedBox(width: 16.h),
+                          SizedBox(width: 16.h),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "lbl_hello".tr,
+                                  style: theme.textTheme.labelLarge,
+                                ),
+                                Text(
+                                  "${controller.user.value.firstName}".tr,
+                                  style: theme.textTheme.titleLarge,
+                                )
+                              ],
+                            ),
+                          ),
+                          SizedBox(width: 16.h),
+                          CustomImageView(
+                            imagePath: ImageConstant.svgBell,
+                            height: 20.h,
+                            width: 20.h,
                           )
                         ],
                       ),
-                    ),
-                  )
+                    );
+                  }),
                 ],
-              ),
-            ),
-          )
-        ],
-      ),
-    );
-  }
-
-  /// Section Widget
-  Widget _buildPaymentSettingsRow() {
-    return Container(
-      padding: EdgeInsets.only(
-        top: 16.h,
-        bottom: 14.h,
-      ),
-      decoration: BoxDecoration(
-        border: Border(
-          bottom: BorderSide(
-            color: theme.colorScheme.onPrimary.withOpacity(0.05),
-            width: 1.h,
-          ),
-        ),
-      ),
-      width: double.maxFinite,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          CustomIconButton(
-            height: 48.h,
-            width: 48.h,
-            padding: EdgeInsets.all(12.h),
-            decoration: IconButtonStyleHelper.fillOnPrimaryTL24,
-            child: CustomImageView(
-              imagePath: ImageConstant.imgStack,
-            ),
-          ),
-          SizedBox(width: 16.h),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "msg_payment_settings".tr,
-                  style: theme.textTheme.titleSmall,
-                ),
-                Text(
-                  "lbl_02_card_added".tr,
-                  style: theme.textTheme.bodySmall,
-                )
-              ],
-            ),
-          ),
-          SizedBox(width: 16.h),
-          CustomElevatedButton(
-            height: 32.h,
-            width: 68.h,
-            text: "lbl_visa".tr,
-            rightIcon: Container(
-              margin: EdgeInsets.only(left: 4.h),
-              child: CustomImageView(
-                imagePath: ImageConstant.imgRight,
-                height: 16.h,
-                width: 16.h,
-                fit: BoxFit.contain,
-              ),
-            ),
-            buttonTextStyle: CustomTextStyles.labelLargeOnPrimary,
-          )
-        ],
-      ),
-    );
-  }
-
-  /// Section Widget
-  Widget _buildLanguageSettingsRow() {
-    return GestureDetector(
-      onTap: () {
-        controller.onPressedChangeLanguage();
-      },
-      child: Container(
-        padding: EdgeInsets.only(
-          top: 16.h,
-          bottom: 14.h,
-        ),
-        decoration: BoxDecoration(
-          border: Border(
-            bottom: BorderSide(
-              color: theme.colorScheme.onPrimary.withOpacity(0.05),
-              width: 1.h,
-            ),
-          ),
-        ),
-        width: double.maxFinite,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            CustomIconButton(
-              height: 48.h,
-              width: 48.h,
-              padding: EdgeInsets.all(12.h),
-              decoration: IconButtonStyleHelper.fillOnPrimaryTL24,
-              child: CustomImageView(
-                imagePath: ImageConstant.svgFlag,
-              ),
-            ),
-            SizedBox(width: 16.h),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "lbl_change_language".tr,
-                    style: theme.textTheme.titleSmall,
-                  ),
-                  SizedBox(height: 2.h),
-                  Text(
-                    "msg_apperiance_currency".tr,
-                    style: theme.textTheme.bodySmall,
-                  )
-                ],
-              ),
-            ),
-            SizedBox(width: 16.h),
-            CustomElevatedButton(
-              onPressed: () {
-                controller.onPressedChangeLanguage();
-              },
-              height: 32.h,
-              width: 92.h,
-              text: "lbl_vietnam2".tr,
-              rightIcon: Container(
-                margin: EdgeInsets.only(left: 4.h),
-                child: CustomImageView(
-                  imagePath: ImageConstant.imgRight,
-                  height: 16.h,
-                  width: 16.h,
-                  fit: BoxFit.contain,
-                ),
-              ),
-              buttonTextStyle: CustomTextStyles.labelLargeOnPrimary,
-            )
-          ],
-        ),
-      ),
-    );
-  }
-
-  /// Common widget
-  /// Common widget
-  Widget _buildAboutSectionRow({
-    required String inboxOne,
-    required String aboutOne,
-    required String applicationvers,
-    required Function() onTap,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        decoration: BoxDecoration(
-          border: Border(
-            bottom: BorderSide(
-              color: theme.colorScheme.onPrimary.withOpacity(0.05),
-              width: 1.h,
-            ),
-          ),
-        ),
-        child: ListTile(
-          contentPadding: EdgeInsets.symmetric(horizontal: 0),
-          title: Text(
-            aboutOne,
-            style: theme.textTheme.titleSmall!
-                .copyWith(color: theme.colorScheme.onPrimary.withOpacity(1)),
-          ),
-          subtitle: Text(
-            applicationvers,
-            style: theme.textTheme.bodySmall!
-                .copyWith(color: theme.colorScheme.onPrimary.withOpacity(0.5)),
-          ),
-          leading: Container(
-            height: 48.h,
-            width: 48.h,
-            decoration: BoxDecoration(
-              color: theme.colorScheme.onPrimary,
-              borderRadius: BorderRadiusStyle.roundedBorder24,
-            ),
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                CustomImageView(
-                  imagePath: inboxOne,
-                  height: 24.h,
-                  width: 26.h,
-                ),
-              ],
-            ),
+              )
+            ],
           ),
         ),
       ),

@@ -5,6 +5,8 @@ class ImageConstant {
   static const svgPath = 'assets/svgs';
 
   static const imgNoData = '$imagePath/empty2.png';
+  static const svgUser = '$svgPath/user_line.svg';
+  static const svgDeline = '$svgPath/deline.svg';
 
 // sign_up images
   static const imgUser24x24 = '$imagePath/img_user_24x24.svg';
@@ -181,7 +183,7 @@ class ImageConstant {
   static const imgInterfacePrimary = '$imagePath/img_interface_primary.svg';
 
 //   tour_detail images
-  static const imgSettings = '$imagePath/img_settings.svg';
+  static const svgSetting = '$svgPath/setting.svg';
 
   static const imgUserOnprimary24x24 =
       '$imagePath/img_user_onprimary_24x24.svg';

@@ -56,10 +56,11 @@ class PlanRequest {
     return ApiResponse.fromResponse(response.data);
   }
 
-  Future<ApiResponse> findPlanById() async {
+  Future<ApiResponse> findPlanById(String planId) async {
     var reponse = await _baseAPI.fetchData(
-      AppAPI.basePlan,
+      AppAPI.basePlan + "/$planId",
       includeHeaders: true,
+      method: ApiMethod.GET,
     );
 
     return ApiResponse.fromResponse(reponse.data);

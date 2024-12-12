@@ -19,6 +19,7 @@ import 'package:kiwis_flutter/views/message/widgets/create_group.content.dart';
 import 'package:kiwis_flutter/views/message/widgets/group_name_content.dart';
 import 'package:kiwis_flutter/views/message/widgets/members.content.dart';
 import 'package:kiwis_flutter/views/message/widgets/setting_chat_room_content.dart';
+import 'package:kiwis_flutter/views/message/widgets/sharemap.content.dart';
 import 'package:kiwis_flutter/views/plan/plan_view.dart';
 import 'package:kiwis_flutter/views/plan/widgets/plan_create.content.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
@@ -36,14 +37,12 @@ class MessageController extends BaseController {
   final TextEditingController editGroupNameTEC = TextEditingController();
 
   // Variables
-  // Message content
-  Rx<UserModel> user = UserModel().obs;
-  RxList<GroupModel> groups = <GroupModel>[].obs;
-  // Chat room content
-  RxInt selectedIndex = 0.obs;
-  Rx<MessageModel> currentMessage = MessageModel().obs;
+  RxInt currentGroupIndex = 0.obs;
   RxBool isOnchangeAvatar = false.obs;
+  Rx<UserModel> user = UserModel().obs;
   Rx<File> editGroupAvatar = File('').obs;
+  RxList<GroupModel> groups = <GroupModel>[].obs;
+  Rx<MessageModel> currentMessage = MessageModel().obs;
 
   @override
   void onInit() {
@@ -58,9 +57,11 @@ class MessageController extends BaseController {
     super.onClose();
   }
 
+  GroupModel get currentGroup => groups.value[currentGroupIndex.value];
+
   /// Message methods
   void onPressedChanel(BuildContext context, int index) {
-    selectedIndex.value = index;
+    currentGroupIndex.value = index;
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -81,7 +82,7 @@ class MessageController extends BaseController {
     ManagerSocket.socket?.on(AppAPI.socketReceiveGroupMessage, (data) {
       print('Received group message: $data');
       final message = MessageModel.fromJson(data);
-      final group = groups.value[selectedIndex.value];
+      final group = groups.value[currentGroupIndex.value];
       group.messages?.add(message);
       groups.refresh();
     });
@@ -145,6 +146,8 @@ class MessageController extends BaseController {
   }
 
   /// Chat room methods
+
+  // Handle
   Future<void> pickAvatar() async {
     final image = await _imagePicker.pickImage(source: ImageSource.gallery);
     if (image != null) {
@@ -153,17 +156,10 @@ class MessageController extends BaseController {
     }
   }
 
-  void onPressedCreatePlan() {
-    Get.toNamed(
-      Routes.PLAN,
-      arguments: groups.value[selectedIndex.value].groupId!,
-    );
-  }
-
   Future<void> handleChangeGroupName(BuildContext context) async {
     try {
       final response = await _groupRequest.editGroupRequest(
-        groupId: groups.value[selectedIndex.value].groupId!,
+        groupId: groups.value[currentGroupIndex.value].groupId!,
         name: editGroupNameTEC.text,
         file: editGroupAvatar.value.readAsBytesSync(),
       );
@@ -174,8 +170,8 @@ class MessageController extends BaseController {
         editGroupAvatar.value = File('');
         editGroupNameTEC.clear();
         // Update group
-        groups.value[selectedIndex.value].name = group.name;
-        groups.value[selectedIndex.value].avatar = group.avatar;
+        groups.value[currentGroupIndex.value].name = group.name;
+        groups.value[currentGroupIndex.value].avatar = group.avatar;
         groups.refresh();
 
         Get.back();
@@ -200,7 +196,7 @@ class MessageController extends BaseController {
   Future<void> handleLeaveGroup(BuildContext context) async {
     try {
       final response = await _groupRequest.leaveGroupRequest(
-        groupId: groups.value[selectedIndex.value].groupId!,
+        groupId: groups.value[currentGroupIndex.value].groupId!,
       );
       if (response.allGood) {
         Get.back();
@@ -223,21 +219,38 @@ class MessageController extends BaseController {
   }
 
   void sendMessage() {
-    ManagerSocket.sendMessage(
-      user.value.userId!,
-      groups.value[selectedIndex.value].groupId!,
-      messageTEC.text,
+    if (messageTEC.text.isNotEmpty) {
+      ManagerSocket.sendMessage(
+        user.value.userId!,
+        groups.value[currentGroupIndex.value].groupId!,
+        messageTEC.text,
+      );
+      messageTEC.clear();
+    }
+  }
+
+  void onPressedShareLocation(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) => ShareMapContent(),
     );
-    messageTEC.clear();
+  }
+
+  void onPressedCreatePlan() {
+    Get.toNamed(
+      Routes.PLAN,
+      arguments: groups.value[currentGroupIndex.value].groupId!,
+    );
   }
 
   String getGroupName() {
-    final group = groups.value[selectedIndex.value];
+    final group = groups.value[currentGroupIndex.value];
     return group.name ?? group.members!.first.user!.fullName;
   }
 
   String getAvatarGroup() {
-    final group = groups.value[selectedIndex.value];
+    final group = groups.value[currentGroupIndex.value];
     if (group.avatar != null) {
       return group.avatar!.imageUrl!;
     } else if (isGroupChat()) {
@@ -248,7 +261,7 @@ class MessageController extends BaseController {
   }
 
   bool isGroupChat() {
-    final group = groups.value[selectedIndex.value];
+    final group = groups.value[currentGroupIndex.value];
     return group.isGroupChat();
   }
 

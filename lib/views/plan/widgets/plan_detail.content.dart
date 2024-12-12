@@ -29,7 +29,7 @@ class PlanDetailContent extends GetView<PlanController> {
       floatingActionButton: CustomElevatedButton(
         width: Get.width * 0.9,
         text: "Start now",
-        onPressed: () => controller.onPressedChooseLocation(context),
+        onPressed: () => controller.toOnPlan(),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: SizedBox(

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kiwis_flutter/services/services.dart';
+import 'package:kiwis_flutter/views/message/message_controller.dart';
 import 'package:vietmap_flutter_gl/vietmap_flutter_gl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../../services/map.service.dart';
 
-class ShareMapContent extends StatelessWidget {
+class ShareMapContent extends GetView<MessageController> {
   final mapService = MapService.to;
   final authService = AuthServices();
 
@@ -41,7 +42,9 @@ class ShareMapContent extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
               ),
               child: StreamBuilder<QuerySnapshot>(
-                stream: mapService.getSharedLocations(),
+                stream: mapService.getSharedLocations(
+                  controller.currentGroup.groupId!,
+                ),
                 builder: (context, snapshot) {
                   if (snapshot.hasError) {
                     return Center(child: Text('Đã xảy ra lỗi'));
@@ -91,6 +94,7 @@ class ShareMapContent extends StatelessWidget {
 
                   if (description != null) {
                     await mapService.shareLocation(
+                      groupId: controller.currentGroup.groupId!,
                       userId: AuthServices.currentUser!.userId!,
                       location: mapService.selectedLocation.value!,
                       description: description,

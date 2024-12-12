@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:kiwis_flutter/app/routes/app_pages.dart';
 import 'package:kiwis_flutter/core/base/base.controller.dart';
+import 'package:kiwis_flutter/core/constants/app.theme_helper.dart';
 import 'package:kiwis_flutter/core/constants/constants.dart';
 import 'package:kiwis_flutter/core/manager/manager.socket.dart';
 import 'package:kiwis_flutter/models/api.response.dart';
@@ -56,6 +57,21 @@ class SignInController extends BaseController {
             await _authRequest.loginRequest(email: email, password: password);
         if (apiResponse.allGood) {
           await _handleDeviceLogin(apiResponse, context);
+        } else if (apiResponse.error == "Account is deleted") {
+          Get.defaultDialog(
+            contentPadding: EdgeInsets.symmetric(vertical: 32, horizontal: 24),
+            backgroundColor: appTheme.primary,
+            title: "Account is deleted",
+            middleText:
+                "Your account is deleted. Please contact admin to restore your account. Contact: noreply.ecourse@gmail.com",
+            titleStyle: theme.textTheme.titleLarge,
+            middleTextStyle: theme.textTheme.bodyLarge!.copyWith(
+              color: Colors.white,
+            ),
+            onConfirm: () {
+              Get.back();
+            },
+          );
         } else {
           AnimatedSnackBar.material(
             apiResponse.error!,

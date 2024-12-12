@@ -23,20 +23,26 @@ class ChatRoomContent extends BaseView<MessageController> {
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: [
-          Container(
-            width: 32.h,
-            height: 32.h,
-            child: Icon(
-              IconlyBold.location,
-              color: appTheme.blue300,
+          GestureDetector(
+            onTap: () => controller.onPressedShareLocation(context),
+            child: Container(
+              width: 32.h,
+              height: 32.h,
+              child: Icon(
+                IconlyBold.location,
+                color: appTheme.blue300,
+              ),
             ),
           ),
-          Container(
-            width: 32.h,
-            height: 32.h,
-            child: Icon(
-              IconlyBold.camera,
-              color: appTheme.blue300,
+          GestureDetector(
+            onTap: () => controller.onPressedShareLocation(context),
+            child: Container(
+              width: 32.h,
+              height: 32.h,
+              child: Icon(
+                IconlyBold.camera,
+                color: appTheme.blue300,
+              ),
             ),
           ),
           SizedBox(width: 8.h),
@@ -125,14 +131,20 @@ class ChatRoomContent extends BaseView<MessageController> {
               child: Obx(() {
                 return ScrollablePositionedList.builder(
                   itemScrollController: controller.scrollController,
-                  initialScrollIndex: controller.groups
-                      .value[controller.selectedIndex.value].messages!.length,
+                  initialScrollIndex: controller
+                      .groups
+                      .value[controller.currentGroupIndex.value]
+                      .messages!
+                      .length,
                   padding: const EdgeInsets.all(8.0),
-                  itemCount: controller.groups
-                      .value[controller.selectedIndex.value].messages!.length,
+                  itemCount: controller
+                      .groups
+                      .value[controller.currentGroupIndex.value]
+                      .messages!
+                      .length,
                   itemBuilder: (context, index) {
-                    final messages = controller
-                        .groups.value[controller.selectedIndex.value].messages!;
+                    final messages = controller.groups
+                        .value[controller.currentGroupIndex.value].messages!;
                     final currentMessage = messages[index];
                     final isGroupStart = index == 0 ||
                         messages[index - 1].senderId != currentMessage.senderId;
