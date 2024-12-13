@@ -118,26 +118,32 @@ VIETMAP_API_KEY=your_vietmap_api_key
 
 ### Step 3: Install Dependencies
 bash
+```
 flutter pub get
-
+```
 
 ### Step 4: iOS Setup
 bash
+```
 cd ios
 pod install
 cd ..
+```
 
 ### Step 5: Run the App
 bash
+```
 flutter run
+```
 
 ## Development Guidelines
 
 ### Code Structure
+```
 lib/
 ├── core/ # Core functionality and utilities
 ├── models/ # Data models
 ├── services/ # Service classes
 ├── views/ # UI screens
 ├── widgets/ # Reusable widgets
-└── main.dart # Entry point
+└── main.dart # Entry point```
