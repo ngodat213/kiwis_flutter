@@ -14,7 +14,7 @@ class ChangeNameContent extends GetView<HomeController> {
       height: Get.height * 0.4,
       padding: EdgeInsets.symmetric(horizontal: 16.h, vertical: 16.h),
       decoration: BoxDecoration(
-        color: appTheme.primary,
+        color: appTheme.gray50,
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(16.h),
           topRight: Radius.circular(16.h),

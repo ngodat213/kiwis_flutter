@@ -49,12 +49,12 @@ class ChatBubble extends StatelessWidget {
                         vertical: 20.h,
                       ),
                       decoration: BoxDecoration(
-                        color: appTheme.black900.withOpacity(0.5),
+                        color: appTheme.gray200.withOpacity(0.5),
                         borderRadius: BorderRadius.circular(12.h),
                       ),
                       child: Text(
                         message.post?.caption ?? "",
-                        style: theme.textTheme.labelMedium?.copyWith(
+                        style: theme.textTheme.bodySmall?.copyWith(
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
@@ -89,23 +89,22 @@ class ChatBubble extends StatelessWidget {
                   children: [
                     Visibility(
                       visible: isGroup && !message.isMe() && showAvatar,
-                      child: message.sender!.fullName.text.white
-                          .textStyle(theme.textTheme.labelMedium)
+                      child: message.sender!.fullName.text.bold
+                          .textStyle(theme.textTheme.bodySmall)
                           .make()
                           .pOnly(right: 16.h, bottom: 4.h, left: 8.h),
                     ),
                     (message.text ?? "")
                         .tr
                         .text
-                        .white
-                        .textStyle(theme.textTheme.labelMedium)
+                        .textStyle(theme.textTheme.bodySmall)
                         .make()
                         .pOnly(top: 10.h, bottom: 10.h, left: 16.h, right: 16.h)
                         .box
                         .customRounded(borderRadius)
                         .color(message.isMe()
-                            ? appTheme.black900.withOpacity(0.3)
-                            : appTheme.black900.withOpacity(0.5))
+                            ? appTheme.gray200.withOpacity(0.3)
+                            : appTheme.gray200.withOpacity(0.5))
                         .make()
                   ],
                 ),

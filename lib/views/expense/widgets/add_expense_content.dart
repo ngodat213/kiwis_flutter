@@ -17,12 +17,10 @@ class AddExpenseContent extends BaseView<ExpenseController> {
   /// Section Widget
   PreferredSizeWidget appBar(BuildContext context) {
     return PreferredSize(
-      preferredSize:
-          Size.fromHeight(Get.height * 0.09 + 23), // Set desired height
+      preferredSize: Size.fromHeight(Get.height * 0.09 + 23),
       child: Container(
         padding: EdgeInsets.only(top: 23),
-        margin: EdgeInsets.symmetric(
-            horizontal: 16.0, vertical: 16), // Adjust padding as needed
+        margin: EdgeInsets.symmetric(horizontal: 16.0, vertical: 16),
         child: CustomAppBar(
           leadingWidth: 44.h,
           leading: AppbarLeadingIconbutton(
@@ -169,7 +167,7 @@ class AddExpenseContent extends BaseView<ExpenseController> {
                   height: Get.width * 0.15,
                   padding: EdgeInsets.symmetric(vertical: 16, horizontal: 23),
                   decoration: BoxDecoration(
-                    color: appTheme.blueA200,
+                    color: appTheme.blue500,
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: "Rewards"

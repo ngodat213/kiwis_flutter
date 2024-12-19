@@ -85,4 +85,16 @@ class UserRequest {
     );
     return ApiResponse.fromResponse(response.data);
   }
+
+  Future<ApiResponse> updateFcmToken(String fcmToken) async {
+    var response = await _baseAPI.fetchData(
+      AppAPI.userUpdateFcmToken,
+      method: ApiMethod.PUT,
+      includeHeaders: true,
+      body: {
+        "fcmToken": fcmToken,
+      },
+    );
+    return ApiResponse.fromResponse(response.data);
+  }
 }

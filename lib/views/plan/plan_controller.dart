@@ -1,6 +1,7 @@
-import 'package:animated_snack_bar/animated_snack_bar.dart';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:kiwis_flutter/app/routes/app_pages.dart';
 import 'package:kiwis_flutter/controllers/location_search.controller.dart';
 import 'package:kiwis_flutter/core/base/base.controller.dart';
@@ -10,6 +11,7 @@ import 'package:kiwis_flutter/models/api.response.dart';
 import 'package:kiwis_flutter/models/plan.model.dart';
 import 'package:kiwis_flutter/models/plan_location.model.dart';
 import 'package:kiwis_flutter/requests/plan.request.dart';
+import 'package:kiwis_flutter/views/plan/widgets/add_task.content.dart';
 import 'package:kiwis_flutter/views/plan/widgets/addlocation.content.dart';
 import 'package:kiwis_flutter/views/plan/widgets/choose_location.content.dart';
 import 'package:kiwis_flutter/views/plan/widgets/plan_create.content.dart';
@@ -19,6 +21,7 @@ import 'package:vietmap_flutter_plugin/vietmap_flutter_plugin.dart';
 
 class PlanController extends BaseController {
   /// Request
+  final ImagePicker _imagePicker = ImagePicker();
   final PlanRequest _planRequest = PlanRequest();
 
   /// Controller
@@ -30,22 +33,32 @@ class PlanController extends BaseController {
   final TextEditingController estimatedCostTEC = TextEditingController();
   final TextEditingController estimatedTimeTEC = TextEditingController();
 
-  Rx<DateTime?> startDay = Rx<DateTime?>(null);
-  Rx<DateTime?> endDay = Rx<DateTime?>(null);
-  Rx<DateTime?> focusedDay = Rx<DateTime?>(DateTime.now());
-
   /// Variables
+  Rx<DateTime> startDay = Rx<DateTime>(DateTime.now());
+  Rx<DateTime> endDay = Rx<DateTime>(DateTime.now());
+  Rx<DateTime?> focusedDay = Rx<DateTime?>(DateTime.now());
   Rx<PlanModel?> currentPlan = Rxn<PlanModel?>();
-  RxList<PlanModel> plans = <PlanModel>[].obs;
   Rxn<AddressModel?> currentLocation = Rxn<AddressModel?>();
+  RxList<PlanModel> plans = <PlanModel>[].obs;
   RxList<AddressModel> locations = <AddressModel>[].obs;
+  Rx<File?> imageFile = Rxn<File?>();
+  RxInt currentStep = 0.obs;
   String? argGroupId;
+  List<Widget> steps = [TimeWidget(), DetailWidget(), ScheduleWidget()];
 
   @override
   void onInit() {
     super.onInit();
     argGroupId = Get.arguments;
     initPlans();
+  }
+
+  /// Chat room methods
+  Future<void> pickImage() async {
+    final image = await _imagePicker.pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      imageFile.value = File(image.path);
+    }
   }
 
   Future<void> onTapEditPlan(BuildContext context) async {
@@ -66,16 +79,16 @@ class PlanController extends BaseController {
         PlanModel(
           name: titleTEC.text,
           totalCost: int.parse(budgetTEC.text),
-          startDate: startDay.value!,
-          endDate: endDay.value!,
+          startDate: startDay.value,
+          endDate: endDay.value,
         ),
       );
       if (response.allGood) {
         titleTEC.clear();
         descriptionTEC.clear();
         budgetTEC.clear();
-        startDay.value = null;
-        endDay.value = null;
+        startDay.value = DateTime.now();
+        endDay.value = DateTime.now();
 
         plans[plans.indexWhere((p) => p.planId == currentPlan.value!.planId)] =
             PlanModel.fromJson(response.body);
@@ -102,7 +115,7 @@ class PlanController extends BaseController {
 
   void removeLocation(int index) {
     Get.defaultDialog(
-      backgroundColor: appTheme.primary,
+      backgroundColor: appTheme.gray50,
       title: "Remove location",
       middleText: "Are you sure you want to remove this location?",
       titleStyle: theme.textTheme.titleLarge,
@@ -258,13 +271,16 @@ class PlanController extends BaseController {
     );
   }
 
+  void onPressedAddTask(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) => AddTaskContent(),
+    );
+  }
+
   Future<void> createPlan(BuildContext context) async {
     try {
-      if (startDay.value == null || endDay.value == null) {
-        Get.snackbar("Error", "Please select date", colorText: Colors.white);
-        return;
-      }
-
       if (titleTEC.text.isEmpty ||
           descriptionTEC.text.isEmpty ||
           budgetTEC.text.isEmpty) {
@@ -276,8 +292,8 @@ class PlanController extends BaseController {
         title: titleTEC.text,
         description: descriptionTEC.text,
         budget: budgetTEC.text,
-        startDay: startDay.value!,
-        endDay: endDay.value!,
+        startDay: startDay.value,
+        endDay: endDay.value,
         groupId: argGroupId,
       );
 
@@ -285,8 +301,8 @@ class PlanController extends BaseController {
         titleTEC.clear();
         descriptionTEC.clear();
         budgetTEC.clear();
-        startDay.value = null;
-        endDay.value = null;
+        startDay.value = DateTime.now();
+        endDay.value = DateTime.now();
         plans.add(PlanModel.fromJson(response.body));
         Get.back();
         Get.snackbar("Success", "Plan created successfully",

@@ -171,7 +171,7 @@ class CustomTextFormField extends StatelessWidget {
               vertical: 38.h,
             ),
         filled: filled,
-        fillColor: fillColor ?? theme.colorScheme.onPrimary,
+        fillColor: fillColor ?? theme.colorScheme.onPrimary.withOpacity(0.05),
         border: borderDecoration ??
             OutlineInputBorder(
               borderRadius: BorderRadius.circular(8.h),

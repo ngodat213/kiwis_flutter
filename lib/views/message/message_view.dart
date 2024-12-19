@@ -4,8 +4,8 @@ import 'package:kiwis_flutter/core/constants/app_export.dart';
 import 'package:kiwis_flutter/core/base/base.view.dart';
 import 'package:kiwis_flutter/models/group.model.dart';
 import 'package:kiwis_flutter/widgets/app_bar/app_bar_title.dart';
-import 'package:kiwis_flutter/widgets/app_bar/app_bar_trainling_iconbutton.dart';
 import 'package:kiwis_flutter/widgets/app_bar/custom_app_bar.dart';
+import 'package:kiwis_flutter/widgets/app_bar/app_bar_leadingiconbutton.dart';
 
 import 'message_controller.dart';
 
@@ -55,10 +55,6 @@ class MessageScreen extends BaseView<MessageController> {
       child: SizedBox(
         width: double.maxFinite,
         child: Container(
-          padding: EdgeInsets.only(
-            top: 16.h,
-            bottom: 14.h,
-          ),
           decoration: BoxDecoration(
             border: Border(
               bottom: BorderSide(
@@ -67,60 +63,25 @@ class MessageScreen extends BaseView<MessageController> {
               ),
             ),
           ),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Align(
-                alignment: Alignment.center,
-                child: Container(
-                  height: 48.h,
-                  width: 48.h,
-                  decoration: BoxDecoration(
-                    color: theme.colorScheme.onPrimary,
-                    borderRadius: BorderRadiusStyle.roundedBorder24,
-                  ),
-                  child: Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      CustomImageView(
-                        imagePath: group.groupAvatarUrl(),
-                        fit: BoxFit.cover,
-                        height: 47.h,
-                        width: 47.h,
-                        radius: BorderRadius.circular(100),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              SizedBox(width: 16.h),
-              Expanded(
-                child: group.lastMessage() == ''
-                    ? Text(
-                        group.groupName(),
-                        style: theme.textTheme.titleSmall!.copyWith(
-                            color: theme.colorScheme.onPrimary.withOpacity(1)),
-                      )
-                    : Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            group.groupName(),
-                            style: theme.textTheme.titleSmall!.copyWith(
-                                color:
-                                    theme.colorScheme.onPrimary.withOpacity(1)),
-                          ),
-                          SizedBox(height: 2.h),
-                          Text(
-                            group.lastMessage(),
-                            style: theme.textTheme.bodySmall!.copyWith(
-                                color: theme.colorScheme.onPrimary
-                                    .withOpacity(0.5)),
-                          )
-                        ],
-                      ),
-              ),
-            ],
+          child: ListTile(
+            leading: CustomImageView(
+              imagePath: group.groupAvatarUrl(),
+              fit: BoxFit.cover,
+              height: 47.h,
+              width: 47.h,
+              radius: BorderRadius.circular(100),
+            ),
+            title: Text(
+              group.groupName(),
+              style: theme.textTheme.titleSmall!
+                  .copyWith(color: theme.colorScheme.onPrimary.withOpacity(1)),
+            ),
+            subtitle: Text(
+              group.lastMessage(),
+              style: theme.textTheme.bodySmall!.copyWith(
+                  color: theme.colorScheme.onPrimary.withOpacity(0.5)),
+            ),
+            contentPadding: EdgeInsets.zero,
           ),
         ),
       ),
@@ -137,12 +98,12 @@ class MessageScreen extends BaseView<MessageController> {
           margin: EdgeInsets.only(left: 16.h),
         ),
         actions: [
-          AppbarTrailingIconbutton(
+          AppbarLeadingIconbutton(
             // onTap: () => controller.showModalCalenderSheet(context),
             imagePath: ImageConstant.svgCalander,
             margin: EdgeInsets.only(right: 8.h),
           ),
-          AppbarTrailingIconbutton(
+          AppbarLeadingIconbutton(
             onTap: () => controller.onPressedCreateGroup(context),
             imagePath: ImageConstant.svgMore,
             margin: EdgeInsets.only(right: 8.h),

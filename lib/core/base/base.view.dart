@@ -91,7 +91,7 @@ abstract class BaseView<Controller extends BaseController>
                 child: controller.pageState == PageState.LOADING
                     ? Center(
                         child: LoadingAnimationWidget.threeRotatingDots(
-                          color: appTheme.primary,
+                          color: appTheme.amberA400,
                           size: 200,
                         ),
                       )
@@ -123,11 +123,11 @@ abstract class BaseView<Controller extends BaseController>
   }
 
   Color pageBackgroundColor() {
-    return appTheme.primary;
+    return appTheme.gray50;
   }
 
   Color statusBarColor() {
-    return appTheme.primary;
+    return appTheme.gray50;
   }
 
   Widget? floatingActionButton(BuildContext context) {

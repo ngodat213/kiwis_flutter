@@ -15,11 +15,10 @@ class MenuContent extends BaseView<HomeController> {
   /// Section Widget
   PreferredSizeWidget appBar(BuildContext context) {
     return PreferredSize(
-      preferredSize: Size.fromHeight(Get.height * 0.13), // Set desired height
+      preferredSize: Size.fromHeight(Get.height * 0.13),
       child: Container(
         padding: EdgeInsets.only(top: 23),
-        margin: EdgeInsets.symmetric(
-            horizontal: 16.0, vertical: 16), // Adjust padding as needed
+        margin: EdgeInsets.symmetric(horizontal: 16.0, vertical: 16),
         child: CustomAppBar(
           leadingWidth: 44.h,
           leading: AppbarLeadingIconbutton(

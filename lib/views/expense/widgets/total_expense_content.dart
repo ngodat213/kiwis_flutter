@@ -16,12 +16,10 @@ class TotalExpenseContent extends BaseView<ExpenseController> {
   /// Section Widget
   PreferredSizeWidget appBar(BuildContext context) {
     return PreferredSize(
-      preferredSize:
-          Size.fromHeight(Get.height * 0.09 + 23), // Set desired height
+      preferredSize: Size.fromHeight(Get.height * 0.09 + 23),
       child: Container(
         padding: EdgeInsets.only(top: 23),
-        margin: EdgeInsets.symmetric(
-            horizontal: 16.0, vertical: 16), // Adjust padding as needed
+        margin: EdgeInsets.symmetric(horizontal: 16.0, vertical: 16),
         child: CustomAppBar(
           leadingWidth: 44.h,
           leading: AppbarLeadingIconbutton(
@@ -85,7 +83,7 @@ class TotalExpenseContent extends BaseView<ExpenseController> {
             width: Get.width * 0.3,
             height: Get.width * 0.3,
             decoration: BoxDecoration(
-              color: appTheme.blue30001,
+              color: appTheme.blue500,
               borderRadius: BorderRadius.circular(100),
             ),
             child: Center(
@@ -194,53 +192,53 @@ class TotalExpenseContent extends BaseView<ExpenseController> {
       switch (i) {
         case 0:
           return PieChartSectionData(
-            color: appTheme.blue30001,
+            color: appTheme.blue500,
             value: 40,
             title: '40%',
             radius: radius,
             titleStyle: TextStyle(
               fontSize: fontSize,
               fontWeight: FontWeight.bold,
-              color: appTheme.black900,
+              color: appTheme.black9000a,
               shadows: shadows,
             ),
           );
         case 1:
           return PieChartSectionData(
-            color: appTheme.green300,
+            color: appTheme.green600,
             value: 30,
             title: '30%',
             radius: radius,
             titleStyle: TextStyle(
               fontSize: fontSize,
               fontWeight: FontWeight.bold,
-              color: appTheme.black900,
+              color: appTheme.black9000a,
               shadows: shadows,
             ),
           );
         case 2:
           return PieChartSectionData(
-            color: appTheme.pinkA100,
+            color: appTheme.black9000a,
             value: 15,
             title: '15%',
             radius: radius,
             titleStyle: TextStyle(
               fontSize: fontSize,
               fontWeight: FontWeight.bold,
-              color: appTheme.black900,
+              color: appTheme.black9000a,
               shadows: shadows,
             ),
           );
         case 3:
           return PieChartSectionData(
-            color: appTheme.teal100,
+            color: appTheme.black9000a,
             value: 15,
             title: '15%',
             radius: radius,
             titleStyle: TextStyle(
               fontSize: fontSize,
               fontWeight: FontWeight.bold,
-              color: appTheme.black900,
+              color: appTheme.black9000a,
               shadows: shadows,
             ),
           );

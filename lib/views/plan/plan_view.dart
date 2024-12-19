@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:kiwis_flutter/core/base/base.view.dart';
 import 'package:kiwis_flutter/core/constants/app_export.dart';
+import 'package:kiwis_flutter/models/plan.model.dart';
 import 'package:kiwis_flutter/widgets/app_bar/app_bar_leadingiconbutton.dart';
 import 'package:kiwis_flutter/widgets/app_bar/app_bar_title.dart';
 import 'package:kiwis_flutter/widgets/app_bar/custom_app_bar.dart';
@@ -17,11 +18,10 @@ class PlanView extends BaseView<PlanController> {
   /// Section Widget
   PreferredSizeWidget appBar(BuildContext context) {
     return PreferredSize(
-      preferredSize: Size.fromHeight(Get.height * 0.13), // Set desired height
+      preferredSize: Size.fromHeight(Get.height * 0.13),
       child: Container(
         padding: EdgeInsets.only(top: 23),
-        margin: EdgeInsets.symmetric(
-            horizontal: 16.0, vertical: 16), // Adjust padding as needed
+        margin: EdgeInsets.symmetric(horizontal: 16.0, vertical: 16),
         child: CustomAppBar(
           leadingWidth: 44.h,
           leading: AppbarLeadingIconbutton(
@@ -92,7 +92,7 @@ class PlanView extends BaseView<PlanController> {
                   padding: EdgeInsets.symmetric(horizontal: 16, vertical: 32.h),
                   width: Get.width,
                   decoration: BoxDecoration(
-                    color: theme.colorScheme.onPrimary,
+                    color: theme.colorScheme.onPrimary.withOpacity(0.05),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Column(
@@ -155,47 +155,50 @@ class PlanView extends BaseView<PlanController> {
                     itemCount: controller.plans.length,
                     itemBuilder: (context, index) {
                       final plan = controller.plans[index];
-                      return Container(
-                        width: double.maxFinite,
-                        decoration: BoxDecoration(
-                          color: theme.colorScheme.onPrimary,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: ListTile(
-                          onTap: () =>
-                              controller.onPressedPlanDetail(context, plan),
-                          contentPadding: EdgeInsets.symmetric(horizontal: 16),
-                          leading: Container(
-                            width: 3,
-                            height: 50,
-                            decoration: BoxDecoration(
-                              color: Colors.blue,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                          title: plan.name
-                              .toString()
-                              .text
-                              .bold
-                              .textStyle(theme.textTheme.titleMedium)
-                              .make(),
-                          subtitle:
-                              '${DateFormat('dd/MM/yyyy').format(plan.startDate ?? DateTime.now())} - ${DateFormat('dd/MM/yyyy').format(plan.endDate ?? DateTime.now())}'
-                                  .text
-                                  .textStyle(theme.textTheme.bodySmall)
-                                  .make(),
-                          trailing:
-                              'Time remaining ${plan.startDate?.difference(DateTime.now()).inDays} days'
-                                  .text
-                                  .textStyle(theme.textTheme.labelSmall)
-                                  .make(),
-                        ),
-                      );
+                      return _buildPlanItem(context, plan);
                     },
                   ),
                 ),
               ],
             ),
+    );
+  }
+
+  Widget _buildPlanItem(BuildContext context, PlanModel plan) {
+    return Container(
+      width: double.maxFinite,
+      decoration: BoxDecoration(
+        color: theme.colorScheme.onPrimary.withOpacity(0.05),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: ListTile(
+        onTap: () => controller.onPressedPlanDetail(context, plan),
+        contentPadding: EdgeInsets.symmetric(horizontal: 16),
+        leading: Container(
+          width: 3,
+          height: 50,
+          decoration: BoxDecoration(
+            color: Colors.blue,
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ),
+        title: plan.name
+            .toString()
+            .text
+            .bold
+            .textStyle(theme.textTheme.titleMedium)
+            .make(),
+        subtitle:
+            '${DateFormat('dd/MM/yyyy').format(plan.startDate ?? DateTime.now())} - ${DateFormat('dd/MM/yyyy').format(plan.endDate ?? DateTime.now())}'
+                .text
+                .textStyle(theme.textTheme.bodySmall)
+                .make(),
+        trailing:
+            'Time remaining ${plan.startDate?.difference(DateTime.now()).inDays} days'
+                .text
+                .textStyle(theme.textTheme.labelSmall)
+                .make(),
+      ),
     );
   }
 }

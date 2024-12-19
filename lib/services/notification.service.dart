@@ -1,9 +1,11 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
+import 'package:kiwis_flutter/requests/user.request.dart';
 
 class NotificationService extends GetxService {
   late FlutterLocalNotificationsPlugin _localNotificationsPlugin;
+  final UserRequest _userRequest = UserRequest();
 
   @override
   Future<NotificationService> init() async {
@@ -44,6 +46,7 @@ class NotificationService extends GetxService {
     FirebaseMessaging messaging = FirebaseMessaging.instance;
 
     String? token = await messaging.getToken();
+    await _userRequest.updateFcmToken(token!);
     print('FirebaseMessagingToken: $token');
     // Yêu cầu quyền
     await messaging.requestPermission(

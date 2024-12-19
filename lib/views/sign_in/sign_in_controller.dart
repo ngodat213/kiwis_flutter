@@ -60,7 +60,7 @@ class SignInController extends BaseController {
         } else if (apiResponse.error == "Account is deleted") {
           Get.defaultDialog(
             contentPadding: EdgeInsets.symmetric(vertical: 32, horizontal: 24),
-            backgroundColor: appTheme.primary,
+            backgroundColor: appTheme.gray50,
             title: "Account is deleted",
             middleText:
                 "Your account is deleted. Please contact admin to restore your account. Contact: noreply.ecourse@gmail.com",

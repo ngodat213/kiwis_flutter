@@ -48,10 +48,10 @@ class CameraWidget extends GetView<HomeController> {
                             child: Container(
                               width: Get.width - 97.h,
                               decoration: BoxDecoration(
-                                color: Colors.white.withOpacity(0.2),
+                                color: appTheme.black.withOpacity(0.2),
                                 borderRadius: BorderRadius.circular(20),
                                 border: Border.all(
-                                  color: Colors.white.withOpacity(0.3),
+                                  color: appTheme.black.withOpacity(0.3),
                                 ),
                               ),
                               child: Padding(
@@ -60,10 +60,10 @@ class CameraWidget extends GetView<HomeController> {
                                   controller: controller.captionTEC,
                                   maxLines: 1,
                                   maxLength: 30,
-                                  style: TextStyle(color: Colors.white),
+                                  style: TextStyle(color: appTheme.black),
                                   decoration: InputDecoration(
                                     hintText: 'Enter text',
-                                    hintStyle: TextStyle(color: Colors.white54),
+                                    hintStyle: TextStyle(color: appTheme.black),
                                     border: InputBorder.none,
                                   ),
                                 ),
@@ -118,7 +118,7 @@ class CameraWidget extends GetView<HomeController> {
                             child: IconButton(
                               icon: Icon(
                                 Icons.close,
-                                color: Colors.white,
+                                color: appTheme.black,
                                 size: 30,
                               ),
                               onPressed: controller.closeOnPost,
@@ -139,7 +139,7 @@ class CameraWidget extends GetView<HomeController> {
                           child: Center(
                             child: Icon(
                               Icons.check,
-                              color: Colors.white,
+                              color: appTheme.black,
                               size: 30,
                             ),
                           ),
@@ -159,7 +159,7 @@ class CameraWidget extends GetView<HomeController> {
                           controller.isFlashOn.value
                               ? Icons.flash_on
                               : Icons.flash_off,
-                          color: Colors.white,
+                          color: appTheme.black,
                           size: 30,
                         ),
                         onPressed: controller.toggleFlash,
@@ -172,7 +172,7 @@ class CameraWidget extends GetView<HomeController> {
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             border: Border.all(
-                              color: Colors.white,
+                              color: appTheme.black,
                               width: 4,
                             ),
                           ),
@@ -180,7 +180,7 @@ class CameraWidget extends GetView<HomeController> {
                             margin: EdgeInsets.all(3),
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color: Colors.white,
+                              color: appTheme.black,
                             ),
                           ),
                         ),
@@ -188,7 +188,7 @@ class CameraWidget extends GetView<HomeController> {
                       IconButton(
                         icon: Icon(
                           Icons.flip_camera_ios,
-                          color: Colors.white,
+                          color: appTheme.black,
                           size: 30,
                         ),
                         onPressed: controller.toggleRotate,

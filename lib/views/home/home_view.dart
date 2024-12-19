@@ -78,6 +78,7 @@ class HomeScreen extends BaseView<HomeController> {
                             imagePath: ImageConstant.svgMenuDefault,
                             height: 24.h,
                             width: 24.h,
+                            color: appTheme.gray800,
                           ),
                         ),
                         SizedBox(width: 24.h),
@@ -127,6 +128,7 @@ class HomeScreen extends BaseView<HomeController> {
                                   imagePath: ImageConstant.svgBell,
                                   height: 20.h,
                                   width: 20.h,
+                                  color: appTheme.gray800,
                                 ),
                                 SizedBox(width: 16.h),
                                 Container(

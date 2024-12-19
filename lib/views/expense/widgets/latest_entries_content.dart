@@ -17,10 +17,9 @@ class EntriesView extends BaseView<ExpenseController> {
   /// Section Widget
   PreferredSizeWidget appBar(BuildContext context) {
     return PreferredSize(
-      preferredSize: Size.fromHeight(Get.height * 0.09), // Set desired height
+      preferredSize: Size.fromHeight(Get.height * 0.09),
       child: Container(
-        margin: EdgeInsets.symmetric(
-            horizontal: 16.0, vertical: 16), // Adjust padding as needed
+        margin: EdgeInsets.symmetric(horizontal: 16.0, vertical: 16),
         child: CustomAppBar(
           leadingWidth: 44.h,
           leading: AppbarLeadingIconbutton(

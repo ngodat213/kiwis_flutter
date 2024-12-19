@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kiwis_flutter/core/constants/app_export.dart';
 import 'package:kiwis_flutter/views/message/message_controller.dart';
-import 'package:kiwis_flutter/widgets/app_bar/app_bar_trainling_iconbutton.dart';
+import 'package:kiwis_flutter/widgets/app_bar/app_bar_leadingiconbutton.dart';
 import 'package:kiwis_flutter/widgets/base_appbar.dart';
 import 'package:velocity_x/velocity_x.dart';
 
@@ -47,7 +47,7 @@ class SettingChatRoomContent extends GetView<MessageController> {
                       child: Container(
                         child: Column(
                           children: [
-                            AppbarTrailingIconbutton(
+                            AppbarLeadingIconbutton(
                               imagePath: ImageConstant.svgCalander,
                               margin: EdgeInsets.only(right: 8.h),
                             ),
@@ -63,7 +63,7 @@ class SettingChatRoomContent extends GetView<MessageController> {
                     SizedBox(width: 16.h),
                     Column(
                       children: [
-                        AppbarTrailingIconbutton(
+                        AppbarLeadingIconbutton(
                           imagePath: ImageConstant.svgBell,
                           margin: EdgeInsets.only(right: 8.h),
                         ),
@@ -135,7 +135,9 @@ class SettingChatRoomContent extends GetView<MessageController> {
                 SizedBox(
                   width: double.maxFinite,
                   child: _buildAboutSectionRow(
-                    onTap: () => controller.showModalGroupNameSheet(context),
+                    onTap: () => controller.isGroupChat()
+                        ? controller.handleLeaveGroup()
+                        : controller.handleBlockUser(),
                     inboxOne: ImageConstant.svgInbox,
                     aboutOne:
                         controller.isGroupChat() ? "Out group".tr : "Block".tr,
@@ -186,7 +188,7 @@ class SettingChatRoomContent extends GetView<MessageController> {
             height: 48.h,
             width: 48.h,
             decoration: BoxDecoration(
-              color: theme.colorScheme.onPrimary,
+              color: theme.colorScheme.onPrimary.withOpacity(0.05),
               borderRadius: BorderRadiusStyle.roundedBorder24,
             ),
             child: Stack(
@@ -196,6 +198,7 @@ class SettingChatRoomContent extends GetView<MessageController> {
                   imagePath: inboxOne,
                   height: 24.h,
                   width: 26.h,
+                  color: appTheme.black,
                 ),
               ],
             ),

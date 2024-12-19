@@ -1,23 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:kiwis_flutter/core/constants/app_export.dart';
+import 'package:kiwis_flutter/models/plan_location.model.dart';
 import 'package:kiwis_flutter/views/plan/plan_controller.dart';
 import 'package:kiwis_flutter/widgets/custom_icon_button.dart';
-import 'package:velocity_x/velocity_x.dart';
 import 'package:dotted_line/dotted_line.dart';
+import 'package:vietmap_flutter_gl/vietmap_flutter_gl.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class LocationCard extends GetView<PlanController> {
   const LocationCard(
       {super.key,
-      required this.name,
-      required this.estimatedCost,
-      required this.estimatedTime,
-      required this.address,
+      required this.planLocation,
       this.isLast = false,
       required this.index});
-  final String name;
-  final String estimatedCost;
-  final String estimatedTime;
-  final String address;
+  final PlanLocationModel planLocation;
   final bool? isLast;
   final int index;
 
@@ -29,41 +25,59 @@ class LocationCard extends GetView<PlanController> {
       children: [
         Container(
           width: Get.width,
-          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
-          decoration: BoxDecoration(
-            color: theme.colorScheme.onPrimary,
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: VStack([
-            HStack([
-              Row(
-                children: [
-                  name.text.bold.textStyle(theme.textTheme.titleLarge).make(),
-                  SizedBox(width: 10),
-                  '${estimatedTime} Minutes'
-                      .text
-                      .bold
-                      .textStyle(theme.textTheme.titleSmall)
-                      .make(),
-                ],
+          height: 200,
+          child: Stack(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: VietmapGL(
+                  styleString:
+                      'https://maps.vietmap.vn/api/maps/dark/styles.json?apikey=' +
+                          dotenv.env['VIETMAP_API_KEY']!,
+                  myLocationRenderMode: MyLocationRenderMode.COMPASS,
+                  initialCameraPosition: CameraPosition(
+                    target:
+                        LatLng(planLocation.latitude!, planLocation.longitude!),
+                    zoom: 15,
+                  ),
+                  onMapCreated: (controller) {
+                    controller.addSymbol(
+                      SymbolOptions(
+                        geometry: LatLng(
+                            planLocation.latitude!, planLocation.longitude!),
+                        iconImage: "marker-15",
+                        iconSize: 2.0,
+                      ),
+                    );
+                  },
+                ),
               ),
-              Spacer(),
-              'Remove'
-                  .tr
-                  .text
-                  .bold
-                  .textStyle(theme.textTheme.titleSmall)
-                  .make()
-                  .onTap(() => controller.removeLocation(index)),
-            ]),
-            '${estimatedCost} VNĐ'
-                .text
-                .bold
-                .textStyle(theme.textTheme.titleSmall)
-                .make(),
-            SizedBox(height: 10),
-            address.text.textStyle(theme.textTheme.bodySmall).make(),
-          ]),
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: Container(
+                  margin: EdgeInsets.only(left: 10, right: 10, bottom: 20),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: ListTile(
+                    title: Text(
+                      '📌 ' + planLocation.name!,
+                      style: theme.textTheme.titleLarge!.copyWith(
+                          color: Colors.black, fontWeight: FontWeight.bold),
+                    ),
+                    subtitle: Text(
+                      planLocation.address!,
+                      style: theme.textTheme.titleSmall!
+                          .copyWith(color: Colors.black),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
         SizedBox(height: 10),
         Visibility(

@@ -28,6 +28,7 @@ class AppbarLeadingIconbutton extends StatelessWidget {
           padding: EdgeInsets.all(10.h),
           child: CustomImageView(
             imagePath: imagePath,
+            color: appTheme.black,
           ),
         ),
       ),

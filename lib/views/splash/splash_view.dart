@@ -19,7 +19,7 @@ class SplashScreen extends BaseView<SplashController> {
               height: 28.h,
               width: 28.h,
               decoration: BoxDecoration(
-                color: appTheme.green300,
+                color: appTheme.green600,
                 borderRadius: BorderRadiusStyle.customBorderTL14,
               ),
               child: Column(

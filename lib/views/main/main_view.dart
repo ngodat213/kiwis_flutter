@@ -29,14 +29,14 @@ class MainView extends BaseView<MainController> {
             CrystalNavigationBarItem(
               icon: IconlyBold.home,
               unselectedIcon: IconlyLight.home,
-              selectedColor: appTheme.green60001,
+              selectedColor: appTheme.green600,
             ),
 
             /// Search
             CrystalNavigationBarItem(
               icon: IconlyBold.chat,
               unselectedIcon: IconlyLight.chat,
-              selectedColor: appTheme.green60001,
+              selectedColor: appTheme.green600,
             ),
           ],
         ),

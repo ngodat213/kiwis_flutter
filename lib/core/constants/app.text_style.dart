@@ -46,7 +46,7 @@ class CustomTextStyles {
         fontSize: 8.fSize,
       );
   static TextStyle get bodySmallAmber600 => theme.textTheme.bodySmall!.copyWith(
-        color: appTheme.amber600,
+        color: appTheme.amber400,
       );
   static TextStyle get bodySmallOnPrimary =>
       theme.textTheme.bodySmall!.copyWith(
@@ -114,6 +114,6 @@ class CustomTextStyles {
       );
   static TextStyle get titleSmallGreen300 =>
       theme.textTheme.titleSmall!.copyWith(
-        color: appTheme.green300,
+        color: appTheme.green600,
       );
 }

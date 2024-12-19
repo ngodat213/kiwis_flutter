@@ -156,6 +156,35 @@ class MessageController extends BaseController {
     }
   }
 
+  Future<void> handleLeaveGroup() async {
+    try {
+      final response = await _groupRequest.leaveGroupRequest(
+        groupId: groups.value[currentGroupIndex.value].groupId!,
+      );
+      if (response.allGood) {
+        Get.offAllNamed(Routes.MAIN);
+        Get.snackbar("Leave group", "Leave group successfully");
+      }
+    } catch (err) {
+      Get.snackbar("Leave group", err.toString());
+    }
+  }
+
+  Future<void> handleBlockUser() async {
+    try {
+      final response = await _groupRequest.blockUserRequest(
+        userId:
+            groups.value[currentGroupIndex.value].members!.first.user!.userId!,
+      );
+      if (response.allGood) {
+        Get.offAllNamed(Routes.MAIN);
+        Get.snackbar("Block user", "Block user successfully");
+      }
+    } catch (err) {
+      Get.snackbar("Block user", err.toString());
+    }
+  }
+
   Future<void> handleChangeGroupName(BuildContext context) async {
     try {
       final response = await _groupRequest.editGroupRequest(
@@ -177,31 +206,6 @@ class MessageController extends BaseController {
         Get.back();
         AnimatedSnackBar.material(
           "Group name changed successfully",
-          type: AnimatedSnackBarType.success,
-        ).show(context);
-      } else {
-        AnimatedSnackBar.material(
-          response.error!,
-          type: AnimatedSnackBarType.error,
-        ).show(context);
-      }
-    } catch (err) {
-      AnimatedSnackBar.material(
-        err.toString(),
-        type: AnimatedSnackBarType.error,
-      ).show(context);
-    }
-  }
-
-  Future<void> handleLeaveGroup(BuildContext context) async {
-    try {
-      final response = await _groupRequest.leaveGroupRequest(
-        groupId: groups.value[currentGroupIndex.value].groupId!,
-      );
-      if (response.allGood) {
-        Get.back();
-        AnimatedSnackBar.material(
-          "Leave group successfully",
           type: AnimatedSnackBarType.success,
         ).show(context);
       } else {

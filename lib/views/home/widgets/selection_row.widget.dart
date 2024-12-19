@@ -41,7 +41,7 @@ class SelectionRowWidget extends StatelessWidget {
           height: 48.h,
           width: 48.h,
           decoration: BoxDecoration(
-            color: theme.colorScheme.onPrimary,
+            color: theme.colorScheme.onPrimary.withOpacity(0.05),
             borderRadius: BorderRadiusStyle.roundedBorder24,
           ),
           child: Stack(
@@ -51,6 +51,7 @@ class SelectionRowWidget extends StatelessWidget {
                 imagePath: inboxOne,
                 height: 24.h,
                 width: 26.h,
+                color: appTheme.black,
               ),
             ],
           ),

@@ -64,7 +64,8 @@ class PlanDetailContent extends GetView<PlanController> {
                           padding: EdgeInsets.symmetric(
                               horizontal: 23.h, vertical: 23.h),
                           decoration: BoxDecoration(
-                            color: theme.colorScheme.onPrimary,
+                            color:
+                                theme.colorScheme.onPrimary.withOpacity(0.05),
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: VStack([
@@ -168,16 +169,8 @@ class PlanDetailContent extends GetView<PlanController> {
                                       controller.currentPlan.value!
                                               .planLocations!.length -
                                           1,
-                                  name: controller.currentPlan.value!
-                                      .planLocations![index].name!,
-                                  estimatedCost: controller.currentPlan.value!
-                                      .planLocations![index].estimatedCost
-                                      .toString(),
-                                  estimatedTime: controller.currentPlan.value!
-                                      .planLocations![index].estimatedTime
-                                      .toString(),
-                                  address: controller.currentPlan.value!
-                                      .planLocations![index].address!,
+                                  planLocation: controller
+                                      .currentPlan.value!.planLocations![index],
                                 ).marginOnly(bottom: 10);
                               },
                             ),

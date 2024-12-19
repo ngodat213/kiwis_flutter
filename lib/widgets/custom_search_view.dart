@@ -130,7 +130,7 @@ class CustomSearchView extends StatelessWidget {
             ),
         isDense: true,
         contentPadding: contentPadding ?? EdgeInsets.all(16.h),
-        fillColor: fillColor ?? appTheme.black900.withOpacity(0.3),
+        fillColor: fillColor ?? appTheme.black9000a.withOpacity(0.3),
         filled: filled,
         border: borderDecoration ??
             OutlineInputBorder(

@@ -102,11 +102,13 @@ class PostItem extends GetView<HomeController> {
                           child: CustomTextFormField(
                             controller: controller.commentTEC,
                             hintText: "Send a comment".tr,
+                            hintStyle: TextStyle(color: appTheme.gray50),
                             maxLines: 1,
                             contentPadding: EdgeInsets.symmetric(
                               horizontal: 12.h,
                               vertical: 12.h,
                             ),
+                            fillColor: appTheme.black9000a,
                             suffix: GestureDetector(
                               onTap: () {
                                 controller.sendComment(post.realtimePostId!);
