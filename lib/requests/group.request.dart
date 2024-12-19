@@ -81,10 +81,17 @@ class GroupRequest {
     required String groupId,
   }) async {
     var response = await _baseAPI.fetchData(
-      AppAPI.baseGroup,
+      AppAPI.baseGroup + "/$groupId",
       method: ApiMethod.DELETE,
-      body: {"groupId": groupId},
+      includeHeaders: true,
     );
+    return ApiResponse.fromResponse(response.data);
+  }
+
+  Future<ApiResponse> blockUserRequest({
+    required String userId,
+  }) async {
+    var response = await _baseAPI.fetchData(AppAPI.baseGroup);
     return ApiResponse.fromResponse(response.data);
   }
 }

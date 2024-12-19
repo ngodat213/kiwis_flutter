@@ -18,10 +18,6 @@ extension IconButtonStyleHelper on CustomIconButton {
         color: theme.colorScheme.onPrimary.withOpacity(0.05),
         borderRadius: BorderRadius.circular(20.h),
       );
-  static BoxDecoration get fillGreen => BoxDecoration(
-        color: appTheme.green300,
-        borderRadius: BorderRadius.circular(16.h),
-      );
   static BoxDecoration get fillPrimaryLR18 => BoxDecoration(
         color: theme.colorScheme.primary,
         borderRadius: BorderRadius.only(
@@ -76,10 +72,6 @@ extension IconButtonStyleHelper on CustomIconButton {
         color: appTheme.gray5002,
         borderRadius: BorderRadius.circular(24.h),
       );
-  static BoxDecoration get fillPinkA => BoxDecoration(
-        color: appTheme.pinkA100,
-        borderRadius: BorderRadius.circular(14.h),
-      );
   static BoxDecoration get fillGreenTL14 => BoxDecoration(
         color: appTheme.green600,
         borderRadius: BorderRadius.circular(14.h),
@@ -99,14 +91,6 @@ extension IconButtonStyleHelper on CustomIconButton {
   static BoxDecoration get fillPrimaryTL24 => BoxDecoration(
         color: theme.colorScheme.primary,
         borderRadius: BorderRadius.circular(24.h),
-      );
-  static BoxDecoration get fillPinkATL20 => BoxDecoration(
-        color: appTheme.pinkA100,
-        borderRadius: BorderRadius.circular(20.h),
-      );
-  static BoxDecoration get fillAmber => BoxDecoration(
-        color: appTheme.amber600,
-        borderRadius: BorderRadius.circular(22.h),
       );
   static BoxDecoration get fillOnPrimaryTL14 => BoxDecoration(
         color: theme.colorScheme.onPrimary.withOpacity(0.2),
@@ -157,7 +141,7 @@ class CustomIconButton extends StatelessWidget {
         child: DecoratedBox(
           decoration: decoration ??
               BoxDecoration(
-                color: theme.colorScheme.onPrimary,
+                color: theme.colorScheme.onPrimary.withOpacity(0.05),
                 borderRadius: BorderRadius.circular(20.h),
               ),
           child: IconButton(

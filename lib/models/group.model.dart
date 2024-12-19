@@ -3,6 +3,7 @@ import 'package:kiwis_flutter/models/cloudinary_image.model.dart';
 import 'package:kiwis_flutter/models/friend_data.model.dart';
 import 'package:kiwis_flutter/models/member.model.dart';
 import 'package:kiwis_flutter/models/message.model.dart';
+import 'package:kiwis_flutter/models/plan.model.dart';
 
 class GroupModel {
   String? groupId;
@@ -14,7 +15,7 @@ class GroupModel {
   FriendDataModel? createdBy;
   List<MemberModel>? members;
   List<MessageModel>? messages;
-  // List<Null>? plans;
+  // List<PlanModel>? plans;
   // List<Null>? realtimePosts;
 
   GroupModel({
@@ -76,9 +77,9 @@ class GroupModel {
       });
     }
     // if (json['plans'] != null) {
-    //   plans = <Null>[];
+    //   plans = <PlanModel>[];
     //   json['plans'].forEach((v) {
-    //     plans!.add(new Null.fromJson(v));
+    //     plans!.add(new PlanModel.fromJson(v));
     //   });
     // }
     // if (json['realtimePosts'] != null) {

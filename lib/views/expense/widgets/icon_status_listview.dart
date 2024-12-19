@@ -51,7 +51,7 @@ class IconStatusListView extends GetView<ExpenseController> {
         width: Get.width * 0.25,
         height: Get.height * 0.05,
         decoration: BoxDecoration(
-          color: appTheme.blueA200,
+          color: appTheme.blue500,
           borderRadius: BorderRadius.circular(16.h),
         ),
         child: Row(

@@ -29,7 +29,7 @@ class SignInScreen extends BaseView<SignInController> {
                   height: 28.h,
                   width: 28.h,
                   decoration: BoxDecoration(
-                    color: appTheme.green300,
+                    color: appTheme.green600,
                     borderRadius: BorderRadiusStyle.customBorderTL14,
                   ),
                   child: Column(
@@ -94,39 +94,6 @@ class SignInScreen extends BaseView<SignInController> {
             onPressed: () => controller.onSignInButtonPressed(context),
           ),
           SizedBox(height: 32.h),
-          "- Or Sign in with"
-              .tr
-              .text
-              .textStyle(theme.textTheme.titleSmall)
-              .make()
-              .paddingOnly(bottom: 16),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              CustomElevatedButton(
-                height: 48,
-                width: Get.width * 0.25,
-                text: "Google".tr,
-                buttonTextStyle: theme.textTheme.titleSmall,
-                decoration: BoxDecoration(
-                  color: theme.colorScheme.primary,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                buttonStyle: CustomButtonStyles.fillOnPrimaryTL28,
-              ),
-              CustomElevatedButton(
-                height: 48,
-                width: Get.width * 0.25,
-                text: "Facebook".tr,
-                buttonTextStyle: theme.textTheme.titleSmall,
-                decoration: BoxDecoration(
-                  color: theme.colorScheme.primary,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                buttonStyle: CustomButtonStyles.fillOnPrimaryTL28,
-              ),
-            ],
-          ).paddingOnly(bottom: 32),
           GestureDetector(
             onTap: () => controller.onSignUpButtonPressed(),
             child: Row(

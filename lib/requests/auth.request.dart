@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:kiwis_flutter/core/base/base.api.dart';
 import 'package:kiwis_flutter/core/constants/constants.dart';
 import 'package:kiwis_flutter/models/api.response.dart';
@@ -85,22 +87,20 @@ class AuthRequest {
     return ApiResponse.fromResponse(response.data);
   }
 
-  Future<ApiResponse> changeAvatarRequest({
-    required String email,
-    required XFile photo,
-  }) async {
-    var response = await _baseAPI.fetchData(
-      AppAPI.changeAvatar,
-    );
-    return ApiResponse.fromResponse(response.data);
-  }
-
   Future<ApiResponse> updatePasswordRequest({
     required String oldPassword,
     required String newPassword,
+    required String confirmPassword,
   }) async {
     var response = await _baseAPI.fetchData(
-      AppAPI.updatePassword,
+      AppAPI.changePassword,
+      method: ApiMethod.POST,
+      includeHeaders: true,
+      body: {
+        "oldPassword": oldPassword,
+        "newPassword": newPassword,
+        "confirmPassword": confirmPassword,
+      },
     );
     return ApiResponse.fromResponse(response.data);
   }
@@ -121,6 +121,8 @@ class AuthRequest {
   Future<ApiResponse> deleteAccountRequest() async {
     var response = await _baseAPI.fetchData(
       AppAPI.deleteAccount,
+      method: ApiMethod.POST,
+      includeHeaders: true,
     );
     return ApiResponse.fromResponse(response.data);
   }

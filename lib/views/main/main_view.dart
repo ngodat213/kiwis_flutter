@@ -14,13 +14,13 @@ class MainView extends BaseView<MainController> {
     return Obx(
       () => Container(
         child: CrystalNavigationBar(
-          paddingR: EdgeInsets.only(left: 40.h, right: 40.h, top: 5.h),
+          paddingR: EdgeInsets.only(left: 45.h, right: 45.h, top: 5.h),
           currentIndex: controller.currentIndex.value,
           unselectedItemColor: Colors.white70,
           backgroundColor: Colors.black.withOpacity(0.1),
           outlineBorderColor: Colors.grey.withOpacity(0.4),
           indicatorColor: Colors.black.withOpacity(0.1),
-          marginR: EdgeInsets.symmetric(horizontal: 36.h, vertical: 20.h),
+          marginR: EdgeInsets.symmetric(horizontal: 70.h, vertical: 20.h),
           onTap: (index) {
             controller.currentIndex.value = index;
           },
@@ -29,21 +29,14 @@ class MainView extends BaseView<MainController> {
             CrystalNavigationBarItem(
               icon: IconlyBold.home,
               unselectedIcon: IconlyLight.home,
-              selectedColor: appTheme.green60001,
-            ),
-
-            /// Favourite
-            CrystalNavigationBarItem(
-              icon: IconlyBold.chart,
-              unselectedIcon: IconlyLight.chart,
-              selectedColor: appTheme.green60001,
+              selectedColor: appTheme.green600,
             ),
 
             /// Search
             CrystalNavigationBarItem(
               icon: IconlyBold.chat,
               unselectedIcon: IconlyLight.chat,
-              selectedColor: appTheme.green60001,
+              selectedColor: appTheme.green600,
             ),
           ],
         ),

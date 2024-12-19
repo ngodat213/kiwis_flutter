@@ -4,23 +4,6 @@ import 'package:kiwis_flutter/core/constants/app_export.dart';
 /// A class that offers pre-defined styles for customizing button appearance.
 class CustomButtonStyles {
   /// Filled button style
-  static ButtonStyle get fillAmber => ElevatedButton.styleFrom(
-        backgroundColor: appTheme.amber600,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(28.h),
-        ),
-        elevation: 0,
-        padding: EdgeInsets.zero,
-      );
-
-  static ButtonStyle get fillCyan => ElevatedButton.styleFrom(
-        backgroundColor: appTheme.cyan500,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(18.h),
-        ),
-        elevation: 0,
-        padding: EdgeInsets.zero,
-      );
 
   static ButtonStyle get fillGreen => ElevatedButton.styleFrom(
         backgroundColor: appTheme.green600,

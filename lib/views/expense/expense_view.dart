@@ -38,8 +38,7 @@ class ExpenseScreen extends BaseView<ExpenseController> {
   /// Section Widget
   Widget _buildHeaderSection() {
     return Container(
-      margin: EdgeInsets.symmetric(
-          horizontal: 16.0, vertical: 16), // Adjust padding as needed
+      margin: EdgeInsets.symmetric(horizontal: 16.0, vertical: 16),
       child: CustomAppBar(
         title: AppbarTitle(
           text: "Expense".tr,

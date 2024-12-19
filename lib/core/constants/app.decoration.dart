@@ -7,7 +7,7 @@ class AppDecoration {
         color: appTheme.gray800,
         boxShadow: [
           BoxShadow(
-            color: appTheme.gray900.withOpacity(0.5),
+            color: appTheme.gray800.withOpacity(0.5),
             spreadRadius: 2.h,
             blurRadius: 2.h,
             offset: Offset(0, 4),
@@ -16,11 +16,11 @@ class AppDecoration {
       );
 
   static BoxDecoration get colorBase700 => BoxDecoration(
-        color: appTheme.gray90003,
+        color: appTheme.gray5001,
       );
 
   static BoxDecoration get colorGray800 => BoxDecoration(
-        color: appTheme.gray900,
+        color: appTheme.gray800,
       );
 
   static BoxDecoration get colorBase800ColorWhite10 => BoxDecoration(
@@ -28,36 +28,11 @@ class AppDecoration {
         border: Border.all(color: appTheme.gray800, width: 4.h),
         boxShadow: [
           BoxShadow(
-            color: appTheme.gray900.withOpacity(0.5),
+            color: appTheme.gray800.withOpacity(0.5),
             spreadRadius: 2.h,
             offset: Offset(0, 4),
           ),
         ],
-      );
-
-  static BoxDecoration get colorMorePink => BoxDecoration(
-        color: appTheme.pinkA100,
-      );
-
-  static BoxDecoration get colorPrimary800 => BoxDecoration(
-        color: appTheme.blueA40019,
-        border: Border.all(
-          color: theme.colorScheme.primary,
-          width: 1.h,
-          strokeAlign: BorderSide.strokeAlignCenter,
-        ),
-      );
-
-  static BoxDecoration get colorPrimary800ColorPrimary100 => BoxDecoration(
-        color: appTheme.blueA40019,
-        border: Border.all(
-          color: theme.colorScheme.primary,
-          width: 3.h,
-        ),
-      );
-
-  static BoxDecoration get colorSecondary500 => BoxDecoration(
-        color: appTheme.green300,
       );
 
   static BoxDecoration get colorSecondary900 => BoxDecoration(
@@ -109,18 +84,6 @@ class AppDecoration {
         ),
       );
 
-  // Fill decorations
-  static BoxDecoration get fillBack => BoxDecoration(
-        color: appTheme.black900,
-      );
-
-  static BoxDecoration get fillBlack900 => BoxDecoration(
-        color: appTheme.black900.withOpacity(0.3),
-      );
-  static BoxDecoration get fillBlue => BoxDecoration(
-        color: appTheme.blue200,
-      );
-
   static BoxDecoration get fillOnPrimary => BoxDecoration(
         color: theme.colorScheme.onPrimary.withOpacity(1),
       );
@@ -129,74 +92,12 @@ class AppDecoration {
         color: theme.colorScheme.primary,
       );
 
-  static BoxDecoration get gradientGrayToGray => BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment(0.5, 0),
-          end: Alignment(0.5, 1),
-          colors: [appTheme.gray900.withOpacity(0), appTheme.gray900],
-        ),
-      );
-
-  static BoxDecoration get gradientGrayToGray900 => BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment(0.5, 0),
-          end: Alignment(0.5, 1),
-          colors: [appTheme.gray900.withOpacity(0), appTheme.gray900],
-        ),
-      );
-
-  static BoxDecoration get gradientGrayToGray90001 => BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment(0.5, 0),
-          end: Alignment(0.5, 1),
-          colors: [
-            appTheme.gray90001.withOpacity(0),
-            appTheme.gray90003,
-            appTheme.gray90001
-          ],
-        ),
-      );
-
-  static BoxDecoration get gradientGrayToTeal => BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment(0.5, 0),
-          end: Alignment(0.5, 1),
-          colors: [appTheme.gray800, appTheme.gray800, appTheme.teal800],
-        ),
-      );
-
   static BoxDecoration get gradientGreenToGreen => BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment(0.23, 0.08),
           end: Alignment(0.5, 1),
           colors: [appTheme.green600, appTheme.green600],
         ),
-      );
-
-  static BoxDecoration get gradientOnPrimaryContainerToGray => BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment(0.5, 0),
-          end: Alignment(0.5, 1),
-          colors: [
-            theme.colorScheme.onPrimaryContainer,
-            theme.colorScheme.onPrimaryContainer,
-            appTheme.gray80001
-          ],
-        ),
-      );
-
-  // Outline decorations
-
-  static BoxDecoration get outlineGreen600 => BoxDecoration(
-        color: appTheme.green600,
-        boxShadow: [
-          BoxShadow(
-            color: appTheme.black900.withOpacity(0.5),
-            spreadRadius: 2.h,
-            blurRadius: 2.h,
-            offset: Offset(0, 4),
-          ),
-        ],
       );
 
   static BoxDecoration get outlineOnPrimary => BoxDecoration(
