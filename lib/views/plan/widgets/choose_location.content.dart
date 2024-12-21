@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:kiwis_flutter/core/constants/app.button_style.dart';
 import 'package:kiwis_flutter/core/constants/app_export.dart';
 import 'package:kiwis_flutter/views/plan/plan_controller.dart';
-import 'package:kiwis_flutter/views/plan/widgets/addlocation.content.dart';
 import 'package:kiwis_flutter/widgets/base_appbar.dart';
 import 'package:kiwis_flutter/widgets/custom_elevated_button.dart';
 import 'package:kiwis_flutter/widgets/custom_text_form_field.dart';
@@ -26,6 +25,10 @@ class ChooseLocationContent extends GetView<PlanController> {
       appBar: baseAppBar(
         context: context,
         title: "".tr,
+        onBack: () {
+          controller.currentLocation.value = null;
+          Get.back();
+        },
         actions: [
           CustomTextFormField(
             width: Get.width * 0.7,
@@ -47,13 +50,8 @@ class ChooseLocationContent extends GetView<PlanController> {
       ),
       body: Stack(
         children: [
-          // Map View
           Obx(() {
             final vietMapController = mapService.mapController.value;
-            // if (vietMapController == null) {
-            //   print("vietMapController is null");
-            //   return Center(child: CircularProgressIndicator());
-            // }
             return vietMapGl.VietmapGL(
               styleString: mapService.styleUrl,
               initialCameraPosition: mapService.defaultLocation,
@@ -71,20 +69,6 @@ class ChooseLocationContent extends GetView<PlanController> {
               },
             );
           }),
-          // Back Button
-          Positioned(
-            top: 40,
-            left: 16,
-            child: CircleAvatar(
-              backgroundColor: Colors.white,
-              child: IconButton(
-                icon: Icon(Icons.arrow_back, color: Colors.black),
-                onPressed: () => Get.back(),
-              ),
-            ),
-          ),
-
-          // Search Bar và Results
           Positioned(
             top: 0,
             left: 60,
@@ -136,8 +120,6 @@ class ChooseLocationContent extends GetView<PlanController> {
               ],
             ),
           ),
-
-          // Confirm Button
           Positioned(
             bottom: 20,
             left: 20,
@@ -172,6 +154,9 @@ class ChooseLocationContent extends GetView<PlanController> {
                     ),
                     SizedBox(height: 20),
                     CustomElevatedButton(
+                      buttonTextStyle: theme.textTheme.titleMedium!.copyWith(
+                        color: Colors.white,
+                      ),
                       buttonStyle: CustomButtonStyles.fillGreen,
                       onPressed: () =>
                           controller.onPressChooseLocation(context),
@@ -182,10 +167,8 @@ class ChooseLocationContent extends GetView<PlanController> {
               );
             }),
           ),
-
-          // Current Location Button
           Positioned(
-            top: 100,
+            top: 40,
             left: 16,
             child: CircleAvatar(
               backgroundColor: Colors.white,
@@ -197,8 +180,6 @@ class ChooseLocationContent extends GetView<PlanController> {
               ),
             ),
           ),
-
-          // Loading Indicator
           Obx(() {
             if (mapService.mapController.value == null) {
               return Center(
@@ -210,11 +191,5 @@ class ChooseLocationContent extends GetView<PlanController> {
         ],
       ),
     );
-  }
-
-  // Thêm hàm helper để load image từ asset
-  Future<Uint8List> _loadImageFromAsset(String assetName) async {
-    final ByteData data = await rootBundle.load(assetName);
-    return data.buffer.asUint8List();
   }
 }

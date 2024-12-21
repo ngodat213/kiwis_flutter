@@ -5,6 +5,7 @@ import 'package:kiwis_flutter/core/constants/app.value.dart';
 import 'package:kiwis_flutter/core/constants/constants.dart';
 import 'package:kiwis_flutter/core/manager/manager.socket.dart';
 import 'package:kiwis_flutter/requests/user.request.dart';
+import 'package:kiwis_flutter/services/notification.service.dart';
 import 'package:kiwis_flutter/services/services.dart';
 
 class SplashController extends BaseController {
@@ -21,15 +22,20 @@ class SplashController extends BaseController {
       if (await AuthServices.getAuthBearerToken() == "") {
         Get.offNamed(Routes.SIGN_IN);
       } else {
-        final response = await _userRequest.getCurrentUser();
-        if (response.allGood) {
-          AuthServices.saveUser(response.body);
-          ManagerSocket.initSocket(
-            domain: AppAPI.domainSocket,
-            userId: response.body['userId'],
-          );
-          Get.offNamed(Routes.MAIN);
-        } else {
+        try {
+          final response = await _userRequest.getCurrentUser();
+          if (response.allGood) {
+            AuthServices.saveUser(response.body);
+            ManagerSocket.initSocket(
+              domain: AppAPI.domainSocket,
+              userId: response.body['userId'],
+            );
+            await NotificationService().initializeFirebaseMessaging();
+            Get.offNamed(Routes.MAIN);
+          } else {
+            Get.offNamed(Routes.SIGN_IN);
+          }
+        } catch (e) {
           Get.offNamed(Routes.SIGN_IN);
         }
       }

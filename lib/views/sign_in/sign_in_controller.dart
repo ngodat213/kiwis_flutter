@@ -23,7 +23,7 @@ class SignInController extends BaseController {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   Rx<SignInModel> signInModelObj = SignInModel().obs;
-  RxBool isShowPassword = false.obs;
+  RxBool isShowPassword = true.obs;
 
   @override
   void onInit() {

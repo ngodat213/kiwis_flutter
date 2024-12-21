@@ -99,7 +99,7 @@ class LocationCard extends GetView<PlanController> {
                 width: 36.h,
                 padding: EdgeInsets.all(10.h),
                 onTap: () {
-                  controller.onTapSwapLocation(index);
+                  // controller.onTapSwapLocation(index);
                 },
                 child: Center(
                   child: Icon(

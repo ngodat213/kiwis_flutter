@@ -20,7 +20,6 @@ class OnPlanView extends GetView<OnPlanController> {
           // Map View
           Obx(() {
             final vietMapController = mapService.mapController.value;
-
             return vietMapGl.VietmapGL(
               styleString: mapService.styleUrl,
               initialCameraPosition: mapService.defaultLocation,
@@ -29,8 +28,9 @@ class OnPlanView extends GetView<OnPlanController> {
               myLocationRenderMode: vietMapGl.MyLocationRenderMode.COMPASS,
               onMapCreated: (vietMapGl.VietmapController vmController) async {
                 mapService.mapController.value = vmController;
-                mapService.startTrackingUserLocation();
-                await controller.drawLine();
+                await mapService.moveToCurrentLocation();
+                // mapService.startTrackingUserLocation();
+                // await controller.drawLine();
               },
               onMapClick: (point, latLng) {
                 mapService.isUserPinned.value = false;

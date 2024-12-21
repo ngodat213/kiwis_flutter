@@ -105,6 +105,9 @@ class AddLocationContent extends GetView<PlanController> {
           ),
           SizedBox(height: 32),
           CustomElevatedButton(
+            buttonTextStyle: theme.textTheme.titleMedium!.copyWith(
+              color: Colors.white,
+            ),
             buttonStyle: CustomButtonStyles.fillGreen,
             onPressed: () => controller.changeCurrentLocation(),
             text: "Add location".tr,

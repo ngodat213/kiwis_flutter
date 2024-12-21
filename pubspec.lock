@@ -758,6 +758,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "7.7.0"
+  gif:
+    dependency: "direct main"
+    description:
+      name: gif
+      sha256: ade95694f1471da737922806818ffade2814d1d7f8d10af38ebcf36ace012bc0
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.3.0"
+  glossy:
+    dependency: "direct main"
+    description:
+      name: glossy
+      sha256: e57a20a9883eecbb134a2495d602c75ed99f0bdf010ab09b6d56d680a6af8616
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.4"
   google_fonts:
     dependency: "direct main"
     description:

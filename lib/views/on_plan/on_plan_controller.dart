@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:kiwis_flutter/core/base/base.controller.dart';
 import 'package:kiwis_flutter/models/plan.model.dart';
 import 'package:kiwis_flutter/models/plan_location.model.dart';
+import 'package:kiwis_flutter/models/task.model.dart';
 import 'package:kiwis_flutter/requests/plan.request.dart';
 import 'package:kiwis_flutter/services/geolocator.service.dart';
 import 'package:kiwis_flutter/services/map.service.dart';
@@ -17,10 +18,10 @@ class OnPlanController extends BaseController {
   final mapService = MapService.to;
   final geoService = GeolocatorService.to;
   final Rxn<PlanModel> currentPlan = Rxn<PlanModel>(null);
-  final RxList<PlanLocationModel> locations = RxList.empty();
+  final Rxn<TaskModel> currentTask = Rxn<TaskModel>(null);
   String? argPlanId;
   final RxBool onTracking = false.obs;
-  final RxInt currentRouteIndex = 0.obs;
+  final RxInt currentTaskIndex = 0.obs;
   final RxBool isShowDialog = false.obs;
 
   @override
@@ -28,21 +29,16 @@ class OnPlanController extends BaseController {
     super.onInit();
     argPlanId = Get.arguments;
     await getPlan();
-    await drawLine();
   }
 
-  Rx<PlanLocationModel> get currentLocation =>
-      locations[currentRouteIndex.value].obs;
-
   RxBool get isLastLocation =>
-      (currentRouteIndex.value == locations.length - 1).obs;
+      (currentTaskIndex.value == currentPlan.value!.tasks!.length - 1).obs;
 
   Future<void> getPlan() async {
     try {
       final plan = await _planRequest.findPlanById(argPlanId!);
       if (plan.allGood) {
         currentPlan.value = PlanModel.fromJson(plan.body);
-        locations.value = currentPlan.value!.planLocations ?? [];
       }
     } catch (e) {
       print(e);
@@ -50,8 +46,8 @@ class OnPlanController extends BaseController {
   }
 
   Future<void> nextLocation() async {
-    if (currentRouteIndex.value < locations.length - 1) {
-      currentRouteIndex.value++;
+    if (currentTaskIndex.value < currentPlan.value!.tasks!.length - 1) {
+      currentTaskIndex.value++;
       await drawLine();
     }
   }
@@ -65,16 +61,18 @@ class OnPlanController extends BaseController {
   }
 
   Future<void> drawLine() async {
-    await mapService.drawTripPolyLine(
-      vietMapFlg.LatLng(
-        geoService.currentPosition.value!.latitude,
-        geoService.currentPosition.value!.longitude,
-      ),
-      vietMapFlg.LatLng(
-        locations[currentRouteIndex.value].latitude!,
-        locations[currentRouteIndex.value].longitude!,
-      ),
-    );
+    if (currentTask.value?.planLocation != null) {
+      await mapService.drawTripPolyLine(
+        vietMapFlg.LatLng(
+          geoService.currentPosition.value!.latitude,
+          geoService.currentPosition.value!.longitude,
+        ),
+        vietMapFlg.LatLng(
+          currentTask.value!.planLocation!.latitude!,
+          currentTask.value!.planLocation!.longitude!,
+        ),
+      );
+    }
   }
 
   Future<void> updatePlan() async {

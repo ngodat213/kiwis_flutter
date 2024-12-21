@@ -3,7 +3,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:kiwis_flutter/core/base/base.controller.dart';
 import 'package:kiwis_flutter/requests/auth.request.dart';
-import 'package:kiwis_flutter/views/sign_up/models/sign_up_model.dart';
 import '../../core/constants/app_export.dart';
 
 class SignUpController extends BaseController {
@@ -13,7 +12,6 @@ class SignUpController extends BaseController {
   TextEditingController passwordTEC = TextEditingController();
   TextEditingController firstNameTEC = TextEditingController();
   TextEditingController lastNameTEC = TextEditingController();
-  Rx<SignUpModel> signUpModelObj = SignUpModel().obs;
   RxBool isShowPassword = true.obs;
 
   Future<void> onSignUpButtonPressed(BuildContext context) async {

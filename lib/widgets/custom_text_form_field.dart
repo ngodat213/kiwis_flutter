@@ -126,7 +126,7 @@ class CustomTextFormField extends StatelessWidget {
 
   Widget get textFormFieldWidget => Container(
         width: width ?? double.maxFinite,
-        // height: height ?? Get.height,
+        height: height ?? Get.height,
         decoration: boxDecoration,
         child: TextFormField(
           scrollPadding: EdgeInsets.only(

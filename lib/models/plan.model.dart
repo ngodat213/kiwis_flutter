@@ -2,12 +2,14 @@ import 'package:kiwis_flutter/models/cloudinary_image.model.dart';
 import 'package:kiwis_flutter/models/friend_data.model.dart';
 import 'package:kiwis_flutter/models/group.model.dart';
 import 'package:kiwis_flutter/models/plan_location.model.dart';
+import 'package:kiwis_flutter/models/task.model.dart';
 
 class PlanModel {
   String? planId;
   String? createdById;
   String? groupId;
   String? name;
+  String? description;
   DateTime? startDate;
   DateTime? endDate;
   int? totalCost;
@@ -20,8 +22,8 @@ class PlanModel {
   GroupModel? group;
   CloudinaryImageModel? thumbnail;
   List<Null>? realtimeImages;
-  List<PlanLocationModel>? planLocations;
   List<Null>? planCosts;
+  List<TaskModel>? tasks;
 
   PlanModel(
       {this.planId,
@@ -40,7 +42,6 @@ class PlanModel {
       this.group,
       this.thumbnail,
       this.realtimeImages,
-      this.planLocations,
       this.planCosts});
 
   PlanModel.fromJson(Map<String, dynamic> json) {
@@ -67,19 +68,22 @@ class PlanModel {
         ? FriendDataModel.fromJson(json['createdBy'])
         : null;
     group = json['group'] != null ? GroupModel.fromJson(json['group']) : null;
-    thumbnail = json['thumbnail'];
+    thumbnail = json['thumbnail'] != null
+        ? CloudinaryImageModel.fromJson(json['thumbnail'])
+        : null;
+    description = json['description'] == null ? null : json['description'];
+    if (json['tasks'] != null) {
+      tasks = <TaskModel>[];
+      json['tasks'].forEach((v) {
+        tasks!.add(TaskModel.fromJson(v));
+      });
+    }
     // if (json['realtimeImages'] != null) {
     //   realtimeImages = <Null>[];
     //   json['realtimeImages'].forEach((v) {
     //     realtimeImages!.add(new Null.fromJson(v));
     //   });
     // }
-    if (json['planLocations'] != null) {
-      planLocations = <PlanLocationModel>[];
-      json['planLocations'].forEach((v) {
-        planLocations!.add(new PlanLocationModel.fromJson(v));
-      });
-    }
     // if (json['planCosts'] != null) {
     //   planCosts = <Null>[];
     //   json['planCosts'].forEach((v) {
@@ -106,15 +110,15 @@ class PlanModel {
       data['createdBy'] = this.createdBy!.toJson();
     }
     data['group'] = this.group?.toJson();
-    data['thumbnail'] = this.thumbnail;
+    data['thumbnail'] = this.thumbnail?.toJson();
+    data['description'] = this.description;
+    if (this.tasks != null) {
+      data['tasks'] = this.tasks!.map((v) => v.toJson()).toList();
+    }
     // if (this.realtimeImages != null) {
     //   data['realtimeImages'] =
     //       this.realtimeImages!.map((v) => v.toJson()).toList();
     // }
-    if (this.planLocations != null) {
-      data['planLocations'] =
-          this.planLocations!.map((v) => v.toJson()).toList();
-    }
     // if (this.planCosts != null) {
     //   data['planCosts'] = this.planCosts!.map((v) => v.toJson()).toList();
     // }

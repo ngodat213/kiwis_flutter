@@ -19,7 +19,6 @@ void main() async {
   await runZonedGuarded(
     () async {
       WidgetsFlutterBinding.ensureInitialized();
-      //setting up firebase notifications
       await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform,
       );
@@ -30,7 +29,7 @@ void main() async {
         assetLoader: const AssetLoaderRootBundleJson('assets/locales/'),
       );
       await LocalStorageService.getPrefs();
-
+      // Service
       await Get.putAsync(() => GeolocatorService().init());
       await Get.putAsync(() => MapService().init());
       await Get.putAsync(() => NotificationService().init());

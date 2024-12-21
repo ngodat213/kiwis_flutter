@@ -5,6 +5,7 @@ import 'package:kiwis_flutter/views/sign_up/sign_up_controller.dart';
 import 'package:kiwis_flutter/core/constants/app_export.dart';
 import 'package:kiwis_flutter/widgets/custom_elevated_button.dart';
 import 'package:kiwis_flutter/widgets/custom_floating_text_field.dart';
+import 'package:kiwis_flutter/widgets/custom_text_form_field.dart';
 
 // ignore_for_file: must_be_immutable
 class SignUpScreen extends BaseView<SignUpController> {
@@ -59,10 +60,12 @@ class SignUpScreen extends BaseView<SignUpController> {
             height: 48,
             text: "lbl_sign_up".tr,
             decoration: BoxDecoration(
-              color: theme.colorScheme.primary,
-              borderRadius: BorderRadius.circular(8),
+              color: appTheme.green600,
+              borderRadius: BorderRadius.circular(10),
             ),
-            buttonStyle: CustomButtonStyles.fillOnPrimaryTL28,
+            buttonTextStyle: theme.textTheme.titleSmall!.copyWith(
+              color: Colors.white,
+            ),
             onPressed: () => controller.onSignUpButtonPressed(context),
           ),
         ],
@@ -72,28 +75,15 @@ class SignUpScreen extends BaseView<SignUpController> {
 
   /// Section Widget
   Widget _buildEmailInput(BuildContext context) {
-    return CustomFloatingTextField(
+    return CustomTextFormField(
       controller: controller.emailTEC,
-      labelText: "lbl_email".tr,
-      labelStyle: theme.textTheme.titleMedium!,
-      hintText: "lbl_email".tr,
+      hintText: "Email",
+      height: 56 + 16,
+      contentPadding: EdgeInsets.symmetric(horizontal: 23.h, vertical: 23.h),
+      boxDecoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(18.h),
+      ),
       textInputType: TextInputType.emailAddress,
-      suffix: Container(
-        margin: EdgeInsets.fromLTRB(12.h, 38.h, 24.h, 38.h),
-        child: CustomImageView(
-          imagePath: ImageConstant.imgMail,
-          height: 24.h,
-          width: 24.h,
-          fit: BoxFit.contain,
-        ),
-      ),
-      suffixConstraints: BoxConstraints(
-        maxHeight: 100.h,
-      ),
-      contentPadding: EdgeInsets.symmetric(
-        horizontal: 24.h,
-        vertical: 38.h,
-      ),
       validator: (value) {
         if (value == null || (!isValidEmail(value, isRequired: true))) {
           controller.showSnackBarWarning(
@@ -108,37 +98,16 @@ class SignUpScreen extends BaseView<SignUpController> {
   /// Section Widget
   Widget _buildPasswordInput(BuildContext context) {
     return Obx(
-      () => CustomFloatingTextField(
+      () => CustomTextFormField(
         controller: controller.passwordTEC,
-        labelText: "lbl_password".tr,
-        labelStyle: theme.textTheme.bodySmall!,
-        hintText: "lbl_password".tr,
+        hintText: "Password",
+        height: 56 + 16,
+        contentPadding: EdgeInsets.symmetric(horizontal: 23.h, vertical: 23.h),
+        boxDecoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(18.h),
+        ),
         textInputType: TextInputType.visiblePassword,
         obscureText: controller.isShowPassword.value,
-        prefixConstraints: BoxConstraints(
-          maxHeight: 100.h,
-        ),
-        suffix: InkWell(
-          onTap: () {
-            controller.isShowPassword.value = !controller.isShowPassword.value;
-          },
-          child: Container(
-            margin: EdgeInsets.fromLTRB(12.h, 38.h, 24.h, 38.h),
-            child: CustomImageView(
-              imagePath: ImageConstant.svgPrivacy,
-              height: 24.h,
-              width: 24.h,
-              fit: BoxFit.contain,
-            ),
-          ),
-        ),
-        suffixConstraints: BoxConstraints(
-          maxHeight: 100.h,
-        ),
-        contentPadding: EdgeInsets.symmetric(
-          horizontal: 24.h,
-          vertical: 38.h,
-        ),
         validator: (value) {
           if (value == null || (!isValidPassword(value, isRequired: true))) {
             controller.showSnackBarWarning(
@@ -153,26 +122,13 @@ class SignUpScreen extends BaseView<SignUpController> {
 
   /// Section Widget
   Widget _buildFirstNameInput(BuildContext context) {
-    return CustomFloatingTextField(
+    return CustomTextFormField(
       controller: controller.firstNameTEC,
-      labelText: "lbl_first_name".tr,
-      labelStyle: theme.textTheme.titleMedium!,
-      hintText: "lbl_first_name".tr,
-      suffix: Container(
-        margin: EdgeInsets.fromLTRB(12.h, 38.h, 24.h, 38.h),
-        child: CustomImageView(
-          imagePath: ImageConstant.imgUser24x24,
-          height: 24.h,
-          width: 24.h,
-          fit: BoxFit.contain,
-        ),
-      ),
-      suffixConstraints: BoxConstraints(
-        maxHeight: 100.h,
-      ),
-      contentPadding: EdgeInsets.symmetric(
-        horizontal: 24.h,
-        vertical: 38.h,
+      hintText: "First Name",
+      height: 56 + 16,
+      contentPadding: EdgeInsets.symmetric(horizontal: 23.h, vertical: 23.h),
+      boxDecoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(18.h),
       ),
       validator: (value) {
         if (!isText(value)) {
@@ -187,27 +143,13 @@ class SignUpScreen extends BaseView<SignUpController> {
 
   /// Section Widget
   Widget _buildLastNameInput(BuildContext context) {
-    return CustomFloatingTextField(
+    return CustomTextFormField(
       controller: controller.lastNameTEC,
-      labelText: "lbl_last_name2".tr,
-      labelStyle: theme.textTheme.titleMedium!,
-      hintText: "lbl_last_name2".tr,
-      textInputAction: TextInputAction.done,
-      suffix: Container(
-        margin: EdgeInsets.fromLTRB(12.h, 38.h, 24.h, 38.h),
-        child: CustomImageView(
-          imagePath: ImageConstant.imgUser24x24,
-          height: 24.h,
-          width: 24.h,
-          fit: BoxFit.contain,
-        ),
-      ),
-      suffixConstraints: BoxConstraints(
-        maxHeight: 100.h,
-      ),
-      contentPadding: EdgeInsets.symmetric(
-        horizontal: 24.h,
-        vertical: 38.h,
+      hintText: "Last Name",
+      height: 56 + 16,
+      contentPadding: EdgeInsets.symmetric(horizontal: 23.h, vertical: 23.h),
+      boxDecoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(18.h),
       ),
       validator: (value) {
         if (!isText(value)) {
