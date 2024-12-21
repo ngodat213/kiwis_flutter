@@ -50,7 +50,7 @@ class PlanView extends BaseView<PlanController> {
   Widget body(BuildContext context) {
     return Container(
       width: double.maxFinite,
-      height: Get.height,
+      height: Get.height - Get.height * 0.13,
       padding: EdgeInsets.symmetric(horizontal: 16),
       child: controller.plans.isEmpty
           ? Center(
@@ -171,34 +171,53 @@ class PlanView extends BaseView<PlanController> {
         color: theme.colorScheme.onPrimary.withOpacity(0.05),
         borderRadius: BorderRadius.circular(10),
       ),
-      child: ListTile(
-        onTap: () => controller.onPressedPlanDetail(context, plan),
-        contentPadding: EdgeInsets.symmetric(horizontal: 16),
-        leading: Container(
-          width: 3,
-          height: 50,
-          decoration: BoxDecoration(
-            color: Colors.blue,
-            borderRadius: BorderRadius.circular(10),
+      child: Row(
+        children: [
+          plan.thumbnail?.imageUrl != null
+              ? CustomImageView(
+                  imagePath: plan.thumbnail?.imageUrl,
+                  width: Get.width * 0.13,
+                  height: Get.width * 0.13,
+                  fit: BoxFit.cover,
+                  radius: BorderRadius.circular(10),
+                  placeHolder: ImageConstant.imgNoData,
+                ).pOnly(right: 16)
+              : CustomImageView(
+                  imagePath: ImageConstant.imgNoData,
+                  width: Get.width * 0.13,
+                  height: Get.width * 0.13,
+                  fit: BoxFit.cover,
+                  radius: BorderRadius.circular(10),
+                ).pOnly(right: 16),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              plan.name
+                  .toString()
+                  .text
+                  .bold
+                  .textStyle(theme.textTheme.titleMedium)
+                  .make(),
+              '${DateFormat('dd/MM/yyyy').format(plan.startDate ?? DateTime.now())} - ${DateFormat('dd/MM/yyyy').format(plan.endDate ?? DateTime.now())}'
+                  .text
+                  .textStyle(theme.textTheme.bodySmall)
+                  .make(),
+              plan.startDate!.difference(DateTime.now()).inDays >= 0
+                  ? 'Time remaining ${plan.startDate?.difference(DateTime.now()).inDays} days'
+                      .text
+                      .textStyle(theme.textTheme.labelSmall)
+                      .make()
+                  : 'In progress'
+                      .tr
+                      .text
+                      .textStyle(theme.textTheme.labelSmall)
+                      .make(),
+            ],
           ),
-        ),
-        title: plan.name
-            .toString()
-            .text
-            .bold
-            .textStyle(theme.textTheme.titleMedium)
-            .make(),
-        subtitle:
-            '${DateFormat('dd/MM/yyyy').format(plan.startDate ?? DateTime.now())} - ${DateFormat('dd/MM/yyyy').format(plan.endDate ?? DateTime.now())}'
-                .text
-                .textStyle(theme.textTheme.bodySmall)
-                .make(),
-        trailing:
-            'Time remaining ${plan.startDate?.difference(DateTime.now()).inDays} days'
-                .text
-                .textStyle(theme.textTheme.labelSmall)
-                .make(),
-      ),
-    );
+        ],
+      ).p(16),
+    ).marginOnly(bottom: 8).onTap(
+          () => controller.onPressedPlanDetail(context, plan),
+        );
   }
 }

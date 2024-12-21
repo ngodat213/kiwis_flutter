@@ -453,7 +453,6 @@ class HomeController extends BaseController {
           Get.snackbar(
             'Success'.tr,
             'Delete account success'.tr,
-            colorText: appTheme.gray50,
           );
         }
       } else {
@@ -484,13 +483,11 @@ class HomeController extends BaseController {
           Get.snackbar(
             'Success'.tr,
             'Change avatar success'.tr,
-            colorText: appTheme.gray50,
           );
         } else {
           Get.snackbar(
             'Error'.tr,
             response.error!,
-            colorText: appTheme.gray50,
           );
         }
       }

@@ -79,7 +79,6 @@ class LocationSearchController extends GetxController {
         'Lỗi',
         'Không thể tìm kiếm địa điểm',
         backgroundColor: Colors.red,
-        colorText: Colors.white,
         snackPosition: SnackPosition.BOTTOM,
         margin: EdgeInsets.all(10),
       );
@@ -134,19 +133,11 @@ class LocationSearchController extends GetxController {
         Get.snackbar(
           'Thành công',
           'Đã chọn địa điểm',
-          backgroundColor: Colors.green,
-          colorText: Colors.white,
-          snackPosition: SnackPosition.BOTTOM,
-          margin: EdgeInsets.all(10),
         );
       } else {
         Get.snackbar(
           'Lỗi',
           'Không thể lấy tọa độ địa điểm',
-          backgroundColor: Colors.red,
-          colorText: Colors.white,
-          snackPosition: SnackPosition.BOTTOM,
-          margin: EdgeInsets.all(10),
         );
       }
     } catch (e) {
@@ -155,7 +146,6 @@ class LocationSearchController extends GetxController {
         'Lỗi',
         'Không thể chọn địa điểm',
         backgroundColor: Colors.red,
-        colorText: Colors.white,
         snackPosition: SnackPosition.BOTTOM,
         margin: EdgeInsets.all(10),
       );

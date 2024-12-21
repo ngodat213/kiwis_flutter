@@ -19,9 +19,7 @@ PreferredSizeWidget baseAppBar({
         leadingWidth: 44.h,
         leading: AppbarLeadingIconbutton(
           imagePath: ImageConstant.imgArrowLeftOnprimary,
-          onTap: () {
-            onBack ?? Get.back();
-          },
+          onTap: () => onBack != null ? onBack() : Get.back(),
         ),
         title: AppbarTitle(
           text: title.tr,

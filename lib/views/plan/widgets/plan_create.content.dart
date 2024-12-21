@@ -14,11 +14,12 @@ import 'package:kiwis_flutter/widgets/app_bar/custom_app_bar.dart';
 import 'package:kiwis_flutter/widgets/custom_elevated_button.dart';
 import 'package:kiwis_flutter/widgets/custom_icon_button.dart';
 import 'package:time_picker_spinner_pop_up/time_picker_spinner_pop_up.dart';
+import 'package:gif/gif.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 import '../../../widgets/custom_text_form_field.dart';
 
-class PlanCreateContent extends BaseView<PlanController> {
+class PlanCreateContent extends GetView<PlanController> {
   PlanCreateContent({
     super.key,
     this.isEdit = false,
@@ -39,6 +40,7 @@ class PlanCreateContent extends BaseView<PlanController> {
           leading: AppbarLeadingIconbutton(
             imagePath: ImageConstant.imgArrowLeftOnprimary,
             onTap: () {
+              controller.currentStep.value = 0;
               Get.back();
             },
           ),
@@ -46,146 +48,116 @@ class PlanCreateContent extends BaseView<PlanController> {
             text: isEdit == true ? "Edit plan".tr : "Create plan".tr,
             margin: EdgeInsets.only(left: 16.h),
           ),
-          actions: [
-            "Add"
-                .tr
-                .text
-                .bold
-                .textStyle(theme.textTheme.titleSmall)
-                .make()
-                .onTap(() => controller.onPressedAddTask(context)),
-          ],
         ),
       ),
     );
   }
 
   Widget? floatingActionButton(BuildContext context) {
-    return CustomElevatedButton(
-      text: controller.currentStep.value == 2 ? "Next" : "Done",
-      buttonTextStyle: theme.textTheme.titleSmall!.copyWith(
-        color: Colors.white,
-      ),
-      decoration: BoxDecoration(
-        color: appTheme.green600,
-        borderRadius: BorderRadius.circular(10),
-      ),
-      width: Get.width * 0.9,
-      onPressed: () {
-        controller.currentStep.value++;
-      },
-    ).marginSymmetric(horizontal: 32, vertical: 16);
+    return Obx(
+      () => CustomElevatedButton(
+        text: controller.currentStep.value == 1
+            ? "Done"
+            : controller.currentStep.value == 2
+                ? "Let's go"
+                : "Next",
+        buttonTextStyle: theme.textTheme.titleSmall!.copyWith(
+          color: Colors.white,
+        ),
+        decoration: BoxDecoration(
+          color: appTheme.green600,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        width: Get.width * 0.9,
+        onPressed: () {
+          if (controller.currentStep.value == 0) {
+            controller.currentStep.value++;
+          } else if (controller.currentStep.value == 1) {
+            controller.createPlan();
+          } else if (controller.currentStep.value == 2) {
+            Get.back();
+            controller.currentStep.value = 0;
+          }
+        },
+      ).marginSymmetric(horizontal: 32, vertical: 16),
+    );
   }
 
   @override
-  Widget body(BuildContext context) {
-    return SizedBox(
-      width: double.maxFinite,
-      child: Container(
-        height: Get.height,
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            CustomImageView(
-              imagePath: ImageConstant.imgEllipse2005,
-              height: 280.h,
-              width: 274.h,
-              alignment: Alignment.topRight,
-            ),
-            CustomImageView(
-              imagePath: ImageConstant.imgEllipse2006Green600516x342,
-              height: 340.h,
-              width: 240.h,
-              alignment: Alignment.bottomLeft,
-            ),
-            SafeArea(
-              child: SingleChildScrollView(
-                child: Container(
-                  height: Get.height,
-                  padding: EdgeInsets.symmetric(horizontal: 24),
-                  child: Obx(
-                    () => Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        CustomStepper(),
-                        controller.steps[controller.currentStep.value],
-                      ],
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: appBar(context),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: floatingActionButton(context),
+      body: SizedBox(
+        width: double.maxFinite,
+        child: Container(
+          height: Get.height - Get.height * 0.13,
+          child: Stack(
+            children: [
+              CustomImageView(
+                imagePath: ImageConstant.imgEllipse2005,
+                height: 280.h,
+                width: 274.h,
+                alignment: Alignment.topRight,
+              ),
+              CustomImageView(
+                imagePath: ImageConstant.imgEllipse2006Green600516x342,
+                height: 340.h,
+                width: 240.h,
+                alignment: Alignment.bottomLeft,
+              ),
+              SafeArea(
+                child: SingleChildScrollView(
+                  child: Container(
+                    height: Get.height - Get.height * 0.13 + 150,
+                    padding: EdgeInsets.symmetric(horizontal: 24),
+                    child: Obx(
+                      () => Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          CustomStepper(),
+                          controller.steps[controller.currentStep.value],
+                          SizedBox(height: 150),
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
   }
 }
 
-class ScheduleWidget extends GetView<PlanController> {
-  const ScheduleWidget({
-    super.key,
-  });
+class EnjoyWidget extends GetView<PlanController> {
+  const EnjoyWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: Get.width,
-      height: Get.height,
-      child: Column(
-        children: [
-          DatePicker(
-            DateTime.now(),
-            height: 90,
-            width: 70,
-            initialSelectedDate: DateTime.now(),
-            selectionColor: appTheme.green600.withOpacity(0.7),
-            selectedTextColor: Colors.white,
-            dateTextStyle: theme.textTheme.titleLarge!.copyWith(
-              fontWeight: FontWeight.w600,
-            ),
-            dayTextStyle: theme.textTheme.titleSmall!.copyWith(
-              fontWeight: FontWeight.w400,
-            ),
-            monthTextStyle: theme.textTheme.titleSmall!.copyWith(
-              fontWeight: FontWeight.w400,
-            ),
+    return Column(
+      children: [
+        Center(
+          child: Gif(
+            image: AssetImage("assets/gif/enjoy.gif"),
+            width: Get.width * 0.7,
+            fit: BoxFit.cover,
+            autostart: Autostart.loop,
           ),
-          SizedBox(height: 16),
-          Expanded(
-            child: ListView.builder(
-              itemCount: 6,
-              itemBuilder: (context, index) {
-                return index != 5
-                    ? SizedBox(
-                        width: Get.width,
-                        child: Stack(
-                          children: [
-                            Container(
-                              margin: EdgeInsets.symmetric(vertical: 8),
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 32, vertical: 8),
-                              decoration: BoxDecoration(
-                                color: theme.colorScheme.onPrimary
-                                    .withOpacity(.05),
-                                borderRadius: BorderRadius.circular(16),
-                              ),
-                              child: ListTile(
-                                contentPadding: EdgeInsets.zero,
-                                leading: Icon(Icons.access_time),
-                                title: Text("Day $index"),
-                                subtitle: Text("10:00 - 12:00"),
-                              ),
-                            ),
-                          ],
-                        ),
-                      )
-                    : SizedBox(height: 64);
-              },
-            ),
-          )
-        ],
-      ),
+        ),
+        SizedBox(height: 16),
+        "Your plan has been created successfully"
+            .tr
+            .text
+            .bold
+            .center
+            .textStyle(theme.textTheme.titleMedium)
+            .make()
+            .w(Get.width * 0.6),
+      ],
     );
   }
 }
@@ -283,8 +255,8 @@ class TimeWidget extends GetView<PlanController> {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(
-      () => Column(
+    return Obx(() {
+      return Column(
         children: [
           Container(
             width: Get.width,
@@ -327,7 +299,7 @@ class TimeWidget extends GetView<PlanController> {
                                 ),
                               ),
                               child: DateFormat('dd / MM / yyyy')
-                                  .format(dataTime)
+                                  .format(controller.startDay.value)
                                   .text
                                   .textStyle(theme.textTheme.titleMedium)
                                   .bold
@@ -384,7 +356,7 @@ class TimeWidget extends GetView<PlanController> {
                                 ),
                               ),
                               child: DateFormat('HH : mm')
-                                  .format(dataTime)
+                                  .format(controller.startDay.value)
                                   .text
                                   .textStyle(theme.textTheme.titleMedium)
                                   .bold
@@ -434,8 +406,7 @@ class TimeWidget extends GetView<PlanController> {
                         .pOnly(bottom: 8),
                     TimePickerSpinnerPopUp(
                       mode: CupertinoDatePickerMode.date,
-                      initTime: controller.startDay.value
-                          .add(const Duration(hours: 1)),
+                      initTime: controller.endDay.value,
                       minTime: controller.startDay.value,
                       barrierColor: Colors.black12,
                       minuteInterval: 1,
@@ -460,7 +431,7 @@ class TimeWidget extends GetView<PlanController> {
                                 ),
                               ),
                               child: DateFormat('dd / MM / yyyy')
-                                  .format(dataTime)
+                                  .format(controller.endDay.value)
                                   .text
                                   .textStyle(theme.textTheme.titleMedium)
                                   .bold
@@ -493,7 +464,7 @@ class TimeWidget extends GetView<PlanController> {
                         .pOnly(bottom: 8),
                     TimePickerSpinnerPopUp(
                       mode: CupertinoDatePickerMode.time,
-                      initTime: DateTime.now(),
+                      initTime: controller.endDay.value,
                       minTime: controller.startDay.value,
                       barrierColor: Colors.black12,
                       minuteInterval: 1,
@@ -544,8 +515,8 @@ class TimeWidget extends GetView<PlanController> {
             ),
           ),
         ],
-      ),
-    );
+      );
+    });
   }
 }
 
@@ -625,7 +596,7 @@ class CustomStepper extends GetView<PlanController> {
             ),
           ),
         ],
-        onStepReached: (index) => controller.currentStep.value = index,
+        enableStepTapping: false,
       ),
     );
   }

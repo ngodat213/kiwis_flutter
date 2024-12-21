@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:kiwis_flutter/core/base/base.api.dart';
 import 'package:kiwis_flutter/core/constants/constants.dart';
 import 'package:kiwis_flutter/models/api.response.dart';
@@ -29,21 +31,37 @@ class PlanRequest {
     required String budget,
     required DateTime startDay,
     required DateTime endDay,
+    Uint8List? image,
     String? groupId,
   }) async {
-    var response = await _baseAPI.fetchData(
-      AppAPI.basePlan,
-      method: ApiMethod.POST,
-      includeHeaders: true,
-      body: {
-        "name": title,
-        "description": description,
-        "totalCost": int.parse(budget),
-        "startDate": startDay.toIso8601String(),
-        "endDate": endDay.toIso8601String(),
-        "groupId": groupId,
-      },
-    );
+    var response = image != null
+        ? await _baseAPI.fileUpload(
+            AppAPI.basePlan,
+            method: ApiMethod.POST,
+            includeHeaders: true,
+            body: {
+              "name": title,
+              "description": description,
+              "totalCost": int.parse(budget),
+              "startDate": startDay.toIso8601String(),
+              "endDate": endDay.toIso8601String(),
+              "groupId": groupId,
+            },
+            file: image,
+          )
+        : await _baseAPI.fetchData(
+            AppAPI.basePlan,
+            method: ApiMethod.POST,
+            includeHeaders: true,
+            body: {
+              "name": title,
+              "description": description,
+              "totalCost": int.parse(budget),
+              "startDate": startDay.toIso8601String(),
+              "endDate": endDay.toIso8601String(),
+              "groupId": groupId,
+            },
+          );
     return ApiResponse.fromResponse(response.data);
   }
 

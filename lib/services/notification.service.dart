@@ -2,6 +2,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:kiwis_flutter/requests/user.request.dart';
+import 'package:kiwis_flutter/services/services.dart';
 
 class NotificationService extends GetxService {
   late FlutterLocalNotificationsPlugin _localNotificationsPlugin;
@@ -11,7 +12,6 @@ class NotificationService extends GetxService {
   Future<NotificationService> init() async {
     try {
       await _initializeNotifications();
-      await _initializeFirebaseMessaging();
 
       return this;
     } catch (e) {
@@ -24,7 +24,7 @@ class NotificationService extends GetxService {
   Future<void> onInit() async {
     super.onInit();
     await _initializeNotifications();
-    await _initializeFirebaseMessaging();
+    await initializeFirebaseMessaging();
   }
 
   Future<void> _initializeNotifications() async {
@@ -42,22 +42,32 @@ class NotificationService extends GetxService {
     );
   }
 
-  Future<void> _initializeFirebaseMessaging() async {
+  Future<void> initializeFirebaseMessaging() async {
     FirebaseMessaging messaging = FirebaseMessaging.instance;
+    try {
+      if (await AuthServices.getAuthBearerToken() != "") {
+        final response = await _userRequest.getCurrentUser();
+        if (response.allGood) {
+          AuthServices.saveUser(response.body);
+          String? token = await messaging.getToken();
+          await _userRequest.updateFcmToken(token!);
+          print('FirebaseMessagingToken: $token');
+        }
+      }
+    } catch (e) {
+      print('Lỗi khởi tạo FirebaseMessaging: $e');
+    } finally {
+      // Yêu cầu quyền
+      await messaging.requestPermission(
+        alert: true,
+        badge: true,
+        sound: true,
+      );
 
-    String? token = await messaging.getToken();
-    await _userRequest.updateFcmToken(token!);
-    print('FirebaseMessagingToken: $token');
-    // Yêu cầu quyền
-    await messaging.requestPermission(
-      alert: true,
-      badge: true,
-      sound: true,
-    );
-
-    // Lắng nghe thông báo
-    FirebaseMessaging.onMessage.listen(_handleForegroundNotification);
-    FirebaseMessaging.onMessageOpenedApp.listen(_handleOpenedNotification);
+      // Lắng nghe thông báo
+      FirebaseMessaging.onMessage.listen(_handleForegroundNotification);
+      FirebaseMessaging.onMessageOpenedApp.listen(_handleOpenedNotification);
+    }
   }
 
   // Xử lý khi nhận thông báo foreground

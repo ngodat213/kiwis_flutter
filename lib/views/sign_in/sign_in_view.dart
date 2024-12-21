@@ -87,10 +87,12 @@ class SignInScreen extends BaseView<SignInController> {
             height: 48,
             text: "lbl_sign_in_now".tr,
             decoration: BoxDecoration(
-              color: theme.colorScheme.primary,
-              borderRadius: BorderRadius.circular(8),
+              color: appTheme.green600,
+              borderRadius: BorderRadius.circular(10),
             ),
-            buttonStyle: CustomButtonStyles.fillOnPrimaryTL28,
+            buttonTextStyle: theme.textTheme.titleSmall!.copyWith(
+              color: Colors.white,
+            ),
             onPressed: () => controller.onSignInButtonPressed(context),
           ),
           SizedBox(height: 32.h),
@@ -120,46 +122,49 @@ class SignInScreen extends BaseView<SignInController> {
 Widget _buildEmailPasswordFields({
   required SignInController controller,
 }) {
-  return Container(
-    width: double.maxFinite,
-    decoration: BoxDecoration(
-      borderRadius: BorderRadiusStyle.roundedBorder24,
-    ),
-    child: Form(
-      key: controller.formKey,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          CustomTextFormField(
-            hintText: "Email",
-            height: 56 + 16,
-            contentPadding:
-                EdgeInsets.symmetric(horizontal: 23.h, vertical: 23.h),
-            boxDecoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(18.h),
+  return Obx(
+    () => Container(
+      width: double.maxFinite,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadiusStyle.roundedBorder24,
+      ),
+      child: Form(
+        key: controller.formKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            CustomTextFormField(
+              hintText: "Email",
+              height: 56 + 16,
+              contentPadding:
+                  EdgeInsets.symmetric(horizontal: 23.h, vertical: 23.h),
+              boxDecoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(18.h),
+              ),
+              validator: Validators.validateEmail,
+              controller: controller.emailTxtController,
+            ).marginOnly(bottom: 8),
+            CustomTextFormField(
+              hintText: "Password",
+              height: 56 + 16,
+              textInputType: TextInputType.visiblePassword,
+              obscureText: controller.isShowPassword.value,
+              contentPadding:
+                  EdgeInsets.symmetric(horizontal: 23.h, vertical: 23.h),
+              boxDecoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(18.h),
+              ),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Password is required';
+                }
+                return null;
+              },
+              controller: controller.passwordTxtController,
             ),
-            validator: Validators.validateEmail,
-            controller: controller.emailTxtController,
-          ).marginOnly(bottom: 8),
-          CustomTextFormField(
-            hintText: "Password",
-            height: 56 + 16,
-            textInputType: TextInputType.visiblePassword,
-            contentPadding:
-                EdgeInsets.symmetric(horizontal: 23.h, vertical: 23.h),
-            boxDecoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(18.h),
-            ),
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Password is required';
-              }
-              return null;
-            },
-            controller: controller.passwordTxtController,
-          ),
-        ],
+          ],
+        ),
       ),
     ),
   );
