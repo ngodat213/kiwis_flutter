@@ -7,8 +7,10 @@ class ImageConstant {
   static const imgNoData = '$imagePath/empty2.png';
   static const svgUser = '$svgPath/user_line.svg';
   static const svgDeline = '$svgPath/deline.svg';
-  static const svgImage = '$svgPath/add image.svg';
+  static const svgImage = '$svgPath/image.svg';
+  static const svgAddImage = '$svgPath/add image.svg';
   static const imageThumbnail = '$imagePath/thumb.jpg';
+  static const svgEdit = '$svgPath/edit.svg';
 
 // sign_up images
   static const imgUser24x24 = '$imagePath/img_user_24x24.svg';

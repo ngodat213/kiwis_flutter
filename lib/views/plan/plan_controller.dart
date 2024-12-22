@@ -21,13 +21,14 @@ import 'package:kiwis_flutter/views/plan/widgets/plan_detail.content.dart';
 import 'package:vietmap_flutter_gl/vietmap_flutter_gl.dart';
 import 'package:vietmap_flutter_plugin/vietmap_flutter_plugin.dart';
 
-class PlanController extends BaseController {
+class PlanController extends BaseController with GetTickerProviderStateMixin {
   /// Request
   final ImagePicker _imagePicker = ImagePicker();
   final PlanRequest _planRequest = PlanRequest();
   final TaskRequest _taskRequest = TaskRequest();
 
   /// Controller
+  late TabController tabController;
   final TextEditingController locationNameTEC = TextEditingController();
   final TextEditingController titleTEC = TextEditingController();
   final TextEditingController descriptionTEC = TextEditingController();
@@ -61,6 +62,7 @@ class PlanController extends BaseController {
     super.onInit();
     argGroupId = Get.arguments;
     initPlans();
+    tabController = TabController(length: 2, vsync: this);
   }
 
   /// Add task content
@@ -164,35 +166,6 @@ class PlanController extends BaseController {
     );
   }
 
-  Future<void> editPlan(BuildContext context) async {
-    try {
-      var response = await _planRequest.updatePlanById(
-        currentPlan.value!.planId!,
-        PlanModel(
-          name: titleTEC.text,
-          totalCost: int.parse(budgetTEC.text),
-          startDate: startDay.value,
-          endDate: endDay.value,
-        ),
-      );
-      if (response.allGood) {
-        titleTEC.clear();
-        descriptionTEC.clear();
-        budgetTEC.clear();
-        startDay.value = DateTime.now();
-        endDay.value = DateTime.now();
-
-        plans[plans.indexWhere((p) => p.planId == currentPlan.value!.planId)] =
-            PlanModel.fromJson(response.body);
-        plans.refresh();
-        Get.back();
-        Get.snackbar("Success", "Plan updated successfully");
-      }
-    } catch (e) {
-      print(e);
-    }
-  }
-
   Future<void> changeCurrentLocation() async {
     if (currentLocation.value?.name == null ||
         currentLocation.value?.coordinates == null ||
@@ -281,7 +254,16 @@ class PlanController extends BaseController {
   }
 
   Future<void> toOnPlan() async {
-    Get.toNamed(Routes.ON_PLAN, arguments: currentPlan.value!.planId);
+    if (currentPlan.value!.isStart!) {
+      Get.toNamed(Routes.ON_PLAN, arguments: currentPlan.value!.planId);
+    } else {
+      var response = await _planRequest.updatePlanIsStart(
+        currentPlan.value!.planId!,
+      );
+      if (response.allGood) {
+        Get.toNamed(Routes.ON_PLAN, arguments: currentPlan.value!.planId);
+      }
+    }
   }
 
   /// Plan cotent
@@ -312,7 +294,7 @@ class PlanController extends BaseController {
     );
   }
 
-  Future<void> createPlan() async {
+  Future<void> createPlan({bool isEdit = false}) async {
     try {
       if (currentStep.value == 1) {
         if (titleTEC.text.isEmpty ||
@@ -321,15 +303,29 @@ class PlanController extends BaseController {
           Get.snackbar("Error", "Please fill all fields");
           return;
         }
-        var response = await _planRequest.createPlan(
-          title: titleTEC.text,
-          description: descriptionTEC.text,
-          budget: budgetTEC.text,
-          startDay: startDay.value,
-          endDay: endDay.value,
-          groupId: argGroupId,
-          image: imageFile.value?.readAsBytesSync(),
-        );
+        ApiResponse response;
+        if (isEdit) {
+          response = await _planRequest.updatePlanById(
+            planId: currentPlan.value!.planId!,
+            title: titleTEC.text,
+            description: descriptionTEC.text,
+            budget: budgetTEC.text,
+            startDay: startDay.value,
+            endDay: endDay.value,
+            groupId: argGroupId,
+            image: imageFile.value?.readAsBytesSync(),
+          );
+        } else {
+          response = await _planRequest.createPlan(
+            title: titleTEC.text,
+            description: descriptionTEC.text,
+            budget: budgetTEC.text,
+            startDay: startDay.value,
+            endDay: endDay.value,
+            groupId: argGroupId,
+            image: imageFile.value?.readAsBytesSync(),
+          );
+        }
 
         if (response.allGood) {
           titleTEC.clear();
@@ -337,6 +333,10 @@ class PlanController extends BaseController {
           budgetTEC.clear();
           startDay.value = DateTime.now();
           endDay.value = DateTime.now();
+          if (isEdit) {
+            plans.removeWhere(
+                (plan) => plan.planId == currentPlan.value!.planId);
+          }
           plans.add(PlanModel.fromJson(response.body));
           Get.snackbar("Success", "Plan created successfully");
           currentStep.value++;
@@ -347,11 +347,22 @@ class PlanController extends BaseController {
     }
   }
 
-  void onTapCreatePlan(BuildContext context) {
+  void onTapCreatePlan(BuildContext context, {bool isEdit = false}) {
+    if (isEdit) {
+      currentStep.value = 0;
+      startDay.value = currentPlan.value!.startDate!;
+      endDay.value = currentPlan.value!.endDate!;
+      titleTEC.text = currentPlan.value!.name!;
+      descriptionTEC.text = currentPlan.value!.description!;
+      budgetTEC.text = currentPlan.value!.totalCost.toString();
+    }
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      builder: (context) => PlanCreateContent(),
+      builder: (context) => PlanCreateContent(
+        isEdit: isEdit,
+        plan: currentPlan.value,
+      ),
     );
   }
 }

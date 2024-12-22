@@ -56,6 +56,7 @@ class AppAPI {
 
   /// Plan
   static const String basePlan = '${domainApi}plan';
+  static const String planStart = '${basePlan}/start';
   static const String planGroup = '${basePlan}/group';
   static const String planSetComplete = '${basePlan}/completed';
   static const String planLocation = '${basePlan}/location';

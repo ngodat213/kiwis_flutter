@@ -1,22 +1,41 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kiwis_flutter/core/base/base.controller.dart';
+import 'package:kiwis_flutter/core/manager/manager.socket.dart';
 import 'package:kiwis_flutter/models/plan.model.dart';
-import 'package:kiwis_flutter/models/plan_location.model.dart';
+import 'package:kiwis_flutter/models/post.model.dart';
 import 'package:kiwis_flutter/models/task.model.dart';
+import 'package:kiwis_flutter/models/user.models.dart';
 import 'package:kiwis_flutter/requests/plan.request.dart';
+import 'package:kiwis_flutter/requests/upload_realtime.request.dart';
 import 'package:kiwis_flutter/services/geolocator.service.dart';
 import 'package:kiwis_flutter/services/map.service.dart';
+import 'package:kiwis_flutter/services/services.dart';
+import 'package:kiwis_flutter/views/home/home_controller.dart';
+import 'package:kiwis_flutter/views/on_plan/widgets/camera.content.dart';
+import 'package:kiwis_flutter/views/plan/widgets/schedule.content.dart';
 import 'package:vietmap_flutter_gl/vietmap_flutter_gl.dart';
 import 'package:vietmap_flutter_plugin/vietmap_flutter_plugin.dart'
     as vietMapFlg;
+import 'package:camera/camera.dart';
 
 class OnPlanController extends BaseController {
   final PlanRequest _planRequest = PlanRequest();
+  final UploadRealtimeRequest _uploadRealtimeRequest = UploadRealtimeRequest();
+
+  late CameraController cameraController;
+
+  final RxBool isCameraInitialized = false.obs;
+  final RxBool isFlashOn = false.obs;
+  final RxBool onPost = false.obs;
+  final Rx<XFile> imageXFile = XFile('').obs;
+  final TextEditingController captionTEC = TextEditingController();
 
   MyLocationTrackingMode myLocationTrackingMode =
       MyLocationTrackingMode.Tracking;
   final mapService = MapService.to;
   final geoService = GeolocatorService.to;
+  final Rxn<UserModel> currentUser = Rxn<UserModel>(null);
   final Rxn<PlanModel> currentPlan = Rxn<PlanModel>(null);
   final Rxn<TaskModel> currentTask = Rxn<TaskModel>(null);
   String? argPlanId;
@@ -29,16 +48,47 @@ class OnPlanController extends BaseController {
     super.onInit();
     argPlanId = Get.arguments;
     await getPlan();
+    currentUser.value = await AuthServices.getCurrentUser();
+    initCamera();
   }
+
+  @override
+  void onClose() {
+    if (cameraController.value.isInitialized) {
+      cameraController.dispose();
+    }
+    captionTEC.dispose();
+    super.onClose();
+  }
+
+  RxBool get isCreatedTask =>
+      (currentPlan.value!.createdById == currentUser.value!.userId).obs;
 
   RxBool get isLastLocation =>
       (currentTaskIndex.value == currentPlan.value!.tasks!.length - 1).obs;
+
+  RxBool get isLastTask =>
+      (currentTaskIndex.value == currentPlan.value!.tasks!.length - 1).obs;
+
+  Future<void> showSchedule(BuildContext context) async {
+    showModalBottomSheet(
+      context: context,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(32),
+          topRight: Radius.circular(32),
+        ),
+      ),
+      builder: (context) => ScheduleContent(),
+    );
+  }
 
   Future<void> getPlan() async {
     try {
       final plan = await _planRequest.findPlanById(argPlanId!);
       if (plan.allGood) {
         currentPlan.value = PlanModel.fromJson(plan.body);
+        currentTask.value = currentPlan.value!.tasks![currentTaskIndex.value];
       }
     } catch (e) {
       print(e);
@@ -52,13 +102,19 @@ class OnPlanController extends BaseController {
     }
   }
 
-  Future<void> finishLocation() async {
-    final plan =
-        await _planRequest.updatePlanById(argPlanId!, currentPlan.value!);
-    if (plan.allGood) {
-      currentPlan.value = PlanModel.fromJson(plan.body);
-    }
+  void openCamera() {
+    Get.dialog(
+      CameraContent(),
+    );
   }
+
+  // Future<void> finishLocation() async {
+  //   final plan =
+  //       await _planRequest.updatePlanById(argPlanId!, currentPlan.value!);
+  //   if (plan.allGood) {
+  //     currentPlan.value = PlanModel.fromJson(plan.body);
+  //   }
+  // }
 
   Future<void> drawLine() async {
     if (currentTask.value?.planLocation != null) {
@@ -75,11 +131,87 @@ class OnPlanController extends BaseController {
     }
   }
 
-  Future<void> updatePlan() async {
-    final plan =
-        await _planRequest.updatePlanById(argPlanId!, currentPlan.value!);
-    if (plan.allGood) {
-      currentPlan.value = PlanModel.fromJson(plan.body);
+  // Future<void> updatePlan() async {
+  //   final plan =
+  //       await _planRequest.updatePlanById(argPlanId!, currentPlan.value!);
+  //   if (plan.allGood) {
+  //     currentPlan.value = PlanModel.fromJson(plan.body);
+  //   }
+  // }
+
+  Future<void> initCamera() async {
+    final cameras = await availableCameras();
+    if (cameras.isNotEmpty) {
+      cameraController = CameraController(
+        cameras[0],
+        ResolutionPreset.high,
+      );
+      await cameraController.initialize();
+      isCameraInitialized.value = true;
+    }
+  }
+
+  void toggleFlash() {
+    isFlashOn.value = !isFlashOn.value;
+    cameraController.setFlashMode(
+      isFlashOn.value ? FlashMode.torch : FlashMode.off,
+    );
+  }
+
+  void toggleRotate() async {
+    final cameras = await availableCameras();
+    final newCamera =
+        cameraController.description == cameras[0] ? cameras[1] : cameras[0];
+
+    await cameraController.dispose();
+    cameraController = CameraController(
+      newCamera,
+      ResolutionPreset.high,
+    );
+    await cameraController.initialize();
+  }
+
+  Future<void> takePicture() async {
+    if (!isCameraInitialized.value) return;
+
+    final image = await cameraController.takePicture();
+    imageXFile.value = image;
+    onPost.value = true;
+  }
+
+  void closeOnPost() {
+    onPost.value = false;
+    imageXFile.value = XFile('');
+    captionTEC.clear();
+  }
+
+  Future<void> handlePost(BuildContext context) async {
+    try {
+      if (imageXFile.value.path.isNotEmpty) {
+        final response = await _uploadRealtimeRequest.uploadRealtimeRequest(
+          file: imageXFile.value,
+          caption: captionTEC.text,
+        );
+        if (response.allGood) {
+          Get.snackbar("Success", "Post created successfully");
+          captionTEC.clear();
+          onPost.value = false;
+
+          final PostModel post = PostModel.fromJson(response.body);
+          final homeController = Get.find<HomeController>();
+          homeController.posts.value.insert(0, post);
+          homeController.posts.refresh();
+
+          ManagerSocket.sendPost(
+            postId: post.realtimePostId!,
+          );
+        } else {
+          Get.snackbar("Kiwis", response.message ?? "Something went wrong");
+        }
+      }
+    } catch (err) {
+      print(err);
+      // Get.snackbar("Kiwis", err.toString());
     }
   }
 }

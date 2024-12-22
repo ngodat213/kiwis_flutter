@@ -84,18 +84,44 @@ class PlanRequest {
     return ApiResponse.fromResponse(reponse.data);
   }
 
-  Future<ApiResponse> updatePlanById(String planId, PlanModel plan) async {
-    var reponse = await _baseAPI.fetchData(
-      AppAPI.basePlan + "/$planId",
-      includeHeaders: true,
-      method: ApiMethod.PUT,
-      body: {
-        "name": plan.name,
-        "totalCost": plan.totalCost.toString(),
-        "startDate": plan.startDate?.toIso8601String(),
-        "endDate": plan.endDate?.toIso8601String(),
-      },
-    );
+  Future<ApiResponse> updatePlanById({
+    required String planId,
+    required String title,
+    required String description,
+    required String budget,
+    required DateTime startDay,
+    required DateTime endDay,
+    String? groupId,
+    Uint8List? image,
+  }) async {
+    var reponse = image != null
+        ? await _baseAPI.fileUpload(
+            AppAPI.basePlan + "/$planId",
+            method: ApiMethod.PUT,
+            includeHeaders: true,
+            body: {
+              "name": title,
+              "description": description,
+              "totalCost": int.parse(budget),
+              "startDate": startDay.toIso8601String(),
+              "endDate": endDay.toIso8601String(),
+              "groupId": groupId,
+            },
+            file: image,
+          )
+        : await _baseAPI.fetchData(
+            AppAPI.basePlan + "/$planId",
+            method: ApiMethod.PUT,
+            includeHeaders: true,
+            body: {
+              "name": title,
+              "description": description,
+              "totalCost": int.parse(budget),
+              "startDate": startDay.toIso8601String(),
+              "endDate": endDay.toIso8601String(),
+              "groupId": groupId,
+            },
+          );
 
     return ApiResponse.fromResponse(reponse.data);
   }
@@ -127,6 +153,16 @@ class PlanRequest {
     var reponse = await _baseAPI.fetchData(
       AppAPI.basePlan,
       includeHeaders: true,
+    );
+
+    return ApiResponse.fromResponse(reponse.data);
+  }
+
+  Future<ApiResponse> updatePlanIsStart(String planId) async {
+    var reponse = await _baseAPI.fetchData(
+      AppAPI.planStart + "/$planId",
+      includeHeaders: true,
+      method: ApiMethod.PUT,
     );
 
     return ApiResponse.fromResponse(reponse.data);
