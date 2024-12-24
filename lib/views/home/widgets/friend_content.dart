@@ -10,7 +10,7 @@ import 'package:kiwis_flutter/widgets/custom_icon_button.dart';
 import 'package:kiwis_flutter/widgets/custom_text_form_field.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-class FriendContent extends BaseView<HomeController> {
+class FriendContent extends GetView<HomeController> {
   /// Section Widget
   PreferredSizeWidget appBar(BuildContext context) {
     return PreferredSize(
@@ -36,74 +36,104 @@ class FriendContent extends BaseView<HomeController> {
   }
 
   @override
-  Widget body(BuildContext context) {
-    return Container(
-      height: Get.height,
-      width: double.maxFinite,
-      margin: EdgeInsets.only(bottom: 48.h),
-      padding: EdgeInsets.symmetric(horizontal: 24.h),
-      child: Column(
-        children: [
-          CustomSelection(
-            title: "Your link",
-            child: CustomTextFormField(
-              height: Get.height * 0.06,
-              hintText: "https://kiwis.app/add/hydracoder".tr,
-              suffix: Icon(
-                Icons.link,
-                color: appTheme.blue300,
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: appBar(context),
+      body: SizedBox(
+        width: double.maxFinite,
+        child: Container(
+          child: Stack(
+            children: [
+              CustomImageView(
+                imagePath: ImageConstant.imgEllipse2005,
+                height: 280.h,
+                width: 274.h,
+                alignment: Alignment.topRight,
               ),
-              contentPadding:
-                  EdgeInsets.symmetric(horizontal: 23.h, vertical: 12.h),
-            ),
-          ),
-          CustomSelection(
-            title: "Add Friend",
-            child: CustomTextFormField(
-              height: Get.height * 0.06,
-              hintText: "uid".tr,
-              controller: controller.friendIdTEC,
-              suffix: GestureDetector(
-                onTap: () => controller.onPressedAddFriend(context),
-                child: Icon(
-                  Icons.send,
-                  color: appTheme.blue300,
-                ),
+              CustomImageView(
+                imagePath: ImageConstant.imgEllipse2006Green600516x342,
+                height: 340.h,
+                width: 240.h,
+                alignment: Alignment.bottomLeft,
               ),
-              contentPadding:
-                  EdgeInsets.symmetric(horizontal: 23.h, vertical: 12.h),
-            ),
-          ),
-          CustomSelection(
-            title: "Friends",
-            child: Column(
-              children: controller.user.value.friends!
-                  .map(
-                    (e) => GestureDetector(
-                      onTap: () {
-                        Get.toNamed(Routes.CHAT_ROOM);
-                      },
-                      child: SizedBox(
-                        width: double.maxFinite,
-                        child: _buildAboutSectionRow(
-                          avatar: e.user?.avatar?.imageUrl ??
-                              AppValues.defaultAvatar,
-                          fullName:
-                              "${e.user!.firstName} ${e.user!.lastName}".tr,
+              SafeArea(
+                child: SingleChildScrollView(
+                  child: Container(
+                    height: Get.height,
+                    width: double.maxFinite,
+                    margin: EdgeInsets.only(bottom: 48.h),
+                    padding: EdgeInsets.symmetric(horizontal: 24.h),
+                    child: Column(
+                      children: [
+                        CustomSelection(
+                          title: "Your link",
+                          child: CustomTextFormField(
+                            height: Get.height * 0.06,
+                            hintText: "https://kiwis.app/add/hydracoder".tr,
+                            suffix: Icon(
+                              Icons.link,
+                              color: appTheme.blue300,
+                            ),
+                            contentPadding: EdgeInsets.symmetric(
+                                horizontal: 23.h, vertical: 12.h),
+                          ),
                         ),
-                      ),
+                        CustomSelection(
+                          title: "Add Friend",
+                          child: CustomTextFormField(
+                            height: Get.height * 0.06,
+                            hintText: "uid".tr,
+                            controller: controller.friendIdTEC,
+                            suffix: GestureDetector(
+                              onTap: () =>
+                                  controller.onPressedAddFriend(context),
+                              child: Icon(
+                                Icons.send,
+                                color: appTheme.blue300,
+                              ),
+                            ),
+                            contentPadding: EdgeInsets.symmetric(
+                                horizontal: 23.h, vertical: 12.h),
+                          ),
+                        ),
+                        CustomSelection(
+                          title: "Friends",
+                          child: Column(
+                            children: controller.user.value.friends!
+                                .map(
+                                  (e) => GestureDetector(
+                                    onTap: () {
+                                      Get.toNamed(Routes.CHAT_ROOM);
+                                    },
+                                    child: SizedBox(
+                                      width: double.maxFinite,
+                                      child: _buildAboutSectionRow(
+                                        avatar: e.user?.avatar?.imageUrl ??
+                                            AppValues.defaultAvatar,
+                                        fullName:
+                                            "${e.user!.firstName} ${e.user!.lastName}"
+                                                .tr,
+                                      ),
+                                    ),
+                                  ),
+                                )
+                                .toList(),
+                          ),
+                        ),
+                        Center(
+                          child: CustomElevatedButton(
+                            width: Get.width * 0.4,
+                            text: "See All".tr,
+                          ),
+                        ),
+                      ],
                     ),
-                  )
-                  .toList(),
-            ),
+                  ),
+                ),
+              )
+            ],
           ),
-          Center(
-            child: CustomElevatedButton(
-              width: Get.width * 0.4,
-              text: "See All".tr,
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }

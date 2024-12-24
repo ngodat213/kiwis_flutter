@@ -15,6 +15,7 @@ class PlanModel {
   int? totalCost;
   bool? isCompleted;
   String? thumbnailId;
+  bool? isStart;
   DateTime? createdAt;
   DateTime? updatedAt;
   DateTime? deletedAt;
@@ -78,6 +79,7 @@ class PlanModel {
         tasks!.add(TaskModel.fromJson(v));
       });
     }
+    isStart = json['isStart'] == null ? null : json['isStart'];
     // if (json['realtimeImages'] != null) {
     //   realtimeImages = <Null>[];
     //   json['realtimeImages'].forEach((v) {
@@ -115,6 +117,7 @@ class PlanModel {
     if (this.tasks != null) {
       data['tasks'] = this.tasks!.map((v) => v.toJson()).toList();
     }
+    data['isStart'] = this.isStart;
     // if (this.realtimeImages != null) {
     //   data['realtimeImages'] =
     //       this.realtimeImages!.map((v) => v.toJson()).toList();

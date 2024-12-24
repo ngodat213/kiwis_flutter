@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:glossy/glossy.dart';
 
 import 'package:kiwis_flutter/core/base/base.view.dart';
 import 'package:kiwis_flutter/core/constants/app_export.dart';
@@ -38,8 +39,8 @@ class PlanView extends BaseView<PlanController> {
           actions: [
             AppbarLeadingIconbutton(
               imagePath: ImageConstant.svgPlus,
-              onTap: () => controller.onTapCreatePlan(context),
-            )
+              onTap: () => controller.showContentCreatePlan(context),
+            ),
           ],
         ),
       ),
@@ -52,115 +53,46 @@ class PlanView extends BaseView<PlanController> {
       width: double.maxFinite,
       height: Get.height - Get.height * 0.13,
       padding: EdgeInsets.symmetric(horizontal: 16),
-      child: controller.plans.isEmpty
-          ? Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  CustomImageView(
-                    imagePath: ImageConstant.imgNoData,
-                    width: Get.width * 0.5,
-                    height: Get.width * 0.5,
-                  ),
-                  "Plan is empty"
-                      .tr
-                      .text
-                      .bold
-                      .textStyle(theme.textTheme.titleLarge)
-                      .make(),
-                  SizedBox(height: 16),
-                  CustomElevatedButton(
-                    width: Get.width * 0.7,
-                    text: "Create plan",
-                    onPressed: () => controller.onTapCreatePlan(context),
-                  ),
-                ],
-              ),
-            )
-          : Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          TabBar(
+            controller: controller.tabController,
+            indicatorColor: appTheme.green600,
+            labelColor: appTheme.green600,
+            dividerColor: Colors.transparent,
+            tabs: [
+              Tab(text: "In Progress"),
+              Tab(text: "My Plans"),
+            ],
+          ),
+          Expanded(
+            child: TabBarView(
+              controller: controller.tabController,
               children: [
-                "In Progress"
-                    .tr
-                    .text
-                    .bold
-                    .textStyle(theme.textTheme.titleLarge)
-                    .make()
-                    .pOnly(bottom: 4),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 32.h),
-                  width: Get.width,
-                  decoration: BoxDecoration(
-                    color: theme.colorScheme.onPrimary.withOpacity(0.05),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      "Đà lạt trip"
-                          .tr
-                          .text
-                          .bold
-                          .textStyle(theme.textTheme.titleMedium)
-                          .make(),
-                      SizedBox(height: 8),
-                      "On location: Bảo Lộc"
-                          .tr
-                          .text
-                          .textStyle(theme.textTheme.bodySmall)
-                          .make(),
-                      SizedBox(height: 16),
-                      Container(
-                        width: Get.width * 0.7,
-                        child: Column(
-                          children: [
-                            LinearProgressIndicator(
-                              value: 0.5,
-                              color: theme.colorScheme.primary,
-                              backgroundColor: theme.colorScheme.onPrimary,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                '50%'
-                                    .tr
-                                    .text
-                                    .textStyle(theme.textTheme.bodySmall)
-                                    .make(),
-                                'Location: Bảo Lộc'
-                                    .tr
-                                    .text
-                                    .textStyle(theme.textTheme.bodySmall)
-                                    .make(),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 32),
-                "My Plans"
-                    .tr
-                    .text
-                    .bold
-                    .textStyle(theme.textTheme.titleLarge)
-                    .make()
-                    .pOnly(bottom: 4),
+                Column(
+                  children: controller.plans
+                      .where((plan) => plan.isStart == true)
+                      .map((plan) => InProgressItem(plan: plan))
+                      .toList(),
+                ).pOnly(top: 16),
                 Expanded(
                   child: ListView.builder(
                     itemCount: controller.plans.length,
                     itemBuilder: (context, index) {
                       final plan = controller.plans[index];
-                      return _buildPlanItem(context, plan);
+                      if (plan.isStart != true) {
+                        return _buildPlanItem(context, plan);
+                      }
+                      return SizedBox.shrink();
                     },
                   ),
                 ),
               ],
             ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -217,7 +149,71 @@ class PlanView extends BaseView<PlanController> {
         ],
       ).p(16),
     ).marginOnly(bottom: 8).onTap(
-          () => controller.onPressedPlanDetail(context, plan),
+          () => controller.showContentPlanDetail(context, plan),
         );
+  }
+}
+
+class InProgressItem extends GetView<PlanController> {
+  const InProgressItem({
+    super.key,
+    required this.plan,
+  });
+
+  final PlanModel plan;
+
+  @override
+  Widget build(BuildContext context) {
+    return GlossyContainer(
+      width: Get.width,
+      height: Get.height * 0.18,
+      borderRadius: BorderRadius.circular(10),
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 32.h),
+        width: Get.width,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            plan.name
+                .toString()
+                .text
+                .bold
+                .textStyle(theme.textTheme.titleMedium)
+                .make(),
+            SizedBox(height: 8),
+            "Task: ${plan.tasks?.length}"
+                .tr
+                .text
+                .textStyle(theme.textTheme.bodySmall)
+                .make(),
+            SizedBox(height: 16),
+            Container(
+              width: Get.width * 0.7,
+              child: Column(
+                children: [
+                  LinearProgressIndicator(
+                    value: 0.5,
+                    color: theme.colorScheme.primary,
+                    backgroundColor: theme.colorScheme.onPrimary,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      '50%'.tr.text.textStyle(theme.textTheme.bodySmall).make(),
+                      'Location: Bảo Lộc'
+                          .tr
+                          .text
+                          .textStyle(theme.textTheme.bodySmall)
+                          .make(),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    ).onTap(() => controller.showContentPlanDetail(context, plan));
   }
 }

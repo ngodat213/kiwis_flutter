@@ -159,7 +159,7 @@ class ChooseLocationContent extends GetView<PlanController> {
                       ),
                       buttonStyle: CustomButtonStyles.fillGreen,
                       onPressed: () =>
-                          controller.onPressChooseLocation(context),
+                          controller.showContentAddLocation(context),
                       text: "Choose location".tr,
                     ),
                   ],

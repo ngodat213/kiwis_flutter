@@ -3,13 +3,19 @@ import '../../core/constants/app_export.dart';
 import '../custom_icon_button.dart';
 
 class AppbarLeadingIconbutton extends StatelessWidget {
-  AppbarLeadingIconbutton({Key? key, this.imagePath, this.onTap, this.margin})
-      : super(
+  AppbarLeadingIconbutton({
+    Key? key,
+    this.imagePath,
+    this.wiget,
+    this.decoration,
+    this.onTap,
+    this.margin,
+  }) : super(
           key: key,
         );
-
+  final BoxDecoration? decoration;
   final String? imagePath;
-
+  final Widget? wiget;
   final Function? onTap;
 
   final EdgeInsetsGeometry? margin;
@@ -26,10 +32,13 @@ class AppbarLeadingIconbutton extends StatelessWidget {
           height: 44.h,
           width: 44.h,
           padding: EdgeInsets.all(10.h),
-          child: CustomImageView(
-            imagePath: imagePath,
-            color: appTheme.black,
-          ),
+          decoration: decoration,
+          child: wiget != null
+              ? wiget!
+              : CustomImageView(
+                  imagePath: imagePath,
+                  color: appTheme.black,
+                ),
         ),
       ),
     );

@@ -284,6 +284,7 @@ class MapService extends GetxService {
       // Lắng nghe vị trí từ GeolocatorService
       _locationSubscription = _geolocatorService.positionStream.listen(
         (Position position) {
+          _geolocatorService.speed = position.speed;
           final currentLocation =
               vietmap.LatLng(position.latitude, position.longitude);
 

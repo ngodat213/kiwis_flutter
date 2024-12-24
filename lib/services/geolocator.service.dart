@@ -12,6 +12,8 @@ class GeolocatorService extends GetxService {
   // Theo dõi vị trí realtime
   StreamSubscription<Position>? _positionStreamSubscription;
 
+  double? speed;
+
   @override
   Future<GeolocatorService> init() async {
     try {

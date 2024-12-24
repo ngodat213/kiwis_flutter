@@ -27,7 +27,7 @@ class AddTaskContent extends GetView<PlanController> {
               .text
               .textStyle(theme.textTheme.titleSmall)
               .make()
-              .onTap(() => controller.createTask()),
+              .onTap(() => controller.handleCreateTask()),
         ],
       ),
       body: Obx(() {
@@ -124,7 +124,7 @@ class AddTaskContent extends GetView<PlanController> {
                             ),
                             child: ListTile(
                               onTap: () {
-                                controller.onPressedChooseLocation(context);
+                                controller.showContentChooseLocation(context);
                               },
                               contentPadding: EdgeInsets.zero,
                               title:

@@ -6,6 +6,7 @@ import 'package:kiwis_flutter/views/message/message_view.dart';
 class MainScreenModel {
   final List<Widget> screens = [
     HomeScreen(),
+    ExpenseScreen(),
     MessageScreen(),
   ];
 }

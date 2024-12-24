@@ -73,7 +73,7 @@ class PlanCreateContent extends GetView<PlanController> {
           if (controller.currentStep.value == 0) {
             controller.currentStep.value++;
           } else if (controller.currentStep.value == 1) {
-            controller.createPlan();
+            controller.handleCreatePlan(isEdit: isEdit);
           } else if (controller.currentStep.value == 2) {
             Get.back();
             controller.currentStep.value = 0;
@@ -92,7 +92,6 @@ class PlanCreateContent extends GetView<PlanController> {
       body: SizedBox(
         width: double.maxFinite,
         child: Container(
-          height: Get.height - Get.height * 0.13,
           child: Stack(
             children: [
               CustomImageView(
@@ -110,7 +109,6 @@ class PlanCreateContent extends GetView<PlanController> {
               SafeArea(
                 child: SingleChildScrollView(
                   child: Container(
-                    height: Get.height - Get.height * 0.13 + 150,
                     padding: EdgeInsets.symmetric(horizontal: 24),
                     child: Obx(
                       () => Column(
@@ -170,6 +168,7 @@ class DetailWidget extends GetView<PlanController> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Obx(
@@ -189,7 +188,7 @@ class DetailWidget extends GetView<PlanController> {
                         padding: EdgeInsets.all(12.h),
                         decoration: IconButtonStyleHelper.fillOnPrimaryTL241,
                         child: CustomImageView(
-                          imagePath: ImageConstant.svgImage,
+                          imagePath: ImageConstant.svgAddImage,
                         ),
                       ),
                     )
