@@ -45,6 +45,18 @@ class TaskRequest {
     return ApiResponse.fromResponse(response.data);
   }
 
+  Future<ApiResponse> updateTaskIsDone({required String taskId}) async {
+    var response = await _baseAPI.fetchData(
+      AppAPI.baseTask + '/$taskId',
+      includeHeaders: true,
+      method: ApiMethod.PUT,
+      body: {
+        "status": "COMPLETED",
+      },
+    );
+    return ApiResponse.fromResponse(response.data);
+  }
+
   Future<ApiResponse> deleteTask({required String taskId}) async {
     var response = await _baseAPI.fetchData(
       AppAPI.baseTask + '/$taskId',

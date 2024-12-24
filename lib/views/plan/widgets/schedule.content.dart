@@ -140,168 +140,143 @@ class ScheduleWidget extends GetView<PlanController> {
     List<String>? avatars,
   }) {
     final theme = Theme.of(context);
-    return IntrinsicHeight(
-      child: Row(
+    return Container(
+      width: Get.width,
+      padding: const EdgeInsets.all(12.0),
+      decoration: BoxDecoration(
+        color: Colors.blue[50],
+        borderRadius: BorderRadius.circular(12.0),
+      ),
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Timeline Indicator + Line
-          Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                width: 12,
-                height: 12,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: Colors.blue,
-                    width: 2,
-                  ),
+          Container(
+            height: 147 / 3,
+            child: Stack(
+              children: [
+                CustomImageView(
+                  imagePath: ImageConstant.svgWave,
+                  width: Get.width - 100,
+                  height: 147 / 3,
+                  fit: BoxFit.cover,
                 ),
-              ),
-              SizedBox(height: 8),
-              Expanded(
-                child: Container(
-                  width: 2,
-                  color: Colors.blue,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(width: 16),
-          // Content Card
-          Expanded(
-            child: Container(
-              width: Get.width,
-              padding: const EdgeInsets.all(12.0),
-              decoration: BoxDecoration(
-                color: isActive
-                    ? Colors.blue[50]
-                    : theme.colorScheme.onPrimary.withOpacity(0.05),
-                borderRadius: BorderRadius.circular(12.0),
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        title,
-                        style: theme.textTheme.titleMedium,
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        description,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: theme.textTheme.bodyMedium,
-                      ),
-                      SizedBox(height: 4),
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.calendar_month,
-                            size: 16,
-                          ),
-                          Text(
-                            DateFormat(' dd/MM/yyyy - ')
-                                .format(startDate)
-                                .toString(),
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: theme.textTheme.bodyMedium,
-                          ),
-                          Text(
-                            DateFormat('dd/MM/yyyy').format(endDate).toString(),
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: theme.textTheme.bodyMedium,
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 4),
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.access_time,
-                            size: 16,
-                          ),
-                          Text(
-                            DateFormat(' HH:mm - ')
-                                .format(startDate)
-                                .toString(),
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: theme.textTheme.bodyMedium,
-                          ),
-                          Text(
-                            DateFormat('HH:mm').format(endDate).toString(),
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: theme.textTheme.bodyMedium,
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 4),
-                      budget != null
-                          ? Row(
-                              children: [
-                                Icon(
-                                  Icons.money,
-                                  size: 16,
-                                ),
-                                SizedBox(width: 4),
-                                Text(
-                                  "${budget} VNĐ",
-                                  style: theme.textTheme.bodyMedium,
-                                ),
-                              ],
-                            )
-                          : SizedBox(),
-                      location != null
-                          ? Row(
-                              children: [
-                                Icon(Icons.map, size: 16),
-                                Text(
-                                  location.name!,
-                                  style: theme.textTheme.bodyMedium,
-                                ),
-                              ],
-                            )
-                          : SizedBox(),
-                      if (avatars != null && avatars.isNotEmpty)
-                        Padding(
-                          padding: const EdgeInsets.only(top: 8.0),
-                          child: Row(
-                            children: avatars.map((url) {
-                              return Padding(
-                                padding: const EdgeInsets.only(right: 4.0),
-                                child: CircleAvatar(
-                                  backgroundImage: NetworkImage(url),
-                                  radius: 12,
-                                ),
-                              );
-                            }).toList(),
-                          ),
+                Column(
+                  children: [
+                    Row(
+                      children: [
+                        CustomImageView(
+                          imagePath: ImageConstant.svgCalander,
+                          width: 16,
+                          height: 16,
+                          color: Colors.black,
                         ),
-                    ],
-                  ),
-                  const SizedBox(width: 8),
-                  Flexible(
-                    flex: 1,
-                    child: Icon(
-                      Icons.delete,
-                      size: 23,
-                    ).onTap(
-                        () => controller.onPressedDeleteTask(context, taskId)),
-                  ),
-                ],
-              ),
+                        Text(
+                          DateFormat(' dd/MM/yyyy - ')
+                              .format(startDate)
+                              .toString(),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: theme.textTheme.bodyMedium,
+                        ),
+                        Text(
+                          DateFormat('dd/MM/yyyy').format(endDate).toString(),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: theme.textTheme.bodyMedium,
+                        ),
+                        Spacer(),
+                        Container(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: Color(0xffFBEA92),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: 'In Progress'
+                              .text
+                              .textStyle(theme.textTheme.bodySmall)
+                              .make(),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.access_time,
+                          size: 16,
+                        ),
+                        Text(
+                          DateFormat(' HH:mm - ').format(startDate).toString(),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: theme.textTheme.bodyMedium,
+                        ),
+                        Text(
+                          DateFormat('HH:mm').format(endDate).toString(),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: theme.textTheme.bodyMedium,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
+          const SizedBox(height: 4),
+          Text(
+            title,
+            style: theme.textTheme.titleLarge,
+          ),
+          SizedBox(height: 4),
+          description.text.ellipsis
+              .maxLines(2)
+              .fontWeight(FontWeight.w400)
+              .textStyle(theme.textTheme.bodyMedium)
+              .make(),
+          SizedBox(height: 4),
+          budget != null
+              ? Row(
+                  children: [
+                    Icon(
+                      Icons.money,
+                      size: 16,
+                    ),
+                    SizedBox(width: 4),
+                    Text(
+                      "${budget} VNĐ",
+                      style: theme.textTheme.bodyMedium,
+                    ),
+                  ],
+                )
+              : SizedBox(),
+          location != null
+              ? Row(
+                  children: [
+                    Icon(Icons.location_on, size: 16),
+                    Text(
+                      location.name!,
+                      style: theme.textTheme.bodyMedium,
+                    ),
+                  ],
+                )
+              : SizedBox(),
+          if (avatars != null && avatars.isNotEmpty)
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Row(
+                children: avatars.map((url) {
+                  return Padding(
+                    padding: const EdgeInsets.only(right: 4.0),
+                    child: CircleAvatar(
+                      backgroundImage: NetworkImage(url),
+                      radius: 12,
+                    ),
+                  );
+                }).toList(),
+              ),
+            ),
         ],
       ),
     ).marginOnly(bottom: 16);

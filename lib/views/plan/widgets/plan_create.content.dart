@@ -73,7 +73,7 @@ class PlanCreateContent extends GetView<PlanController> {
           if (controller.currentStep.value == 0) {
             controller.currentStep.value++;
           } else if (controller.currentStep.value == 1) {
-            controller.createPlan(isEdit: isEdit);
+            controller.handleCreatePlan(isEdit: isEdit);
           } else if (controller.currentStep.value == 2) {
             Get.back();
             controller.currentStep.value = 0;

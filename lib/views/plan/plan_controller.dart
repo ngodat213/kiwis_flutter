@@ -5,14 +5,16 @@ import 'package:image_picker/image_picker.dart';
 import 'package:kiwis_flutter/app/routes/app_pages.dart';
 import 'package:kiwis_flutter/controllers/location_search.controller.dart';
 import 'package:kiwis_flutter/core/base/base.controller.dart';
-import 'package:kiwis_flutter/core/constants/app.theme_helper.dart';
 import 'package:kiwis_flutter/models/address.model.dart';
 import 'package:kiwis_flutter/models/api.response.dart';
+import 'package:kiwis_flutter/models/member.model.dart';
 import 'package:kiwis_flutter/models/plan.model.dart';
 import 'package:kiwis_flutter/models/plan_location.model.dart';
 import 'package:kiwis_flutter/models/task.model.dart';
+import 'package:kiwis_flutter/models/user.models.dart';
 import 'package:kiwis_flutter/requests/plan.request.dart';
 import 'package:kiwis_flutter/requests/task.request.dart';
+import 'package:kiwis_flutter/views/plan/widgets/add_expense.content.dart';
 import 'package:kiwis_flutter/views/plan/widgets/add_task.content.dart';
 import 'package:kiwis_flutter/views/plan/widgets/addlocation.content.dart';
 import 'package:kiwis_flutter/views/plan/widgets/choose_location.content.dart';
@@ -29,6 +31,7 @@ class PlanController extends BaseController with GetTickerProviderStateMixin {
 
   /// Controller
   late TabController tabController;
+  late TabController detailTabController;
   final TextEditingController locationNameTEC = TextEditingController();
   final TextEditingController titleTEC = TextEditingController();
   final TextEditingController descriptionTEC = TextEditingController();
@@ -52,82 +55,53 @@ class PlanController extends BaseController with GetTickerProviderStateMixin {
   RxList<PlanModel> plans = <PlanModel>[].obs;
   RxList<TaskModel> tasks = <TaskModel>[].obs;
   RxList<AddressModel> locations = <AddressModel>[].obs;
+  RxList<MemberModel> selectedShareCosts = <MemberModel>[].obs;
+  RxList<MemberModel> userPlans = <MemberModel>[].obs;
   Rx<File?> imageFile = Rxn<File?>();
   RxInt currentStep = 0.obs;
+  Rxn<String?> currentTaskId = Rxn<String?>();
   String? argGroupId;
   List<Widget> steps = [TimeWidget(), DetailWidget(), EnjoyWidget()];
 
   @override
-  void onInit() {
+  void onInit() async {
     super.onInit();
     argGroupId = Get.arguments;
-    initPlans();
+    await handleInitPlans();
     tabController = TabController(length: 2, vsync: this);
+    detailTabController = TabController(length: 3, vsync: this);
   }
 
-  /// Add task content
-  Future<void> createTask() async {
-    try {
-      if (taskTitleTEC.text.isNotEmpty) {
-        var response = await _taskRequest.createTask(
-          planId: currentPlan.value!.planId!,
-          title: taskTitleTEC.text,
-          description: taskDescriptionTEC.text,
-          budget: taskBudgetTEC.text,
-          startDate: taskDate.value,
-          endDate: taskEndTime.value,
-          locationName: currentLocation.value?.name,
-          latitude: currentLocation.value?.coordinates?.latitude,
-          longitude: currentLocation.value?.coordinates?.longitude,
-          address: currentLocation.value?.address,
-          estimatedCost: int.parse(estimatedCostTEC.text),
-          estimatedTime: int.parse(estimatedTimeTEC.text),
-        );
-        if (response.allGood) {
-          final task = TaskModel.fromJson(response.body);
-          currentPlan.value?.tasks?.add(task);
-          currentPlan.refresh();
-
-          Get.snackbar("Success", "Task created successfully");
-        } else {
-          Get.snackbar("Kiwis", response.message ?? "Something went wrong");
-        }
-      } else {
-        Get.snackbar("Kiwis", "Please fill all fields");
-      }
-    } catch (e) {
-      print(e);
-    } finally {
-      taskTitleTEC.clear();
-      taskDescriptionTEC.clear();
-      taskBudgetTEC.clear();
-      taskDate.value = DateTime.now();
-      taskEndTime.value = DateTime.now();
+  void onChangeTask(String taskId) {
+    if (currentTaskId.value == taskId) {
+      currentTaskId.value = null;
+    } else {
+      currentTaskId.value = taskId;
     }
+    tasks.refresh();
+  }
+
+  void showDialog(Widget child) {
+    Get.dialog(child);
   }
 
   void getTasksByDate(DateTime date) {
     taskDate.value = date;
     var allTasks = currentPlan.value?.tasks ?? [];
 
-    // Lọc các task có ngày bao gồm ngày được chỉ định
     tasks.value = allTasks.where((task) {
-      // Chuyển đổi startDate và endDate từ String sang DateTime
       DateTime? startDate =
           task.startDate != null ? DateTime.tryParse(task.startDate!) : null;
       DateTime? endDate =
           task.endDate != null ? DateTime.tryParse(task.endDate!) : null;
 
-      // Nếu không thể chuyển đổi hoặc thiếu thông tin, bỏ qua task này
       if (startDate == null || endDate == null) return false;
 
-      // Lấy phần ngày, bỏ qua thời gian
       DateTime startDay =
           DateTime(startDate.year, startDate.month, startDate.day);
       DateTime endDay = DateTime(endDate.year, endDate.month, endDate.day);
       DateTime targetDay = DateTime(date.year, date.month, date.day);
 
-      // Kiểm tra nếu targetDay nằm trong khoảng từ startDay đến endDay
       return targetDay.isAtSameMomentAs(startDay) ||
           targetDay.isAtSameMomentAs(endDay) ||
           (targetDay.isAfter(startDay) && targetDay.isBefore(endDay));
@@ -135,19 +109,6 @@ class PlanController extends BaseController with GetTickerProviderStateMixin {
     tasks.refresh();
   }
 
-  Future<void> onPressedDeleteTask(BuildContext context, String taskId) async {
-    try {
-      var response = await _taskRequest.deleteTask(taskId: taskId);
-      if (response.allGood) {
-        tasks.removeWhere((task) => task.taskId == taskId);
-        tasks.refresh();
-      }
-    } catch (e) {
-      print(e);
-    }
-  }
-
-  /// Chat room methods
   Future<void> pickImage() async {
     final image = await _imagePicker.pickImage(source: ImageSource.gallery);
     if (image != null) {
@@ -155,7 +116,7 @@ class PlanController extends BaseController with GetTickerProviderStateMixin {
     }
   }
 
-  Future<void> onTapEditPlan(BuildContext context) async {
+  Future<void> showContentEditPlan(BuildContext context) async {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -188,30 +149,6 @@ class PlanController extends BaseController with GetTickerProviderStateMixin {
     Get.back();
   }
 
-  void onPressChooseLocation(BuildContext context) {
-    if (currentLocation.value == null) {
-      Get.snackbar("Error", "Please select a location first");
-      return;
-    }
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      builder: (context) => Container(
-        padding: EdgeInsets.only(
-          bottom: MediaQuery.of(context).viewInsets.bottom,
-        ),
-        child: AddLocationContent(),
-      ),
-    );
-  }
-
-  addressSelected(AddressModel address) async {
-    currentLocation.value = address;
-    if (address.coordinates != null) {
-      LocationSearchController.to.selectLocation(address);
-    }
-  }
-
   // Lưu vị trí được chọn
   var selectedPosition = Rxn<LatLng>(LatLng(0.00, 0.00));
 
@@ -233,8 +170,98 @@ class PlanController extends BaseController with GetTickerProviderStateMixin {
     }
   }
 
-  // --------------------------- PLAN ------------------------------
-  Future<void> initPlans() async {
+  addressSelected(AddressModel address) async {
+    currentLocation.value = address;
+    if (address.coordinates != null) {
+      LocationSearchController.to.selectLocation(address);
+    }
+  }
+
+  void onPressedAddRomveFriend(MemberModel friend) {
+    if (selectedShareCosts.contains(friend)) {
+      selectedShareCosts.remove(friend);
+    } else {
+      selectedShareCosts.add(friend);
+    }
+    selectedShareCosts.refresh();
+  }
+
+  /// Show content
+  Future<void> showContentPlanDetail(
+      BuildContext context, PlanModel plan) async {
+    currentPlan.value = plan;
+    getTasksByDate(currentPlan.value!.startDate!);
+    getUserPlans();
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) => PlanDetailContent(),
+    );
+  }
+
+  void showContentChooseLocation(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      enableDrag: false,
+      isScrollControlled: true,
+      builder: (context) => ChooseLocationContent(),
+    );
+  }
+
+  void showContentAddTask(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) => AddTaskContent(),
+    );
+  }
+
+  void showContentAddExpense(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) => AddExpenseContent(),
+    );
+  }
+
+  void showContentAddLocation(BuildContext context) {
+    if (currentLocation.value == null) {
+      Get.snackbar("Error", "Please select a location first");
+      return;
+    }
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) => Container(
+        padding: EdgeInsets.only(
+          bottom: MediaQuery.of(context).viewInsets.bottom,
+        ),
+        child: AddLocationContent(),
+      ),
+    );
+  }
+
+  void showContentCreatePlan(BuildContext context, {bool isEdit = false}) {
+    if (isEdit) {
+      currentStep.value = 0;
+      startDay.value = currentPlan.value!.startDate!;
+      endDay.value = currentPlan.value!.endDate!;
+      titleTEC.text = currentPlan.value!.name!;
+      descriptionTEC.text = currentPlan.value!.description!;
+      budgetTEC.text = currentPlan.value!.totalCost.toString();
+    }
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) => PlanCreateContent(
+        isEdit: isEdit,
+        plan: currentPlan.value,
+      ),
+    );
+  }
+
+  /// Handle
+  Future<void> handleInitPlans() async {
     try {
       final ApiResponse response;
       if (argGroupId != null) {
@@ -253,7 +280,81 @@ class PlanController extends BaseController with GetTickerProviderStateMixin {
     }
   }
 
-  Future<void> toOnPlan() async {
+  void getUserPlans() {
+    try {
+      if (currentPlan.value?.groupId != null) {
+        currentPlan.value?.group?.members?.forEach((member) {
+          userPlans.add(member);
+        });
+        userPlans.refresh();
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future<void> handleCreateExpense() async {
+    print("handleCreateExpense");
+  }
+
+  Future<void> handleCreateTask() async {
+    try {
+      if (taskTitleTEC.text.isNotEmpty) {
+        var response = await _taskRequest.createTask(
+          planId: currentPlan.value!.planId!,
+          title: taskTitleTEC.text,
+          description: taskDescriptionTEC.text,
+          budget: taskBudgetTEC.text,
+          startDate: taskDate.value,
+          endDate: taskEndTime.value,
+          locationName: currentLocation.value?.name,
+          latitude: currentLocation.value?.coordinates?.latitude,
+          longitude: currentLocation.value?.coordinates?.longitude,
+          address: currentLocation.value?.address,
+          estimatedCost: estimatedCostTEC.text.isEmpty
+              ? 0
+              : int.parse(estimatedCostTEC.text),
+          estimatedTime: estimatedTimeTEC.text.isEmpty
+              ? 0
+              : int.parse(estimatedTimeTEC.text),
+        );
+        if (response.allGood) {
+          final task = TaskModel.fromJson(response.body);
+          currentPlan.value?.tasks?.add(task);
+          currentPlan.refresh();
+          taskTitleTEC.clear();
+          taskDescriptionTEC.clear();
+          taskBudgetTEC.clear();
+          taskDate.value = DateTime.now();
+          taskEndTime.value = DateTime.now();
+          Get.snackbar("Success", "Task created successfully");
+        } else {
+          Get.snackbar("Kiwis", response.message ?? "Something went wrong");
+        }
+      } else {
+        Get.snackbar("Kiwis", "Please fill all fields");
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future<void> handleTaskDone(String taskId) async {
+    var response = await _taskRequest.updateTaskIsDone(taskId: taskId);
+    if (response.allGood) {
+      TaskModel task = TaskModel.fromJson(response.body);
+      tasks.removeWhere((task) => task.taskId == taskId);
+      tasks.add(task);
+      tasks.refresh();
+      Get.back();
+    }
+  }
+
+  Future<void> handeToOnPlan() async {
+    if (currentPlan.value!.tasks!.isEmpty) {
+      Get.snackbar("Note", "Please add tasks first");
+      return;
+    }
     if (currentPlan.value!.isStart!) {
       Get.toNamed(Routes.ON_PLAN, arguments: currentPlan.value!.planId);
     } else {
@@ -261,40 +362,32 @@ class PlanController extends BaseController with GetTickerProviderStateMixin {
         currentPlan.value!.planId!,
       );
       if (response.allGood) {
-        Get.toNamed(Routes.ON_PLAN, arguments: currentPlan.value!.planId);
+        if (response.body == 'Plan already started') {
+          Get.toNamed(Routes.ON_PLAN, arguments: currentPlan.value!.planId);
+          currentPlan.value!.isStart = true;
+        } else {
+          PlanModel plan = PlanModel.fromJson(response.body);
+          currentPlan.value = plan;
+          Get.toNamed(Routes.ON_PLAN, arguments: currentPlan.value!.planId);
+        }
+        currentPlan.refresh();
       }
     }
   }
 
-  /// Plan cotent
-  Future<void> onPressedPlanDetail(BuildContext context, PlanModel plan) async {
-    currentPlan.value = plan;
-    getTasksByDate(currentPlan.value!.startDate!);
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      builder: (context) => PlanDetailContent(),
-    );
+  Future<void> handleDeleteTask(String taskId) async {
+    try {
+      var response = await _taskRequest.deleteTask(taskId: taskId);
+      if (response.allGood) {
+        tasks.removeWhere((task) => task.taskId == taskId);
+        tasks.refresh();
+      }
+    } catch (e) {
+      print(e);
+    }
   }
 
-  void onPressedChooseLocation(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      enableDrag: false,
-      isScrollControlled: true,
-      builder: (context) => ChooseLocationContent(),
-    );
-  }
-
-  void onPressedAddTask(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      builder: (context) => AddTaskContent(),
-    );
-  }
-
-  Future<void> createPlan({bool isEdit = false}) async {
+  Future<void> handleCreatePlan({bool isEdit = false}) async {
     try {
       if (currentStep.value == 1) {
         if (titleTEC.text.isEmpty ||
@@ -345,24 +438,5 @@ class PlanController extends BaseController with GetTickerProviderStateMixin {
     } catch (e) {
       print(e);
     }
-  }
-
-  void onTapCreatePlan(BuildContext context, {bool isEdit = false}) {
-    if (isEdit) {
-      currentStep.value = 0;
-      startDay.value = currentPlan.value!.startDate!;
-      endDay.value = currentPlan.value!.endDate!;
-      titleTEC.text = currentPlan.value!.name!;
-      descriptionTEC.text = currentPlan.value!.description!;
-      budgetTEC.text = currentPlan.value!.totalCost.toString();
-    }
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      builder: (context) => PlanCreateContent(
-        isEdit: isEdit,
-        plan: currentPlan.value,
-      ),
-    );
   }
 }

@@ -11,6 +11,7 @@ class ImageConstant {
   static const svgAddImage = '$svgPath/add image.svg';
   static const imageThumbnail = '$imagePath/thumb.jpg';
   static const svgEdit = '$svgPath/edit.svg';
+  static const svgWave = '$svgPath/wave.svg';
 
 // sign_up images
   static const imgUser24x24 = '$imagePath/img_user_24x24.svg';

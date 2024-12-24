@@ -39,7 +39,7 @@ class PlanView extends BaseView<PlanController> {
           actions: [
             AppbarLeadingIconbutton(
               imagePath: ImageConstant.svgPlus,
-              onTap: () => controller.onTapCreatePlan(context),
+              onTap: () => controller.showContentCreatePlan(context),
             ),
           ],
         ),
@@ -149,7 +149,7 @@ class PlanView extends BaseView<PlanController> {
         ],
       ).p(16),
     ).marginOnly(bottom: 8).onTap(
-          () => controller.onPressedPlanDetail(context, plan),
+          () => controller.showContentPlanDetail(context, plan),
         );
   }
 }
@@ -214,6 +214,6 @@ class InProgressItem extends GetView<PlanController> {
           ],
         ),
       ),
-    ).onTap(() => controller.onPressedPlanDetail(context, plan));
+    ).onTap(() => controller.showContentPlanDetail(context, plan));
   }
 }
