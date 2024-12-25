@@ -33,6 +33,7 @@ class AppAPI {
   static const String updateProfile = '${baseAuth}/update-profile';
   static const String deleteAccount = '${baseAuth}/delete-account';
   static const String forgotPassword = '${baseAuth}/forgot-password';
+  static const String logout = '${baseAuth}/logout';
 
   /// User
   static const String baseUser = '${domainApi}user';
@@ -61,6 +62,7 @@ class AppAPI {
   static const String planSetComplete = '${basePlan}/completed';
   static const String planLocation = '${basePlan}/location';
   static const String planPost = '${basePlan}/post';
+  static const String planCostSharing = '${basePlan}/cost-sharing';
   static const String planAllLocation = '${basePlan}/plan-location';
 
   /// Task

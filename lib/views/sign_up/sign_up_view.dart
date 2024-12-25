@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:kiwis_flutter/core/base/base.view.dart';
-import 'package:kiwis_flutter/core/constants/app.button_style.dart';
 import 'package:kiwis_flutter/views/sign_up/sign_up_controller.dart';
 import 'package:kiwis_flutter/core/constants/app_export.dart';
+import 'package:kiwis_flutter/widgets/app_bar/app_bar_leadingiconbutton.dart';
+import 'package:kiwis_flutter/widgets/app_bar/app_bar_title.dart';
+import 'package:kiwis_flutter/widgets/app_bar/custom_app_bar.dart';
 import 'package:kiwis_flutter/widgets/custom_elevated_button.dart';
-import 'package:kiwis_flutter/widgets/custom_floating_text_field.dart';
 import 'package:kiwis_flutter/widgets/custom_text_form_field.dart';
 
 // ignore_for_file: must_be_immutable
@@ -13,6 +14,30 @@ class SignUpScreen extends BaseView<SignUpController> {
       : super(
           key: key,
         );
+
+  /// Section Widget
+  PreferredSizeWidget appBar(BuildContext context) {
+    return PreferredSize(
+      preferredSize: Size.fromHeight(Get.height * 0.13),
+      child: Container(
+        padding: EdgeInsets.only(top: 23),
+        margin: EdgeInsets.symmetric(horizontal: 16.0, vertical: 16),
+        child: CustomAppBar(
+          leadingWidth: 44.h,
+          leading: AppbarLeadingIconbutton(
+            imagePath: ImageConstant.imgArrowLeftOnprimary,
+            onTap: () {
+              Get.back();
+            },
+          ),
+          title: AppbarTitle(
+            text: "Sign Up".tr,
+            margin: EdgeInsets.only(left: 16.h),
+          ),
+        ),
+      ),
+    );
+  }
 
   @override
   Widget body(BuildContext context) {
@@ -47,11 +72,13 @@ class SignUpScreen extends BaseView<SignUpController> {
               children: [
                 _buildEmailInput(context),
                 SizedBox(height: 4.h),
-                _buildPasswordInput(context),
-                SizedBox(height: 4.h),
                 _buildFirstNameInput(context),
                 SizedBox(height: 4.h),
-                _buildLastNameInput(context)
+                _buildLastNameInput(context),
+                SizedBox(height: 4.h),
+                _buildPhoneInput(context),
+                SizedBox(height: 4.h),
+                _buildPasswordInput(context),
               ],
             ),
           ),
@@ -156,6 +183,26 @@ class SignUpScreen extends BaseView<SignUpController> {
           controller.showSnackBarWarning(
               "err_msg_please_enter_valid_text".tr, context);
           return "err_msg_please_enter_valid_text".tr;
+        }
+        return null;
+      },
+    );
+  }
+
+  Widget _buildPhoneInput(BuildContext context) {
+    return CustomTextFormField(
+      controller: controller.phoneTEC,
+      hintText: "Phone",
+      height: 56 + 16,
+      contentPadding: EdgeInsets.symmetric(horizontal: 23.h, vertical: 23.h),
+      boxDecoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(18.h),
+      ),
+      validator: (value) {
+        if (!isText(value)) {
+          controller.showSnackBarWarning(
+              "err_msg_please_enter_valid_phone".tr, context);
+          return "err_msg_please_enter_valid_phone".tr;
         }
         return null;
       },

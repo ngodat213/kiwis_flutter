@@ -118,11 +118,6 @@ class MessageController extends BaseController {
             "Group created successfully",
             type: AnimatedSnackBarType.success,
           ).show(context);
-        } else {
-          AnimatedSnackBar.material(
-            response.error!,
-            type: AnimatedSnackBarType.error,
-          ).show(context);
         }
       }
     } catch (err) {

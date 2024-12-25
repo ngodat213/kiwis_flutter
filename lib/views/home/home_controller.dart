@@ -23,7 +23,7 @@ import 'package:kiwis_flutter/views/home/widgets/menu_content.dart';
 import 'package:kiwis_flutter/views/home/widgets/friend_content.dart';
 import 'package:image/image.dart' as img;
 
-class HomeController extends BaseController {
+class HomeController extends BaseController with GetTickerProviderStateMixin {
   /// Variables
   final ImagePicker _imagePicker = ImagePicker();
   final AuthRequest _authRequest = AuthRequest();
@@ -32,6 +32,7 @@ class HomeController extends BaseController {
 
   // Home content variables
   late CameraController cameraController;
+  late TabController tabController;
   final ConfettiController confettiController = ConfettiController();
   final TextEditingController commentTEC = TextEditingController();
   final TextEditingController captionTEC = TextEditingController();
@@ -65,6 +66,7 @@ class HomeController extends BaseController {
     listenPost();
     await initializeCamera();
     await getPosts();
+    tabController = TabController(length: 2, vsync: this);
     user.value = AuthServices.currentUser!;
     hideLoading();
   }
@@ -302,11 +304,13 @@ class HomeController extends BaseController {
   Future<void> onPressedLogout(BuildContext context) async {
     try {
       await _authRequest.revokeFirebaseTokenRequest();
-      await _clearLocalStorage();
       Get.offAndToNamed(Routes.SIGN_IN);
     } catch (err) {
       print(err);
       Get.offAndToNamed(Routes.SIGN_IN);
+    } finally {
+      await _authRequest.logoutRequest();
+      await _clearLocalStorage();
     }
   }
 

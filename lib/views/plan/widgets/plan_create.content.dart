@@ -309,6 +309,11 @@ class TimeWidget extends GetView<PlanController> {
                       },
                       timeFormat: 'dd/MM/yyyy',
                       onChange: (dateTime) {
+                        controller.endDay.value = DateTime(
+                          dateTime.year,
+                          dateTime.month,
+                          dateTime.day,
+                        );
                         controller.startDay.value = DateTime(
                           dateTime.year,
                           dateTime.month,
