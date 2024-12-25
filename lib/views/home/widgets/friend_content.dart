@@ -66,23 +66,10 @@ class FriendContent extends GetView<HomeController> {
                     child: Column(
                       children: [
                         CustomSelection(
-                          title: "Your link",
-                          child: CustomTextFormField(
-                            height: Get.height * 0.06,
-                            hintText: "https://kiwis.app/add/hydracoder".tr,
-                            suffix: Icon(
-                              Icons.link,
-                              color: appTheme.blue300,
-                            ),
-                            contentPadding: EdgeInsets.symmetric(
-                                horizontal: 23.h, vertical: 12.h),
-                          ),
-                        ),
-                        CustomSelection(
                           title: "Add Friend",
                           child: CustomTextFormField(
                             height: Get.height * 0.06,
-                            hintText: "uid".tr,
+                            hintText: "Phone number".tr,
                             controller: controller.friendIdTEC,
                             suffix: GestureDetector(
                               onTap: () =>
@@ -96,28 +83,63 @@ class FriendContent extends GetView<HomeController> {
                                 horizontal: 23.h, vertical: 12.h),
                           ),
                         ),
-                        CustomSelection(
-                          title: "Friends",
-                          child: Column(
-                            children: controller.user.value.friends!
-                                .map(
-                                  (e) => GestureDetector(
-                                    onTap: () {
-                                      Get.toNamed(Routes.CHAT_ROOM);
-                                    },
-                                    child: SizedBox(
-                                      width: double.maxFinite,
-                                      child: _buildAboutSectionRow(
-                                        avatar: e.user?.avatar?.imageUrl ??
-                                            AppValues.defaultAvatar,
-                                        fullName:
-                                            "${e.user!.firstName} ${e.user!.lastName}"
-                                                .tr,
+                        TabBar(
+                          controller: controller.tabController,
+                          indicatorColor: appTheme.green600,
+                          labelColor: appTheme.green600,
+                          dividerColor: Colors.transparent,
+                          tabs: [
+                            Tab(text: "Friends".tr),
+                            Tab(text: "Pending".tr),
+                          ],
+                        ),
+                        Expanded(
+                          child: TabBarView(
+                            controller: controller.tabController,
+                            children: [
+                              Column(
+                                children: controller.user.value.friends!
+                                    .map(
+                                      (e) => GestureDetector(
+                                        onTap: () {
+                                          Get.toNamed(Routes.CHAT_ROOM);
+                                        },
+                                        child: SizedBox(
+                                          width: double.maxFinite,
+                                          child: _buildAboutSectionRow(
+                                            avatar: e.user?.avatar?.imageUrl ??
+                                                AppValues.defaultAvatar,
+                                            fullName:
+                                                "${e.user!.firstName} ${e.user!.lastName}"
+                                                    .tr,
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                  ),
-                                )
-                                .toList(),
+                                    )
+                                    .toList(),
+                              ),
+                              Column(
+                                children: controller.user.value.friends!
+                                    .map(
+                                      (e) => GestureDetector(
+                                        onTap: () {
+                                          Get.toNamed(Routes.CHAT_ROOM);
+                                        },
+                                        child: SizedBox(
+                                          width: double.maxFinite,
+                                          child: _buildAboutSectionRow(
+                                            avatar: e.user?.avatar?.imageUrl ??
+                                                AppValues.defaultAvatar,
+                                            fullName:
+                                                "${e.user!.firstName} ${e.user!.lastName}"
+                                                    .tr,
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                    .toList(),
+                              ),
+                            ],
                           ),
                         ),
                         Center(

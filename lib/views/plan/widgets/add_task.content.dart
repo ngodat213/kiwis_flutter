@@ -27,7 +27,7 @@ class AddTaskContent extends GetView<PlanController> {
               .text
               .textStyle(theme.textTheme.titleSmall)
               .make()
-              .onTap(() => controller.handleCreateTask()),
+              .onTap(() => controller.handleCreateExpense()),
         ],
       ),
       body: Obx(() {

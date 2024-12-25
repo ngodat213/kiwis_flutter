@@ -7,24 +7,34 @@ class CostRequest {
 
   Future<ApiResponse> createExpense({
     required String amount,
+    required String title,
     required String payerId,
     required String planId,
     required String note,
     required String sharedWith,
-    required List<String> individualShares,
+    required List<Map<String, dynamic>> individualShares,
   }) async {
     var response = await _baseAPI.fetchData(
-      AppAPI.baseExpense,
+      AppAPI.planCostSharing + "/$planId",
       includeHeaders: true,
       method: ApiMethod.POST,
       body: {
         "amount": amount,
+        "title": title,
         "payerId": payerId,
-        "planId": planId,
         "note": note,
         "sharedWith": sharedWith,
         "individualShares": individualShares,
       },
+    );
+    return ApiResponse.fromResponse(response.data);
+  }
+
+  Future<ApiResponse> getCostSharing(String planId) async {
+    var response = await _baseAPI.fetchData(
+      AppAPI.planCostSharing + "/$planId",
+      includeHeaders: true,
+      method: ApiMethod.GET,
     );
     return ApiResponse.fromResponse(response.data);
   }

@@ -28,7 +28,7 @@ class AddExpenseContent extends GetView<PlanController> {
               .text
               .textStyle(theme.textTheme.titleSmall)
               .make()
-              .onTap(() => controller.handleCreateExpense()),
+              .onTap(() => controller.handleCreateExpense(expenseId)),
         ],
       ),
       body: Obx(() {

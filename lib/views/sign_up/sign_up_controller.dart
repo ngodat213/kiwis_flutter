@@ -12,6 +12,7 @@ class SignUpController extends BaseController {
   TextEditingController passwordTEC = TextEditingController();
   TextEditingController firstNameTEC = TextEditingController();
   TextEditingController lastNameTEC = TextEditingController();
+  TextEditingController phoneTEC = TextEditingController();
   RxBool isShowPassword = true.obs;
 
   Future<void> onSignUpButtonPressed(BuildContext context) async {
@@ -19,14 +20,19 @@ class SignUpController extends BaseController {
     final String password = passwordTEC.text;
     final String firstName = firstNameTEC.text;
     final String lastName = lastNameTEC.text;
-
+    final String phone = phoneTEC.text;
     try {
-      if (email != '' && password != '' && firstName != '' && lastName != '') {
+      if (email != '' &&
+          password != '' &&
+          firstName != '' &&
+          lastName != '' &&
+          phone != '') {
         final reponse = await _authRequest.registerRequest(
           email,
           password,
           firstName,
           lastName,
+          phone,
         );
         if (reponse.allGood) {
           AnimatedSnackBar.material(
@@ -69,6 +75,7 @@ class SignUpController extends BaseController {
     passwordTEC.text = kReleaseMode ? "" : "Code26102003#!@";
     firstNameTEC.text = kReleaseMode ? "" : "Hydra";
     lastNameTEC.text = kReleaseMode ? "" : "Coder";
+    phoneTEC.text = kReleaseMode ? "" : "0399228357";
     super.onInit();
   }
 
@@ -79,5 +86,6 @@ class SignUpController extends BaseController {
     passwordTEC.dispose();
     firstNameTEC.dispose();
     lastNameTEC.dispose();
+    phoneTEC.dispose();
   }
 }

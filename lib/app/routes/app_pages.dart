@@ -4,8 +4,6 @@ import '../../views/change_language/change_language_binding.dart';
 import '../../views/change_language/change_language_view.dart';
 import '../../views/change_password/change_password_binding.dart';
 import '../../views/change_password/change_password_view.dart';
-import '../../views/expense/expense_binding.dart';
-import '../../views/expense/expense_view.dart';
 import '../../views/forgot_password/forgot_password_binding.dart';
 import '../../views/forgot_password/forgot_password_view.dart';
 import '../../views/home/home_binding.dart';
@@ -83,11 +81,6 @@ class AppPages {
       name: _Paths.MESSAGE,
       page: () => MessageScreen(),
       binding: MessageBinding(),
-    ),
-    GetPage(
-      name: _Paths.EXPENSE,
-      page: () => ExpenseScreen(),
-      binding: ExpenseBinding(),
     ),
     GetPage(
       name: _Paths.SPLASH,

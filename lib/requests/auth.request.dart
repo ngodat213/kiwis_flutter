@@ -38,12 +38,22 @@ class AuthRequest {
     return ApiResponse.fromResponse(response.data);
   }
 
+  Future<ApiResponse> logoutRequest() async {
+    var response = await _baseAPI.fetchData(
+      AppAPI.logout,
+      includeHeaders: true,
+      method: ApiMethod.POST,
+    );
+    return ApiResponse.fromResponse(response.data);
+  }
+
   // Register
   Future<ApiResponse> registerRequest(
     String email,
     String password,
     String firstName,
     String lastName,
+    String phone,
   ) async {
     var reponse = await _baseAPI.fetchData(
       AppAPI.register,
@@ -53,6 +63,7 @@ class AuthRequest {
         'password': password,
         'firstName': firstName,
         'lastName': lastName,
+        'phoneNumber': phone,
       },
     );
 

@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:kiwis_flutter/core/base/base.view.dart';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:kiwis_flutter/core/constants/app_export.dart';
+import 'package:kiwis_flutter/models/cost.model.dart';
 import 'package:kiwis_flutter/views/home/widgets/camera.wiget.dart';
 import 'package:kiwis_flutter/views/home/widgets/post.item.dart';
+import 'package:kiwis_flutter/widgets/app_bar/app_bar_trainling_iconbutton.dart';
 import 'home_controller.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 class HomeScreen extends BaseView<HomeController> {
   HomeScreen({super.key});

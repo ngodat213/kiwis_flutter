@@ -5,8 +5,10 @@ import 'package:image_picker/image_picker.dart';
 import 'package:kiwis_flutter/app/routes/app_pages.dart';
 import 'package:kiwis_flutter/controllers/location_search.controller.dart';
 import 'package:kiwis_flutter/core/base/base.controller.dart';
+import 'package:kiwis_flutter/enums/share_with.enum.dart';
 import 'package:kiwis_flutter/models/address.model.dart';
 import 'package:kiwis_flutter/models/api.response.dart';
+import 'package:kiwis_flutter/models/cost.model.dart';
 import 'package:kiwis_flutter/models/member.model.dart';
 import 'package:kiwis_flutter/models/plan.model.dart';
 import 'package:kiwis_flutter/models/plan_location.model.dart';
@@ -16,6 +18,7 @@ import 'package:kiwis_flutter/models/individual_shares.model.dart';
 import 'package:kiwis_flutter/requests/cost.request.dart';
 import 'package:kiwis_flutter/requests/plan.request.dart';
 import 'package:kiwis_flutter/requests/task.request.dart';
+import 'package:kiwis_flutter/services/services.dart';
 import 'package:kiwis_flutter/views/plan/widgets/add_expense.content.dart';
 import 'package:kiwis_flutter/views/plan/widgets/add_task.content.dart';
 import 'package:kiwis_flutter/views/plan/widgets/addlocation.content.dart';
@@ -66,6 +69,7 @@ class PlanController extends BaseController with GetTickerProviderStateMixin {
   RxList<IndividualSharesModel> individualShares =
       <IndividualSharesModel>[].obs;
   RxList<MemberModel> userPlans = <MemberModel>[].obs;
+  RxList<CostModel> planCosts = <CostModel>[].obs;
   Rx<File?> imageFile = Rxn<File?>();
   RxInt currentStep = 0.obs;
   RxBool isEvenlyShared = true.obs;
@@ -80,6 +84,7 @@ class PlanController extends BaseController with GetTickerProviderStateMixin {
     showLoading();
     argGroupId = Get.arguments;
     await handleInitPlans();
+    currentUser.value = await AuthServices.getCurrentUser();
     tabController = TabController(length: 2, vsync: this);
     detailTabController = TabController(length: 3, vsync: this);
     hideLoading();
@@ -213,6 +218,7 @@ class PlanController extends BaseController with GetTickerProviderStateMixin {
     currentPlan.value = plan;
     getTasksByDate(currentPlan.value!.startDate!);
     getUserPlans();
+    getCostSharing();
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -237,11 +243,11 @@ class PlanController extends BaseController with GetTickerProviderStateMixin {
     );
   }
 
-  void showContentAddExpense(BuildContext context) {
+  void showContentAddExpense(BuildContext context, {String? expenseId}) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      builder: (context) => AddExpenseContent(),
+      builder: (context) => AddExpenseContent(expenseId: expenseId),
     );
   }
 
@@ -314,16 +320,62 @@ class PlanController extends BaseController with GetTickerProviderStateMixin {
     }
   }
 
+  Future<void> getCostSharing() async {
+    try {
+      var response =
+          await _costRequest.getCostSharing(currentPlan.value!.planId!);
+      if (response.allGood) {
+        for (var e in response.body) {
+          planCosts.add(CostModel.fromJson(e));
+        }
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
   Future<void> handleCreateExpense() async {
     try {
+      if (expenseTitleTEC.text.isEmpty ||
+          expenseBudgetTEC.text.isEmpty ||
+          expenseDescriptionTEC.text.isEmpty) {
+        Get.snackbar("Error", "Please fill all fields");
+        return;
+      }
+      final amount = isEvenlyShared.value
+          ? double.parse(expenseBudgetTEC.text) /
+              (currentPlan.value!.group?.members?.length ?? 1)
+          : double.parse(expenseBudgetTEC.text);
+      final individualSharesList = isEvenlyShared.value
+          ? currentPlan.value!.group?.members
+              ?.map((e) => {
+                    "userId": e.user!.userId,
+                    "amount": amount,
+                  })
+              .toList()
+          : individualShares
+              .map((e) => {
+                    "userId": e.userId,
+                    "amount": e.amount!.toDouble(),
+                  })
+              .toList();
       var response = await _costRequest.createExpense(
+        title: expenseTitleTEC.text,
         amount: expenseBudgetTEC.text,
         payerId: currentUser.value!.userId!,
         planId: currentPlan.value!.planId!,
         note: expenseDescriptionTEC.text,
-        sharedWith: selectedShareCosts.map((e) => e.userId!).toList(),
-        individualShares: individualShares.map((e) => e.userId!).toList(),
+        sharedWith: isEvenlyShared.value
+            ? CostSharingSharedWith.GROUP.name
+            : CostSharingSharedWith.INDIVIDUALS.name,
+        individualShares: individualSharesList ?? [],
       );
+      if (response.allGood) {
+        Get.back();
+        Get.snackbar("Success", "Expense created successfully");
+        planCosts.add(CostModel.fromJson(response.body));
+        planCosts.refresh();
+      }
     } catch (e) {
       print(e);
     }

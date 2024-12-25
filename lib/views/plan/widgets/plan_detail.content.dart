@@ -1,18 +1,17 @@
 import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:dotted_line/dotted_line.dart';
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:glossy/glossy.dart';
 import 'package:intl/intl.dart';
 import 'package:kiwis_flutter/core/constants/app_export.dart';
+import 'package:kiwis_flutter/models/cost.model.dart';
 import 'package:kiwis_flutter/models/plan_location.model.dart';
-import 'package:kiwis_flutter/views/expense/widgets/latest_entry_item.dart';
+import 'package:kiwis_flutter/views/home/home_view.dart';
 import 'package:kiwis_flutter/views/plan/plan_controller.dart';
 import 'package:kiwis_flutter/widgets/app_bar/app_bar_leadingiconbutton.dart';
+import 'package:kiwis_flutter/widgets/app_bar/app_bar_trainling_iconbutton.dart';
 import 'package:kiwis_flutter/widgets/base_appbar.dart';
-import 'package:kiwis_flutter/widgets/custom_elevated_button.dart';
 import 'package:kiwis_flutter/widgets/custom_icon_button.dart';
-import 'package:table_calendar/table_calendar.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class PlanDetailContent extends GetView<PlanController> {
@@ -184,13 +183,72 @@ class PlanDetailContent extends GetView<PlanController> {
           child: ListView.builder(
             physics: AlwaysScrollableScrollPhysics(),
             shrinkWrap: true,
-            itemCount: 10,
-            itemBuilder: (context, index) => LatestEntryItem().paddingOnly(
+            itemCount: controller.planCosts.length,
+            itemBuilder: (context, index) => LatestEntryItem(
+              cost: controller.planCosts[index],
+            ).paddingOnly(
               bottom: 8.h,
             ),
           ).pOnly(top: 32),
         ),
       ],
+    );
+  }
+}
+
+class LatestEntryItem extends StatelessWidget {
+  final CostModel cost;
+  const LatestEntryItem({
+    super.key,
+    required this.cost,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.only(bottom: 8.h),
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            width: 1.5,
+            color: theme.colorScheme.onPrimary.withOpacity(0.05),
+          ),
+        ),
+      ),
+      child: Row(
+        children: [
+          AppbarTrailingIconbutton(
+            // onTap: () => controller.showModalCalenderSheet(context),
+            imagePath: ImageConstant.svgDollar,
+          ).marginOnly(right: 8.h),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              cost.title!.tr.text.textStyle(theme.textTheme.titleMedium).make(),
+              "${cost.amount} VNĐ"
+                  .tr
+                  .text
+                  .textStyle(theme.textTheme.titleSmall)
+                  .make(),
+            ],
+          ),
+          Spacer(),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              DateFormat('dd/MM/yyyy')
+                  .format(DateTime.parse(cost.createdAt!))
+                  .tr
+                  .text
+                  .textStyle(theme.textTheme.bodyMedium)
+                  .make(),
+              cost.payer!.fullName.tr.text
+                  .textStyle(theme.textTheme.bodyMedium)
+                  .make(),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
