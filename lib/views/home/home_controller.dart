@@ -9,6 +9,8 @@ import 'package:kiwis_flutter/core/constants/app_export.dart';
 import 'package:kiwis_flutter/core/base/base.controller.dart';
 import 'package:kiwis_flutter/core/constants/constants.dart';
 import 'package:kiwis_flutter/core/manager/manager.socket.dart';
+import 'package:kiwis_flutter/models/friend_data.model.dart';
+import 'package:kiwis_flutter/models/friendship.model.dart';
 import 'package:kiwis_flutter/models/post.model.dart';
 import 'package:kiwis_flutter/models/user.models.dart';
 import 'package:kiwis_flutter/requests/auth.request.dart';
@@ -41,7 +43,7 @@ class HomeController extends BaseController with GetTickerProviderStateMixin {
   final TextEditingController currentPasswordTEC = TextEditingController();
   final TextEditingController newPasswordTEC = TextEditingController();
   final TextEditingController confirmPasswordTEC = TextEditingController();
-  final TextEditingController friendIdTEC = TextEditingController();
+  final TextEditingController phoneNumberTEC = TextEditingController();
 
   final Rx<UserModel> user = UserModel().obs;
   final RxBool isFlashOn = false.obs;
@@ -54,6 +56,7 @@ class HomeController extends BaseController with GetTickerProviderStateMixin {
   final Rx<XFile> imageXFile = XFile("").obs;
   final Rx<File> avatar = File('').obs;
   final RxList<dynamic> friends = RxList<dynamic>([]);
+  final RxList<FriendshipModel> friendsPending = RxList<FriendshipModel>([]);
   final RxList<PostModel> posts = RxList<PostModel>([]);
   List<CameraDescription> cameras = [];
   List<String> emojis = ['😊', '😂', '❤️', '😍', '🤔', '🔥'];
@@ -66,8 +69,9 @@ class HomeController extends BaseController with GetTickerProviderStateMixin {
     listenPost();
     await initializeCamera();
     await getPosts();
+    await getAllFriendPending();
     tabController = TabController(length: 2, vsync: this);
-    user.value = AuthServices.currentUser!;
+    user.value = await AuthServices.getCurrentUser(force: true) ?? UserModel();
     hideLoading();
   }
 
@@ -80,7 +84,7 @@ class HomeController extends BaseController with GetTickerProviderStateMixin {
     currentPasswordTEC.dispose();
     newPasswordTEC.dispose();
     confirmPasswordTEC.dispose();
-    friendIdTEC.dispose();
+    phoneNumberTEC.dispose();
     if (cameraController.value.isInitialized) {
       cameraController.dispose();
     }
@@ -307,18 +311,17 @@ class HomeController extends BaseController with GetTickerProviderStateMixin {
       Get.offAndToNamed(Routes.SIGN_IN);
     } catch (err) {
       print(err);
-      Get.offAndToNamed(Routes.SIGN_IN);
     } finally {
       await _authRequest.logoutRequest();
       await _clearLocalStorage();
+      Get.delete<HomeController>();
     }
   }
 
   Future<void> _clearLocalStorage() async {
-    await LocalStorageService.prefs?.clear();
     await AuthServices.setAuthBearerToken("");
     await AuthServices.setAuthFirebaseToken("");
-    await AuthServices.firstTimeOnApp();
+    await AuthServices.logout();
     await AuthServices.isAuthenticated(force: false);
   }
 
@@ -332,11 +335,26 @@ class HomeController extends BaseController with GetTickerProviderStateMixin {
     );
   }
 
-  Future<void> getAllFriendsRequest() async {
+  Future<void> getAllFriendPending() async {
     try {
-      final response = await _userRequest.getAllFriendsRequest();
+      final response = await _userRequest.getAllFriendPending();
       if (response.allGood) {
-        friends.value = response.data;
+        for (var e in response.body) {
+          friendsPending.value.add(FriendshipModel.fromJson(e));
+        }
+      }
+      friendsPending.refresh();
+    } catch (err) {
+      print(err);
+    }
+  }
+
+  Future<void> acceptFriend(String friendshipId) async {
+    try {
+      final response = await _userRequest.acceptFriendRequest(friendshipId);
+      if (response.allGood) {
+        friendsPending.value.removeWhere((e) => e.friendshipId == friendshipId);
+        friendsPending.refresh();
       }
     } catch (err) {
       print(err);
@@ -345,9 +363,9 @@ class HomeController extends BaseController with GetTickerProviderStateMixin {
 
   Future<void> onPressedAddFriend(BuildContext context) async {
     try {
-      final response = await _userRequest.addFriendRequest(friendIdTEC.text);
+      final response = await _userRequest.addFriendRequest(phoneNumberTEC.text);
       if (response.allGood) {
-        friendIdTEC.clear();
+        phoneNumberTEC.clear();
         AnimatedSnackBar.material(
           'Add friend success'.tr,
           type: AnimatedSnackBarType.success,

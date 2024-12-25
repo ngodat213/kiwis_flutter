@@ -83,18 +83,8 @@ class AuthServices {
     }
   }
 
-  // static logout() async {
-  //   await HttpService().getCacheManager().clearAll();
-  //   await LocalStorageService.prefs!.clear();
-  //   await LocalStorageService.prefs!.setBool(AppStrings.firstTimeOnApp, false);
-  //   FirebaseService()
-  //       .firebaseMessaging
-  //       .unsubscribeFromTopic("${currentUser?.id}");
-  //   FirebaseService()
-  //       .firebaseMessaging
-  //       .unsubscribeFromTopic("d_${currentUser?.id}");
-  //   FirebaseService()
-  //       .firebaseMessaging
-  //       .unsubscribeFromTopic("${currentUser?.role}");
-  // }
+  static logout() async {
+    await LocalStorageService.prefs!.clear();
+    await LocalStorageService.prefs!.setBool(AppStrings.firstTimeOnApp, false);
+  }
 }

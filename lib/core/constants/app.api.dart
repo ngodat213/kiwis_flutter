@@ -42,6 +42,8 @@ class AppAPI {
   static const String updateDisplayName = '${baseUser}/update-user';
   static const String userChangeAvatar = '${baseUser}/change-avatar';
   static const String userUpdateFcmToken = '${baseUser}/update-fcm-token';
+  static const String userFriendPending = '${baseUser}/friend-pending';
+  static const String userFriendAccept = '${baseUser}/friend-accept';
 
   /// Upload Realtime
   static const String uploadRealtime = '${domainApi}upload-realtime';

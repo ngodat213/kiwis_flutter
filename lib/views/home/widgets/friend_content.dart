@@ -70,7 +70,7 @@ class FriendContent extends GetView<HomeController> {
                           child: CustomTextFormField(
                             height: Get.height * 0.06,
                             hintText: "Phone number".tr,
-                            controller: controller.friendIdTEC,
+                            controller: controller.phoneNumberTEC,
                             suffix: GestureDetector(
                               onTap: () =>
                                   controller.onPressedAddFriend(context),
@@ -100,40 +100,33 @@ class FriendContent extends GetView<HomeController> {
                               Column(
                                 children: controller.user.value.friends!
                                     .map(
-                                      (e) => GestureDetector(
-                                        onTap: () {
-                                          Get.toNamed(Routes.CHAT_ROOM);
-                                        },
-                                        child: SizedBox(
-                                          width: double.maxFinite,
-                                          child: _buildAboutSectionRow(
-                                            avatar: e.user?.avatar?.imageUrl ??
-                                                AppValues.defaultAvatar,
-                                            fullName:
-                                                "${e.user!.firstName} ${e.user!.lastName}"
-                                                    .tr,
-                                          ),
+                                      (e) => SizedBox(
+                                        width: double.maxFinite,
+                                        child: _buildAboutSectionRow(
+                                          userId: e.user!.userId!,
+                                          avatar: e.user?.avatar?.imageUrl ??
+                                              AppValues.defaultAvatar,
+                                          fullName:
+                                              "${e.user!.firstName} ${e.user!.lastName}"
+                                                  .tr,
                                         ),
                                       ),
                                     )
                                     .toList(),
                               ),
                               Column(
-                                children: controller.user.value.friends!
+                                children: controller.friendsPending
                                     .map(
-                                      (e) => GestureDetector(
-                                        onTap: () {
-                                          Get.toNamed(Routes.CHAT_ROOM);
-                                        },
-                                        child: SizedBox(
-                                          width: double.maxFinite,
-                                          child: _buildAboutSectionRow(
-                                            avatar: e.user?.avatar?.imageUrl ??
-                                                AppValues.defaultAvatar,
-                                            fullName:
-                                                "${e.user!.firstName} ${e.user!.lastName}"
-                                                    .tr,
-                                          ),
+                                      (e) => SizedBox(
+                                        width: double.maxFinite,
+                                        child: _buildAboutSectionRow(
+                                          userId: e.user!.userId!,
+                                          avatar: e.user?.avatar?.imageUrl ??
+                                              AppValues.defaultAvatar,
+                                          fullName:
+                                              "${e.user!.firstName} ${e.user!.lastName}"
+                                                  .tr,
+                                          isPending: true,
                                         ),
                                       ),
                                     )
@@ -164,6 +157,8 @@ class FriendContent extends GetView<HomeController> {
   Widget _buildAboutSectionRow({
     required String avatar,
     required String fullName,
+    bool isPending = false,
+    required String userId,
   }) {
     return Container(
       padding: EdgeInsets.only(
@@ -220,6 +215,21 @@ class FriendContent extends GetView<HomeController> {
               color: theme.colorScheme.onPrimary.withOpacity(0.5),
             ),
           ),
+          SizedBox(width: 8.h),
+          if (isPending)
+            CustomIconButton(
+              onTap: () => controller.acceptFriend(userId),
+              height: 44.h,
+              width: 44.h,
+              decoration: BoxDecoration(
+                color: appTheme.green600,
+                borderRadius: BorderRadius.circular(100),
+              ),
+              child: Icon(
+                Icons.check,
+                color: Colors.white,
+              ),
+            ),
         ],
       ),
     );
