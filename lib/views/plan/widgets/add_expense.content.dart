@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:glossy/glossy.dart';
 import 'package:kiwis_flutter/core/constants/app.button_style.dart';
 import 'package:kiwis_flutter/core/constants/app_export.dart';
+import 'package:kiwis_flutter/models/individual_shares.model.dart';
 import 'package:kiwis_flutter/views/plan/plan_controller.dart';
 import 'package:kiwis_flutter/widgets/base_appbar.dart';
 import 'package:kiwis_flutter/widgets/custom_elevated_button.dart';
@@ -68,7 +69,7 @@ class AddExpenseContent extends GetView<PlanController> {
                           CustomTextFormField(
                             height: Get.height * 0.06,
                             hintText: "Enter your title".tr,
-                            controller: controller.taskTitleTEC,
+                            controller: controller.expenseTitleTEC,
                             contentPadding: EdgeInsets.symmetric(
                                 horizontal: 23.h, vertical: 12.h),
                           ),
@@ -84,7 +85,7 @@ class AddExpenseContent extends GetView<PlanController> {
                             height: Get.height * 0.06,
                             hintText: "Enter your description".tr,
                             maxLines: 5,
-                            controller: controller.taskDescriptionTEC,
+                            controller: controller.expenseDescriptionTEC,
                             contentPadding: EdgeInsets.symmetric(
                                 horizontal: 23.h, vertical: 12.h),
                           ),
@@ -95,17 +96,52 @@ class AddExpenseContent extends GetView<PlanController> {
                               .bold
                               .textStyle(theme.textTheme.titleMedium)
                               .make(),
-                          SizedBox(height: 4),
-                          CustomTextFormField(
-                            height: Get.height * 0.06,
-                            hintText: "Enter your amount".tr,
-                            controller: controller.taskBudgetTEC,
-                            textInputType: TextInputType.number,
-                            contentPadding: EdgeInsets.symmetric(
-                                horizontal: 23.h, vertical: 12.h),
+                          Row(
+                            children: [
+                              Radio<bool>(
+                                value: true,
+                                activeColor: appTheme.green600,
+                                groupValue: controller.isEvenlyShared.value,
+                                onChanged: (value) =>
+                                    controller.toggleShareType(value!),
+                              ),
+                              "Chia đều"
+                                  .tr
+                                  .text
+                                  .textStyle(theme.textTheme.bodyMedium)
+                                  .make(),
+                            ],
                           ),
+                          Row(
+                            children: [
+                              Radio<bool>(
+                                value: false,
+                                activeColor: appTheme.green600,
+                                groupValue: controller.isEvenlyShared.value,
+                                onChanged: (value) =>
+                                    controller.toggleShareType(value!),
+                              ),
+                              "Chia theo từng người"
+                                  .tr
+                                  .text
+                                  .textStyle(theme.textTheme.bodyMedium)
+                                  .make(),
+                            ],
+                          ),
+                          SizedBox(height: 4),
+                          if (controller.isEvenlyShared.value)
+                            CustomTextFormField(
+                              height: Get.height * 0.06,
+                              hintText: "Enter your amount".tr,
+                              controller: controller.expenseBudgetTEC,
+                              textInputType: TextInputType.number,
+                              contentPadding: EdgeInsets.symmetric(
+                                  horizontal: 23.h, vertical: 12.h),
+                            ),
                           SizedBox(height: 16),
-                          if (controller.currentPlan.value?.groupId != null)
+                          SizedBox(width: 16),
+                          if (controller.currentPlan.value?.groupId != null &&
+                              !controller.isEvenlyShared.value)
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -155,54 +191,114 @@ class AddExpenseContent extends GetView<PlanController> {
                                     .thin
                                     .textStyle(theme.textTheme.bodySmall)
                                     .make(),
+                                SizedBox(height: 16),
+                                SingleChildScrollView(
+                                  scrollDirection: Axis.vertical,
+                                  child: Obx(
+                                    () => Column(
+                                      children: controller.selectedShareCosts
+                                          .map((friend) {
+                                        return Padding(
+                                          padding: const EdgeInsets.only(
+                                              bottom: 8.0),
+                                          child: Row(
+                                            children: [
+                                              Column(
+                                                children: [
+                                                  Container(
+                                                    height: 52.h,
+                                                    width: 52.h,
+                                                    child: CustomImageView(
+                                                      imagePath: friend
+                                                              .user
+                                                              ?.avatar
+                                                              ?.imageUrl ??
+                                                          AppValues
+                                                              .defaultAvatar,
+                                                      height: 47.h,
+                                                      width: 47.h,
+                                                      radius:
+                                                          BorderRadius.circular(
+                                                              100),
+                                                      fit: BoxFit.cover,
+                                                    ),
+                                                  ),
+                                                  SizedBox(height: 8),
+                                                  friend.user!.fullName.text
+                                                      .maxLines(1)
+                                                      .ellipsis
+                                                      .textStyle(
+                                                        theme.textTheme
+                                                            .titleSmall!
+                                                            .copyWith(
+                                                          color: theme
+                                                              .colorScheme
+                                                              .onPrimary
+                                                              .withOpacity(1),
+                                                        ),
+                                                      )
+                                                      .make()
+                                                      .w(52.h),
+                                                ],
+                                              ),
+                                              Expanded(
+                                                child: CustomTextFormField(
+                                                  hintText:
+                                                      "Enter your amount for ${friend.user!.fullName}"
+                                                          .tr,
+                                                  contentPadding:
+                                                      EdgeInsets.symmetric(
+                                                    horizontal: 23.h,
+                                                    vertical: 12.h,
+                                                  ),
+                                                  onChanged: (value) {
+                                                    final amount =
+                                                        double.tryParse(
+                                                                value) ??
+                                                            0.0;
+                                                    final userId =
+                                                        friend.user!.userId;
+
+                                                    // Kiểm tra nếu userId đã tồn tại trong danh sách
+                                                    final index = controller
+                                                        .individualShares
+                                                        .indexWhere(
+                                                      (share) =>
+                                                          share.userId ==
+                                                          userId,
+                                                    );
+
+                                                    if (index != -1) {
+                                                      // Nếu đã tồn tại, cập nhật số tiền
+                                                      controller
+                                                          .individualShares[
+                                                              index]
+                                                          .amount = amount;
+                                                    } else {
+                                                      // Nếu chưa tồn tại, thêm mới vào danh sách
+                                                      controller
+                                                          .individualShares
+                                                          .add(
+                                                        IndividualSharesModel(
+                                                          userId: userId,
+                                                          amount: amount,
+                                                        ),
+                                                      );
+                                                    }
+                                                    controller.individualShares
+                                                        .refresh();
+                                                  },
+                                                ).paddingOnly(left: 16),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      }).toList(),
+                                    ),
+                                  ),
+                                ),
                               ],
                             ),
-                          SizedBox(height: 16),
-                          SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Obx(
-                              () => Row(
-                                children:
-                                    controller.selectedShareCosts.map((friend) {
-                                  return Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 8.0),
-                                    child: Column(
-                                      children: [
-                                        Container(
-                                          height: 52.h,
-                                          width: 52.h,
-                                          child: CustomImageView(
-                                            imagePath:
-                                                friend.user?.avatar?.imageUrl ??
-                                                    AppValues.defaultAvatar,
-                                            height: 47.h,
-                                            width: 47.h,
-                                            radius: BorderRadius.circular(100),
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
-                                        SizedBox(height: 8),
-                                        friend.user!.fullName.text
-                                            .maxLines(1)
-                                            .ellipsis
-                                            .textStyle(
-                                              theme.textTheme.titleSmall!
-                                                  .copyWith(
-                                                color: theme
-                                                    .colorScheme.onPrimary
-                                                    .withOpacity(1),
-                                              ),
-                                            )
-                                            .make()
-                                            .w(52.h),
-                                      ],
-                                    ),
-                                  );
-                                }).toList(),
-                              ),
-                            ),
-                          ),
                           SizedBox(height: 16),
                         ],
                       ),

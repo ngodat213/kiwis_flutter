@@ -12,6 +12,8 @@ import 'package:kiwis_flutter/models/plan.model.dart';
 import 'package:kiwis_flutter/models/plan_location.model.dart';
 import 'package:kiwis_flutter/models/task.model.dart';
 import 'package:kiwis_flutter/models/user.models.dart';
+import 'package:kiwis_flutter/models/individual_shares.model.dart';
+import 'package:kiwis_flutter/requests/cost.request.dart';
 import 'package:kiwis_flutter/requests/plan.request.dart';
 import 'package:kiwis_flutter/requests/task.request.dart';
 import 'package:kiwis_flutter/views/plan/widgets/add_expense.content.dart';
@@ -28,6 +30,7 @@ class PlanController extends BaseController with GetTickerProviderStateMixin {
   final ImagePicker _imagePicker = ImagePicker();
   final PlanRequest _planRequest = PlanRequest();
   final TaskRequest _taskRequest = TaskRequest();
+  final CostRequest _costRequest = CostRequest();
 
   /// Controller
   late TabController tabController;
@@ -41,6 +44,10 @@ class PlanController extends BaseController with GetTickerProviderStateMixin {
   final TextEditingController taskTitleTEC = TextEditingController();
   final TextEditingController taskDescriptionTEC = TextEditingController();
   final TextEditingController taskBudgetTEC = TextEditingController();
+
+  final TextEditingController expenseTitleTEC = TextEditingController();
+  final TextEditingController expenseDescriptionTEC = TextEditingController();
+  final TextEditingController expenseBudgetTEC = TextEditingController();
 
   /// Variables
   Rx<DateTime> taskDate = Rx<DateTime>(DateTime.now());
@@ -56,20 +63,26 @@ class PlanController extends BaseController with GetTickerProviderStateMixin {
   RxList<TaskModel> tasks = <TaskModel>[].obs;
   RxList<AddressModel> locations = <AddressModel>[].obs;
   RxList<MemberModel> selectedShareCosts = <MemberModel>[].obs;
+  RxList<IndividualSharesModel> individualShares =
+      <IndividualSharesModel>[].obs;
   RxList<MemberModel> userPlans = <MemberModel>[].obs;
   Rx<File?> imageFile = Rxn<File?>();
   RxInt currentStep = 0.obs;
+  RxBool isEvenlyShared = true.obs;
   Rxn<String?> currentTaskId = Rxn<String?>();
   String? argGroupId;
+  Rx<UserModel?> currentUser = Rxn<UserModel?>();
   List<Widget> steps = [TimeWidget(), DetailWidget(), EnjoyWidget()];
 
   @override
   void onInit() async {
     super.onInit();
+    showLoading();
     argGroupId = Get.arguments;
     await handleInitPlans();
     tabController = TabController(length: 2, vsync: this);
     detailTabController = TabController(length: 3, vsync: this);
+    hideLoading();
   }
 
   void onChangeTask(String taskId) {
@@ -83,6 +96,14 @@ class PlanController extends BaseController with GetTickerProviderStateMixin {
 
   void showDialog(Widget child) {
     Get.dialog(child);
+  }
+
+  void toggleShareType(bool value) {
+    isEvenlyShared.value = value;
+
+    if (value) {
+      individualShares.clear();
+    }
   }
 
   void getTasksByDate(DateTime date) {
@@ -294,7 +315,18 @@ class PlanController extends BaseController with GetTickerProviderStateMixin {
   }
 
   Future<void> handleCreateExpense() async {
-    print("handleCreateExpense");
+    try {
+      var response = await _costRequest.createExpense(
+        amount: expenseBudgetTEC.text,
+        payerId: currentUser.value!.userId!,
+        planId: currentPlan.value!.planId!,
+        note: expenseDescriptionTEC.text,
+        sharedWith: selectedShareCosts.map((e) => e.userId!).toList(),
+        individualShares: individualShares.map((e) => e.userId!).toList(),
+      );
+    } catch (e) {
+      print(e);
+    }
   }
 
   Future<void> handleCreateTask() async {

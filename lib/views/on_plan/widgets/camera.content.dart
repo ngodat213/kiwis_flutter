@@ -17,7 +17,7 @@ class CameraContent extends GetView<OnPlanController> {
       insetPadding: EdgeInsets.zero,
       backgroundColor: Colors.transparent,
       child: GlossyContainer(
-        height: Get.height * 0.6,
+        height: Get.height * 0.7,
         width: Get.width * 0.9,
         borderRadius: BorderRadius.circular(32),
         child: Column(

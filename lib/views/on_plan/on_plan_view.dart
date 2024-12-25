@@ -27,7 +27,6 @@ class OnPlanView extends GetView<OnPlanController> {
           children: [
             Obx(() {
               return Container(
-                height: Get.height * 0.1,
                 padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,

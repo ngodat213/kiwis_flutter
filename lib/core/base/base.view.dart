@@ -91,8 +91,8 @@ abstract class BaseView<Controller extends BaseController>
                 child: controller.pageState == PageState.LOADING
                     ? Center(
                         child: LoadingAnimationWidget.threeRotatingDots(
-                          color: appTheme.amberA400,
-                          size: 200,
+                          color: appTheme.green600,
+                          size: 100,
                         ),
                       )
                     : body(context),
