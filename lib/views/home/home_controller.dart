@@ -392,7 +392,7 @@ class HomeController extends BaseController with GetTickerProviderStateMixin {
     try {
       final response = await _userRequest.acceptFriendRequest(friendshipId);
       if (response.allGood) {
-        friendsPending.value.removeWhere((e) => e.friendshipId == friendshipId);
+        friendsPending.value.removeWhere((e) => e.user!.userId == friendshipId);
         friendsPending.refresh();
         final messageController = Get.find<MessageController>();
         messageController.initGroups();
