@@ -63,86 +63,88 @@ class FriendContent extends GetView<HomeController> {
                     width: double.maxFinite,
                     margin: EdgeInsets.only(bottom: 48.h),
                     padding: EdgeInsets.symmetric(horizontal: 24.h),
-                    child: Column(
-                      children: [
-                        CustomSelection(
-                          title: "Add Friend",
-                          child: CustomTextFormField(
-                            height: Get.height * 0.06,
-                            hintText: "Phone number".tr,
-                            controller: controller.phoneNumberTEC,
-                            suffix: GestureDetector(
-                              onTap: () =>
-                                  controller.onPressedAddFriend(context),
-                              child: Icon(
-                                Icons.send,
-                                color: appTheme.blue300,
+                    child: Obx(() {
+                      return Column(
+                        children: [
+                          CustomSelection(
+                            title: "Add Friend",
+                            child: CustomTextFormField(
+                              height: Get.height * 0.06,
+                              hintText: "Phone number".tr,
+                              controller: controller.phoneNumberTEC,
+                              suffix: GestureDetector(
+                                onTap: () =>
+                                    controller.onPressedAddFriend(context),
+                                child: Icon(
+                                  Icons.send,
+                                  color: appTheme.blue300,
+                                ),
                               ),
+                              contentPadding: EdgeInsets.symmetric(
+                                  horizontal: 23.h, vertical: 12.h),
                             ),
-                            contentPadding: EdgeInsets.symmetric(
-                                horizontal: 23.h, vertical: 12.h),
                           ),
-                        ),
-                        TabBar(
-                          controller: controller.tabController,
-                          indicatorColor: appTheme.green600,
-                          labelColor: appTheme.green600,
-                          dividerColor: Colors.transparent,
-                          tabs: [
-                            Tab(text: "Friends".tr),
-                            Tab(text: "Pending".tr),
-                          ],
-                        ),
-                        Expanded(
-                          child: TabBarView(
+                          TabBar(
                             controller: controller.tabController,
-                            children: [
-                              Column(
-                                children: controller.user.value.friends!
-                                    .map(
-                                      (e) => SizedBox(
-                                        width: double.maxFinite,
-                                        child: _buildAboutSectionRow(
-                                          userId: e.user!.userId!,
-                                          avatar: e.user?.avatar?.imageUrl ??
-                                              AppValues.defaultAvatar,
-                                          fullName:
-                                              "${e.user!.firstName} ${e.user!.lastName}"
-                                                  .tr,
-                                        ),
-                                      ),
-                                    )
-                                    .toList(),
-                              ),
-                              Column(
-                                children: controller.friendsPending
-                                    .map(
-                                      (e) => SizedBox(
-                                        width: double.maxFinite,
-                                        child: _buildAboutSectionRow(
-                                          userId: e.user!.userId!,
-                                          avatar: e.user?.avatar?.imageUrl ??
-                                              AppValues.defaultAvatar,
-                                          fullName:
-                                              "${e.user!.firstName} ${e.user!.lastName}"
-                                                  .tr,
-                                          isPending: true,
-                                        ),
-                                      ),
-                                    )
-                                    .toList(),
-                              ),
+                            indicatorColor: appTheme.green600,
+                            labelColor: appTheme.green600,
+                            dividerColor: Colors.transparent,
+                            tabs: [
+                              Tab(text: "Friends".tr),
+                              Tab(text: "Pending".tr),
                             ],
                           ),
-                        ),
-                        Center(
-                          child: CustomElevatedButton(
-                            width: Get.width * 0.4,
-                            text: "See All".tr,
+                          Expanded(
+                            child: TabBarView(
+                              controller: controller.tabController,
+                              children: [
+                                Column(
+                                  children: controller.user.value.friends!
+                                      .map(
+                                        (e) => SizedBox(
+                                          width: double.maxFinite,
+                                          child: _buildAboutSectionRow(
+                                            userId: e.user!.userId!,
+                                            avatar: e.user?.avatar?.imageUrl ??
+                                                AppValues.defaultAvatar,
+                                            fullName:
+                                                "${e.user!.firstName} ${e.user!.lastName}"
+                                                    .tr,
+                                          ),
+                                        ),
+                                      )
+                                      .toList(),
+                                ),
+                                Column(
+                                  children: controller.friendsPending
+                                      .map(
+                                        (e) => SizedBox(
+                                          width: double.maxFinite,
+                                          child: _buildAboutSectionRow(
+                                            userId: e.user!.userId!,
+                                            avatar: e.user?.avatar?.imageUrl ??
+                                                AppValues.defaultAvatar,
+                                            fullName:
+                                                "${e.user!.firstName} ${e.user!.lastName}"
+                                                    .tr,
+                                            isPending: true,
+                                          ),
+                                        ),
+                                      )
+                                      .toList(),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
+                          Center(
+                            child: CustomElevatedButton(
+                              width: Get.width * 0.4,
+                              text: "See All".tr,
+                            ),
+                          ),
+                        ],
+                      );
+                    }),
                   ),
                 ),
               )

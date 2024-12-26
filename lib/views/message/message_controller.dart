@@ -45,9 +45,9 @@ class MessageController extends BaseController {
   Rx<MessageModel> currentMessage = MessageModel().obs;
 
   @override
-  void onInit() {
+  void onInit() async {
     super.onInit();
-    user.value = AuthServices.currentUser!;
+    user.value = await AuthServices.getCurrentUser(force: true) ?? UserModel();
     initGroups();
     listenerGroup();
   }
@@ -70,6 +70,7 @@ class MessageController extends BaseController {
   }
 
   Future<void> initGroups() async {
+    groups.value.clear();
     final response = await _groupRequest.getGroupRequest();
     if (response.allGood) {
       for (var e in response.body) {

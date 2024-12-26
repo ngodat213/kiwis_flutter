@@ -3,6 +3,7 @@ import 'package:glossy/glossy.dart';
 import 'package:kiwis_flutter/core/constants/app.button_style.dart';
 import 'package:kiwis_flutter/core/constants/app_export.dart';
 import 'package:kiwis_flutter/models/individual_shares.model.dart';
+import 'package:kiwis_flutter/models/task.model.dart';
 import 'package:kiwis_flutter/views/plan/plan_controller.dart';
 import 'package:kiwis_flutter/widgets/base_appbar.dart';
 import 'package:kiwis_flutter/widgets/custom_elevated_button.dart';
@@ -12,9 +13,7 @@ import 'package:velocity_x/velocity_x.dart';
 class AddExpenseContent extends GetView<PlanController> {
   AddExpenseContent({
     super.key,
-    this.expenseId,
   });
-  final String? expenseId;
 
   @override
   Widget build(BuildContext context) {

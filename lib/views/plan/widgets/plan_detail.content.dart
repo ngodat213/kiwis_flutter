@@ -94,6 +94,7 @@ class PlanDetailContent extends GetView<PlanController> {
                         ),
                         onDateChange: (date) {
                           controller.getTasksByDate(date);
+                          controller.getCostSharingByDate(date);
                         },
                       ),
                       SizedBox(height: 16),
@@ -176,22 +177,24 @@ class PlanDetailContent extends GetView<PlanController> {
     );
   }
 
-  Column ExpenseWidget() {
-    return Column(
-      children: [
-        Expanded(
-          child: ListView.builder(
-            physics: AlwaysScrollableScrollPhysics(),
-            shrinkWrap: true,
-            itemCount: controller.planCosts.length,
-            itemBuilder: (context, index) => LatestEntryItem(
-              cost: controller.planCosts[index],
-            ).paddingOnly(
-              bottom: 8.h,
-            ),
-          ).pOnly(top: 32),
-        ),
-      ],
+  Obx ExpenseWidget() {
+    return Obx(
+      () => Column(
+        children: [
+          Expanded(
+            child: ListView.builder(
+              physics: AlwaysScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: controller.planCosts.length,
+              itemBuilder: (context, index) => LatestEntryItem(
+                cost: controller.planCosts[index],
+              ).paddingOnly(
+                bottom: 8.h,
+              ),
+            ).pOnly(top: 32),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -395,7 +398,7 @@ class ScheduleWidget extends GetView<PlanController> {
                                 backgroundColor: Colors.transparent,
                                 child: GlossyContainer(
                                   width: Get.width + 32,
-                                  height: Get.height * 0.5,
+                                  height: Get.height * 0.3,
                                   borderRadius: BorderRadius.circular(36),
                                   child: Column(
                                     mainAxisSize: MainAxisSize.min,
@@ -419,22 +422,63 @@ class ScheduleWidget extends GetView<PlanController> {
                                         location: currentTask.planLocation,
                                       ),
                                       Spacer(),
-                                      GlossyContainer(
-                                        width: Get.width,
-                                        height: 50,
-                                        borderRadius: BorderRadius.circular(10),
-                                        child: 'Done'
-                                            .tr
-                                            .text
-                                            .white
-                                            .textStyle(
-                                                theme.textTheme.titleSmall)
-                                            .make()
-                                            .centered(),
-                                      ).onTap(() {
-                                        controller.handleTaskDone(
-                                            currentTask.taskId!);
-                                      }),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        children: [
+                                          'Done'
+                                              .tr
+                                              .text
+                                              .textStyle(theme
+                                                  .textTheme.bodySmall!
+                                                  .copyWith(
+                                                color: Colors.white,
+                                              ))
+                                              .bold
+                                              .make()
+                                              .paddingSymmetric(
+                                                  horizontal: 24, vertical: 8)
+                                              .color(appTheme.green600)
+                                              .cornerRadius(10)
+                                              .onTap(() =>
+                                                  controller.handleTaskDone(
+                                                      currentTask.taskId!)),
+                                          'Edit'
+                                              .tr
+                                              .text
+                                              .textStyle(theme
+                                                  .textTheme.bodySmall!
+                                                  .copyWith(
+                                                color: Colors.white,
+                                              ))
+                                              .bold
+                                              .make()
+                                              .paddingSymmetric(
+                                                  horizontal: 24, vertical: 8)
+                                              .color(appTheme.yellow800)
+                                              .cornerRadius(10)
+                                              .onTap(() => controller
+                                                  .showContentAddTask(context,
+                                                      task: currentTask)),
+                                          'Delete'
+                                              .tr
+                                              .text
+                                              .textStyle(theme
+                                                  .textTheme.bodySmall!
+                                                  .copyWith(
+                                                color: Colors.white,
+                                              ))
+                                              .bold
+                                              .make()
+                                              .paddingSymmetric(
+                                                  horizontal: 24, vertical: 8)
+                                              .color(appTheme.red700)
+                                              .cornerRadius(10)
+                                              .onTap(() => controller
+                                                  .showContentAddExpense(
+                                                      context)),
+                                        ],
+                                      ),
                                     ],
                                   ).paddingAll(24),
                                 ),

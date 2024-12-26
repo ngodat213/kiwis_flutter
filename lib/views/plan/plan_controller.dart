@@ -60,6 +60,7 @@ class PlanController extends BaseController with GetTickerProviderStateMixin {
   Rx<DateTime> endDay = Rx<DateTime>(DateTime.now());
   Rx<DateTime?> focusedDay = Rx<DateTime?>(DateTime.now());
   Rx<PlanModel?> currentPlan = Rxn<PlanModel?>();
+  Rxn<TaskModel?> currentTask = Rxn<TaskModel?>();
   Rx<PlanLocationModel?> planLocationChanged = Rxn<PlanLocationModel?>();
   Rxn<AddressModel?> currentLocation = Rxn<AddressModel?>();
   RxList<PlanModel> plans = <PlanModel>[].obs;
@@ -217,8 +218,8 @@ class PlanController extends BaseController with GetTickerProviderStateMixin {
       BuildContext context, PlanModel plan) async {
     currentPlan.value = plan;
     getTasksByDate(currentPlan.value!.startDate!);
+    getCostSharingByDate(currentPlan.value!.startDate!);
     getUserPlans();
-    getCostSharing();
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -235,19 +236,46 @@ class PlanController extends BaseController with GetTickerProviderStateMixin {
     );
   }
 
-  void showContentAddTask(BuildContext context) {
+  void getCostSharingByDate(DateTime date) {
+    taskDate.value = date;
+    var allCost = currentPlan.value?.planCosts ?? [];
+
+    planCosts.value = allCost.where((cost) {
+      DateTime? createdAt =
+          cost.createdAt != null ? DateTime.tryParse(cost.createdAt!) : null;
+
+      if (createdAt == null) return false;
+
+      return createdAt.year == date.year &&
+          createdAt.month == date.month &&
+          createdAt.day == date.day;
+    }).toList();
+    planCosts.refresh();
+  }
+
+  void showContentAddTask(BuildContext context, {TaskModel? task}) {
+    currentTask.value = task;
+    taskTitleTEC.text = task?.title ?? "";
+    taskDescriptionTEC.text = task?.description ?? "";
+    taskBudgetTEC.text = task != null ? task.totalCost.toString() : "";
+    taskStartTime.value = task?.startDate != null
+        ? DateTime.parse(task!.startDate!)
+        : DateTime.now();
+    taskEndTime.value =
+        task?.endDate != null ? DateTime.parse(task!.endDate!) : DateTime.now();
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      builder: (context) => AddTaskContent(),
+      builder: (context) => AddTaskContent(task: task),
     );
   }
 
-  void showContentAddExpense(BuildContext context, {String? expenseId}) {
+  void showContentAddExpense(BuildContext context, {TaskModel? task}) {
+    currentTask.value = task;
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      builder: (context) => AddExpenseContent(expenseId: expenseId),
+      builder: (context) => AddExpenseContent(),
     );
   }
 
@@ -320,20 +348,6 @@ class PlanController extends BaseController with GetTickerProviderStateMixin {
     }
   }
 
-  Future<void> getCostSharing() async {
-    try {
-      var response =
-          await _costRequest.getCostSharing(currentPlan.value!.planId!);
-      if (response.allGood) {
-        for (var e in response.body) {
-          planCosts.add(CostModel.fromJson(e));
-        }
-      }
-    } catch (e) {
-      print(e);
-    }
-  }
-
   Future<void> handleCreateExpense() async {
     try {
       if (expenseTitleTEC.text.isEmpty ||
@@ -373,8 +387,8 @@ class PlanController extends BaseController with GetTickerProviderStateMixin {
       if (response.allGood) {
         Get.back();
         Get.snackbar("Success", "Expense created successfully");
-        planCosts.add(CostModel.fromJson(response.body));
-        planCosts.refresh();
+        currentPlan.value!.planCosts!.add(CostModel.fromJson(response.body));
+        currentPlan.refresh();
       }
     } catch (e) {
       print(e);
@@ -389,7 +403,7 @@ class PlanController extends BaseController with GetTickerProviderStateMixin {
           title: taskTitleTEC.text,
           description: taskDescriptionTEC.text,
           budget: taskBudgetTEC.text,
-          startDate: taskDate.value,
+          startDate: taskStartTime.value,
           endDate: taskEndTime.value,
           locationName: currentLocation.value?.name,
           latitude: currentLocation.value?.coordinates?.latitude,
@@ -409,7 +423,7 @@ class PlanController extends BaseController with GetTickerProviderStateMixin {
           taskTitleTEC.clear();
           taskDescriptionTEC.clear();
           taskBudgetTEC.clear();
-          taskDate.value = DateTime.now();
+          taskStartTime.value = DateTime.now();
           taskEndTime.value = DateTime.now();
           Get.snackbar("Success", "Task created successfully");
         } else {

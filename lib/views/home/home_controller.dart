@@ -24,6 +24,7 @@ import 'package:kiwis_flutter/views/home/widgets/delete_account.content.dart';
 import 'package:kiwis_flutter/views/home/widgets/menu_content.dart';
 import 'package:kiwis_flutter/views/home/widgets/friend_content.dart';
 import 'package:image/image.dart' as img;
+import 'package:kiwis_flutter/views/message/message_controller.dart';
 
 class HomeController extends BaseController with GetTickerProviderStateMixin {
   /// Variables
@@ -66,12 +67,14 @@ class HomeController extends BaseController with GetTickerProviderStateMixin {
   void onInit() async {
     super.onInit();
     showLoading();
-    listenPost();
+    _listenPost();
+    _listenAddFriend();
+    _listenAcceptFriend();
+    user.value = await AuthServices.getCurrentUser(force: true) ?? UserModel();
     await initializeCamera();
     await getPosts();
     await getAllFriendPending();
     tabController = TabController(length: 2, vsync: this);
-    user.value = await AuthServices.getCurrentUser(force: true) ?? UserModel();
     hideLoading();
   }
 
@@ -91,8 +94,42 @@ class HomeController extends BaseController with GetTickerProviderStateMixin {
     super.onClose();
   }
 
+  Future<void> _handleCurrentUser() async {
+    try {
+      final apiResponse = await _userRequest.getCurrentUser();
+
+      if (apiResponse.allGood) {
+        await AuthServices.saveUser(apiResponse.body);
+        user.value =
+            await AuthServices.getCurrentUser(force: true) ?? UserModel();
+      } else {
+        throw Exception(apiResponse.error);
+      }
+    } catch (err) {
+      throw Exception(err);
+    }
+  }
+
+  void _listenAddFriend() {
+    ManagerSocket.socket?.on(AppAPI.socketReceiveFriendRequest, (data) {
+      final FriendshipModel friendship = FriendshipModel.fromJson(data);
+      friendsPending.value.insert(0, friendship);
+      friendsPending.refresh();
+    });
+  }
+
+  void _listenAcceptFriend() {
+    ManagerSocket.socket?.on(AppAPI.socketAcceptFriendRequest, (data) {
+      final messageController = Get.find<MessageController>();
+      messageController.initGroups();
+      friendsPending.value.clear();
+      friendsPending.refresh();
+      _handleCurrentUser();
+    });
+  }
+
   /// Home content
-  void listenPost() {
+  void _listenPost() {
     ManagerSocket.socket?.on(AppAPI.socketReceivePost, (data) {
       final PostModel post = PostModel.fromJson(data);
       posts.value.insert(0, post);
@@ -135,6 +172,7 @@ class HomeController extends BaseController with GetTickerProviderStateMixin {
   }
 
   Future<void> getPosts() async {
+    posts.value.clear();
     final response = await _uploadRealtimeRequest.getRealtimeRequest();
     if (response.allGood) {
       for (var e in response.body) {
@@ -336,6 +374,7 @@ class HomeController extends BaseController with GetTickerProviderStateMixin {
   }
 
   Future<void> getAllFriendPending() async {
+    friendsPending.value.clear();
     try {
       final response = await _userRequest.getAllFriendPending();
       if (response.allGood) {
@@ -355,6 +394,12 @@ class HomeController extends BaseController with GetTickerProviderStateMixin {
       if (response.allGood) {
         friendsPending.value.removeWhere((e) => e.friendshipId == friendshipId);
         friendsPending.refresh();
+        final messageController = Get.find<MessageController>();
+        messageController.initGroups();
+        ManagerSocket.acceptFriend(
+          userId: user.value.userId!,
+          receiverId: friendshipId,
+        );
       }
     } catch (err) {
       print(err);
@@ -366,6 +411,10 @@ class HomeController extends BaseController with GetTickerProviderStateMixin {
       final response = await _userRequest.addFriendRequest(phoneNumberTEC.text);
       if (response.allGood) {
         phoneNumberTEC.clear();
+        ManagerSocket.sendAddFriend(
+          userId: user.value.userId!,
+          friendShipId: response.body['friendshipId'],
+        );
         AnimatedSnackBar.material(
           'Add friend success'.tr,
           type: AnimatedSnackBarType.success,
