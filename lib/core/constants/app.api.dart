@@ -20,6 +20,8 @@ class AppAPI {
   static const String socketReceiveFriendRequest = 'receive_friend_request';
   static const String socketAcceptFriendRequest = 'accept_friend_request';
   static const String socketAcceptFriend = 'accept_friend';
+  static const String socketAddPlan = 'add_plan';
+  static const String socketAddRefreshPlan = 'add_refresh_plan';
 
   /// Auth
   static const String baseAuth = '${domainApi}auth';

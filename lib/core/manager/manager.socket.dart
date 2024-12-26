@@ -94,6 +94,30 @@ class ManagerSocket {
     });
   }
 
+  static void addPlan({
+    required String? userId,
+    required String? groupId,
+    required String planId,
+  }) {
+    socket?.emit(AppAPI.socketAddPlan, {
+      'userId': userId,
+      'planId': planId,
+      'groupId': groupId,
+    });
+  }
+
+  static void addRefreshPlan({
+    required String? userId,
+    required String? planId,
+    required String? groupId,
+  }) {
+    socket?.emit(AppAPI.socketAddRefreshPlan, {
+      'userId': userId,
+      'planId': planId,
+      'groupId': groupId,
+    });
+  }
+
   // Send a message to a group
   static void sendMessage({
     required String senderId,

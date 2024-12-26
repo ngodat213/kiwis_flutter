@@ -5,6 +5,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:kiwis_flutter/app/routes/app_pages.dart';
 import 'package:kiwis_flutter/controllers/location_search.controller.dart';
 import 'package:kiwis_flutter/core/base/base.controller.dart';
+import 'package:kiwis_flutter/core/constants/constants.dart';
+import 'package:kiwis_flutter/core/manager/manager.socket.dart';
 import 'package:kiwis_flutter/enums/share_with.enum.dart';
 import 'package:kiwis_flutter/models/address.model.dart';
 import 'package:kiwis_flutter/models/api.response.dart';
@@ -85,10 +87,24 @@ class PlanController extends BaseController with GetTickerProviderStateMixin {
     showLoading();
     argGroupId = Get.arguments;
     await handleInitPlans();
+    _listenAddPlan();
+    _listenAddRefreshPlan();
     currentUser.value = await AuthServices.getCurrentUser();
     tabController = TabController(length: 2, vsync: this);
     detailTabController = TabController(length: 3, vsync: this);
     hideLoading();
+  }
+
+  Future<void> _listenAddPlan() async {
+    ManagerSocket.socket?.on(AppAPI.socketAddPlan, (data) async {
+      await handleInitPlans();
+    });
+  }
+
+  Future<void> _listenAddRefreshPlan() async {
+    ManagerSocket.socket?.on(AppAPI.socketAddRefreshPlan, (data) async {
+      await handleRefreshCurrentPlan();
+    });
   }
 
   void onChangeTask(String taskId) {
@@ -317,6 +333,7 @@ class PlanController extends BaseController with GetTickerProviderStateMixin {
 
   /// Handle
   Future<void> handleInitPlans() async {
+    plans.value.clear();
     try {
       final ApiResponse response;
       if (argGroupId != null) {
@@ -326,7 +343,8 @@ class PlanController extends BaseController with GetTickerProviderStateMixin {
       }
       if (response.allGood) {
         for (var e in response.body) {
-          plans.add(PlanModel.fromJson(e));
+          plans.value.add(PlanModel.fromJson(e));
+          plans.refresh();
         }
       }
       print(plans.length);
@@ -345,6 +363,14 @@ class PlanController extends BaseController with GetTickerProviderStateMixin {
       }
     } catch (e) {
       print(e);
+    }
+  }
+
+  Future<void> handleRefreshCurrentPlan() async {
+    var response = await _planRequest.getPlanById(currentPlan.value!.planId!);
+    if (response.allGood) {
+      currentPlan.value = PlanModel.fromJson(response.body);
+      currentPlan.refresh();
     }
   }
 
@@ -389,6 +415,13 @@ class PlanController extends BaseController with GetTickerProviderStateMixin {
         Get.snackbar("Success", "Expense created successfully");
         currentPlan.value!.planCosts!.add(CostModel.fromJson(response.body));
         currentPlan.refresh();
+        if (argGroupId != null) {
+          ManagerSocket.addRefreshPlan(
+            userId: currentUser.value!.userId!,
+            planId: currentPlan.value!.planId!,
+            groupId: argGroupId,
+          );
+        }
       }
     } catch (e) {
       print(e);
@@ -425,6 +458,13 @@ class PlanController extends BaseController with GetTickerProviderStateMixin {
           taskBudgetTEC.clear();
           taskStartTime.value = DateTime.now();
           taskEndTime.value = DateTime.now();
+          if (argGroupId != null) {
+            ManagerSocket.addRefreshPlan(
+              userId: currentUser.value!.userId!,
+              planId: currentPlan.value!.planId!,
+              groupId: argGroupId,
+            );
+          }
           Get.snackbar("Success", "Task created successfully");
         } else {
           Get.snackbar("Kiwis", response.message ?? "Something went wrong");
@@ -528,7 +568,13 @@ class PlanController extends BaseController with GetTickerProviderStateMixin {
             plans.removeWhere(
                 (plan) => plan.planId == currentPlan.value!.planId);
           }
-          plans.add(PlanModel.fromJson(response.body));
+          final plan = PlanModel.fromJson(response.body);
+          plans.add(plan);
+          ManagerSocket.addPlan(
+            userId: currentUser.value!.userId!,
+            groupId: argGroupId,
+            planId: plan.planId!,
+          );
           Get.snackbar("Success", "Plan created successfully");
           currentStep.value++;
         }

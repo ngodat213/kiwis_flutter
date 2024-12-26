@@ -208,4 +208,14 @@ class PlanRequest {
 
     return ApiResponse.fromResponse(reponse.data);
   }
+
+  Future<ApiResponse> getPlanById(String planId) async {
+    var reponse = await _baseAPI.fetchData(
+      AppAPI.basePlan + "/$planId",
+      includeHeaders: true,
+      method: ApiMethod.GET,
+    );
+
+    return ApiResponse.fromResponse(reponse.data);
+  }
 }
