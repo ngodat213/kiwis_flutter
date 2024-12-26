@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:kiwis_flutter/core/constants/app_export.dart';
+import 'package:kiwis_flutter/models/task.model.dart';
 import 'package:kiwis_flutter/views/plan/plan_controller.dart';
 import 'package:kiwis_flutter/widgets/base_appbar.dart';
 import 'package:kiwis_flutter/widgets/custom_text_form_field.dart';
@@ -11,23 +12,23 @@ import 'package:velocity_x/velocity_x.dart';
 class AddTaskContent extends GetView<PlanController> {
   AddTaskContent({
     super.key,
-    this.taskId,
+    this.task,
   });
-  final String? taskId;
+  final TaskModel? task;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: baseAppBar(
         context: context,
-        title: "Add Task".tr,
+        title: task != null ? "Edit Task".tr : "Add Task".tr,
         actions: [
           "Save"
               .tr
               .text
               .textStyle(theme.textTheme.titleSmall)
               .make()
-              .onTap(() => controller.handleCreateExpense()),
+              .onTap(() => controller.handleCreateTask()),
         ],
       ),
       body: Obx(() {

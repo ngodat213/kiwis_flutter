@@ -74,6 +74,26 @@ class ManagerSocket {
     });
   }
 
+  static void sendAddFriend({
+    required String userId,
+    required String friendShipId,
+  }) {
+    socket?.emit(AppAPI.socketAddFriend, {
+      'userId': userId,
+      'friendShipId': friendShipId,
+    });
+  }
+
+  static void acceptFriend({
+    required String userId,
+    required String receiverId,
+  }) {
+    socket?.emit(AppAPI.socketAcceptFriend, {
+      'userId': userId,
+      'receiverId': receiverId,
+    });
+  }
+
   // Send a message to a group
   static void sendMessage({
     required String senderId,

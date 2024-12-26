@@ -93,6 +93,7 @@ class ScheduleWidget extends GetView<PlanController> {
             ),
             onDateChange: (date) {
               controller.getTasksByDate(date);
+              controller.getCostSharingByDate(date);
             },
           ),
           SizedBox(height: 16),

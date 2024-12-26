@@ -12,6 +12,7 @@ class NotificationService extends GetxService {
   Future<NotificationService> init() async {
     try {
       await _initializeNotifications();
+      await initializeFirebaseMessaging();
 
       return this;
     } catch (e) {
@@ -23,8 +24,13 @@ class NotificationService extends GetxService {
   @override
   Future<void> onInit() async {
     super.onInit();
-    await _initializeNotifications();
-    await initializeFirebaseMessaging();
+    try {
+      await _initializeNotifications();
+      await initializeFirebaseMessaging();
+    } catch (e) {
+      print('Lỗi khởi tạo NotificationService: $e');
+      rethrow;
+    }
   }
 
   Future<void> _initializeNotifications() async {

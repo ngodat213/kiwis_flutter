@@ -1,7 +1,7 @@
 import 'package:kiwis_flutter/models/cloudinary_image.model.dart';
+import 'package:kiwis_flutter/models/cost.model.dart';
 import 'package:kiwis_flutter/models/friend_data.model.dart';
 import 'package:kiwis_flutter/models/group.model.dart';
-import 'package:kiwis_flutter/models/plan_location.model.dart';
 import 'package:kiwis_flutter/models/task.model.dart';
 
 class PlanModel {
@@ -23,7 +23,7 @@ class PlanModel {
   GroupModel? group;
   CloudinaryImageModel? thumbnail;
   List<Null>? realtimeImages;
-  List<Null>? planCosts;
+  List<CostModel>? planCosts;
   List<TaskModel>? tasks;
 
   PlanModel(
@@ -86,12 +86,12 @@ class PlanModel {
     //     realtimeImages!.add(new Null.fromJson(v));
     //   });
     // }
-    // if (json['planCosts'] != null) {
-    //   planCosts = <Null>[];
-    //   json['planCosts'].forEach((v) {
-    //     planCosts!.add(new Null.fromJson(v));
-    //   });
-    // }
+    if (json['planCosts'] != null) {
+      planCosts = <CostModel>[];
+      json['planCosts'].forEach((v) {
+        planCosts!.add(CostModel.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -122,9 +122,9 @@ class PlanModel {
     //   data['realtimeImages'] =
     //       this.realtimeImages!.map((v) => v.toJson()).toList();
     // }
-    // if (this.planCosts != null) {
-    //   data['planCosts'] = this.planCosts!.map((v) => v.toJson()).toList();
-    // }
+    if (this.planCosts != null) {
+      data['planCosts'] = this.planCosts!.map((v) => v.toJson()).toList();
+    }
     return data;
   }
 }

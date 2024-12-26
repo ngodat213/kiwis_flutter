@@ -16,13 +16,13 @@ class UserRequest {
     return ApiResponse.fromResponse(response.data);
   }
 
-  Future<ApiResponse> addFriendRequest(String friendId) async {
+  Future<ApiResponse> addFriendRequest(String phoneNumber) async {
     var response = await _baseAPI.fetchData(
       AppAPI.userFriend,
       method: ApiMethod.POST,
       includeHeaders: true,
       body: {
-        "friendId": friendId,
+        "phoneNumber": phoneNumber,
       },
     );
     return ApiResponse.fromResponse(response.data);
@@ -31,6 +31,15 @@ class UserRequest {
   Future<ApiResponse> getAllFriendsRequest() async {
     var response = await _baseAPI.fetchData(
       AppAPI.userFriend,
+      method: ApiMethod.GET,
+      includeHeaders: true,
+    );
+    return ApiResponse.fromResponse(response.data);
+  }
+
+  Future<ApiResponse> getAllFriendPending() async {
+    var response = await _baseAPI.fetchData(
+      AppAPI.userFriendPending,
       method: ApiMethod.GET,
       includeHeaders: true,
     );
@@ -93,6 +102,18 @@ class UserRequest {
       includeHeaders: true,
       body: {
         "fcmToken": fcmToken,
+      },
+    );
+    return ApiResponse.fromResponse(response.data);
+  }
+
+  Future<ApiResponse> acceptFriendRequest(String friendshipId) async {
+    var response = await _baseAPI.fetchData(
+      AppAPI.userFriendAccept,
+      method: ApiMethod.POST,
+      includeHeaders: true,
+      body: {
+        "friendshipId": friendshipId,
       },
     );
     return ApiResponse.fromResponse(response.data);

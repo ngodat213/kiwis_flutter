@@ -16,6 +16,10 @@ class AppAPI {
   static const String socketSendComment = 'send_comment';
   static const String socketReceivePost = 'receive_post';
   static const String socketSendPost = 'send_post';
+  static const String socketAddFriend = 'add_friend';
+  static const String socketReceiveFriendRequest = 'receive_friend_request';
+  static const String socketAcceptFriendRequest = 'accept_friend_request';
+  static const String socketAcceptFriend = 'accept_friend';
 
   /// Auth
   static const String baseAuth = '${domainApi}auth';
@@ -42,6 +46,8 @@ class AppAPI {
   static const String updateDisplayName = '${baseUser}/update-user';
   static const String userChangeAvatar = '${baseUser}/change-avatar';
   static const String userUpdateFcmToken = '${baseUser}/update-fcm-token';
+  static const String userFriendPending = '${baseUser}/friend-pending';
+  static const String userFriendAccept = '${baseUser}/friend-accept';
 
   /// Upload Realtime
   static const String uploadRealtime = '${domainApi}upload-realtime';

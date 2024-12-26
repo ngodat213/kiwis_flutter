@@ -73,7 +73,7 @@ class PlanView extends BaseView<PlanController> {
                 Column(
                   children: controller.plans
                       .where((plan) => plan.isStart == true)
-                      .map((plan) => InProgressItem(plan: plan))
+                      .map((plan) => _buildPlanItem(context, plan))
                       .toList(),
                 ).pOnly(top: 16),
                 Expanded(
