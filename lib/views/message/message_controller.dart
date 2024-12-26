@@ -158,6 +158,8 @@ class MessageController extends BaseController {
         groupId: groups.value[currentGroupIndex.value].groupId!,
       );
       if (response.allGood) {
+        groups.value.removeAt(currentGroupIndex.value);
+        groups.refresh();
         Get.offAllNamed(Routes.MAIN);
         Get.snackbar("Leave group", "Leave group successfully");
       }
