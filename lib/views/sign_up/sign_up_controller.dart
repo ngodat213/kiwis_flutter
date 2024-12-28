@@ -71,11 +71,11 @@ class SignUpController extends BaseController {
 
   @override
   void onInit() {
-    emailTEC.text = kReleaseMode ? "" : "ngodat.it213@gmail.com";
-    passwordTEC.text = kReleaseMode ? "" : "Code26102003#!@";
-    firstNameTEC.text = kReleaseMode ? "" : "Hydra";
-    lastNameTEC.text = kReleaseMode ? "" : "Coder";
-    phoneTEC.text = kReleaseMode ? "" : "0399228357";
+    // emailTEC.text = kReleaseMode ? "" : "ngodat.it213@gmail.com";
+    // passwordTEC.text = kReleaseMode ? "" : "Code26102003#!@";
+    // firstNameTEC.text = kReleaseMode ? "" : "Hydra";
+    // lastNameTEC.text = kReleaseMode ? "" : "Coder";
+    // phoneTEC.text = kReleaseMode ? "" : "0399228357";
     super.onInit();
   }
 

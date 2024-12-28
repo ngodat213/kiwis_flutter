@@ -28,6 +28,7 @@ class MessageScreen extends BaseView<MessageController> {
           Expanded(
             child: SingleChildScrollView(
               child: Container(
+                height: Get.height * 0.75,
                 padding: EdgeInsets.symmetric(horizontal: 32.h),
                 child: Obx(
                   () => ListView.builder(

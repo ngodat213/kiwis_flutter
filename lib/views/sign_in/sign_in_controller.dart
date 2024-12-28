@@ -27,8 +27,8 @@ class SignInController extends BaseController {
 
   @override
   void onInit() {
-    emailTxtController.text = kReleaseMode ? "" : "ngodat.it213@gmail.com";
-    passwordTxtController.text = kReleaseMode ? "" : "Code26102003#!@";
+    // emailTxtController.text = kReleaseMode ? "" : "ngodat.it213@gmail.com";
+    // passwordTxtController.text = kReleaseMode ? "" : "Code26102003#!@";
     super.onInit();
   }
 

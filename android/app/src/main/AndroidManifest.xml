@@ -13,7 +13,9 @@
     <!-- NOTIFICATION PERMISSION -->
     <uses-permission android:name="android.permission.NOTIFICATION_SERVICE" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-
+    <!-- CONTACTS PERMISSION -->
+    <uses-permission android:name="android.permission.READ_CONTACTS"/>
+    <uses-permission android:name="android.permission.WRITE_CONTACTS"/>
     <application
         android:label="Kiwis"
         android:name="${applicationName}"

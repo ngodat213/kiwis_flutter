@@ -202,11 +202,7 @@ class TaskTimeWidget extends GetView<PlanController> {
                       timeFormat: 'dd/MM/yyyy',
                       onChange: (dateTime) {
                         controller.taskEndTime.value = dateTime;
-                        controller.taskStartTime.value = DateTime(
-                          dateTime.year,
-                          dateTime.month,
-                          dateTime.day,
-                        );
+                        controller.taskStartTime.value = dateTime;
                       },
                     ),
                   ],

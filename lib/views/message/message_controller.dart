@@ -50,6 +50,7 @@ class MessageController extends BaseController {
     user.value = await AuthServices.getCurrentUser(force: true) ?? UserModel();
     initGroups();
     listenerGroup();
+    _listenCreateGroup();
   }
 
   @override
@@ -69,13 +70,20 @@ class MessageController extends BaseController {
     );
   }
 
+  Future<void> _listenCreateGroup() async {
+    ManagerSocket.socket?.on(AppAPI.socketAddGroup, (data) {
+      initGroups();
+    });
+  }
+
   Future<void> initGroups() async {
-    groups.value.clear();
     final response = await _groupRequest.getGroupRequest();
     if (response.allGood) {
+      groups.value.clear();
       for (var e in response.body) {
         groups.value.add(GroupModel.fromJson(e));
       }
+      groups.refresh();
     }
   }
 
@@ -115,6 +123,8 @@ class MessageController extends BaseController {
         );
         if (response.allGood) {
           Get.back();
+          initGroups();
+          ManagerSocket.addGroup(groupId: response.body['groupId']);
           AnimatedSnackBar.material(
             "Group created successfully",
             type: AnimatedSnackBarType.success,

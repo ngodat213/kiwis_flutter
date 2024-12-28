@@ -68,6 +68,8 @@ dependencies:
   #DATE PICKER
   time_picker_spinner_pop_up: ^2.0.0
   date_picker_timeline: ^1.2.6
+
+  # 
   
   # UI 
   flutter_cache_manager: ^3.3.1
@@ -100,6 +102,7 @@ dependencies:
   easy_stepper: ^0.8.5+1
   gif: ^2.3.0
   glossy: ^0.0.4
+  flutter_contacts: ^1.1.9+2
 
 dependency_overrides:
   flutter_svg: 1.1.6
