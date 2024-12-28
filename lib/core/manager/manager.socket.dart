@@ -118,6 +118,14 @@ class ManagerSocket {
     });
   }
 
+  static void addGroup({
+    required String groupId,
+  }) {
+    socket?.emit(AppAPI.socketAddGroup, {
+      'groupId': groupId,
+    });
+  }
+
   // Send a message to a group
   static void sendMessage({
     required String senderId,

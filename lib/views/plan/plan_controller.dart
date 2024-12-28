@@ -274,11 +274,8 @@ class PlanController extends BaseController with GetTickerProviderStateMixin {
     taskTitleTEC.text = task?.title ?? "";
     taskDescriptionTEC.text = task?.description ?? "";
     taskBudgetTEC.text = task != null ? task.totalCost.toString() : "";
-    taskStartTime.value = task?.startDate != null
-        ? DateTime.parse(task!.startDate!)
-        : DateTime.now();
-    taskEndTime.value =
-        task?.endDate != null ? DateTime.parse(task!.endDate!) : DateTime.now();
+    taskStartTime.value = currentPlan.value!.startDate!;
+    taskEndTime.value = taskStartTime.value;
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -413,8 +410,11 @@ class PlanController extends BaseController with GetTickerProviderStateMixin {
       if (response.allGood) {
         Get.back();
         Get.snackbar("Success", "Expense created successfully");
-        currentPlan.value!.planCosts!.add(CostModel.fromJson(response.body));
+        final cost = CostModel.fromJson(response.body);
+        currentPlan.value!.planCosts!.add(cost);
         currentPlan.refresh();
+        planCosts.add(cost);
+        planCosts.refresh();
         if (argGroupId != null) {
           ManagerSocket.addRefreshPlan(
             userId: currentUser.value!.userId!,
@@ -456,8 +456,8 @@ class PlanController extends BaseController with GetTickerProviderStateMixin {
           taskTitleTEC.clear();
           taskDescriptionTEC.clear();
           taskBudgetTEC.clear();
-          taskStartTime.value = DateTime.now();
-          taskEndTime.value = DateTime.now();
+          taskStartTime.value = currentPlan.value!.startDate!;
+          taskEndTime.value = taskStartTime.value;
           if (argGroupId != null) {
             ManagerSocket.addRefreshPlan(
               userId: currentUser.value!.userId!,

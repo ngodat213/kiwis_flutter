@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:glossy/glossy.dart';
 import 'package:kiwis_flutter/core/constants/app.button_style.dart';
 import 'package:kiwis_flutter/core/constants/app_export.dart';
+import 'package:kiwis_flutter/enums/page_state.enum.dart';
 import 'package:kiwis_flutter/services/geolocator.service.dart';
 import 'package:kiwis_flutter/services/map.service.dart';
 import 'package:kiwis_flutter/views/home/home_controller.dart';
@@ -26,48 +27,51 @@ class OnPlanView extends GetView<OnPlanController> {
         child: Column(
           children: [
             Obx(() {
-              return Container(
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    AppbarLeadingIconbutton(
-                      imagePath: ImageConstant.imgArrowLeftOnprimary,
-                      onTap: () => Get.back(),
-                    ),
-                    SizedBox(width: 23),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        "My route"
-                            .text
-                            .thin
-                            .textStyle(theme.textTheme.titleMedium)
-                            .make(),
-                        "${controller.currentTask.value?.title ?? ""}"
-                            .text
-                            .bold
-                            .textStyle(theme.textTheme.titleLarge)
-                            .make(),
-                        SizedBox(height: 10),
-                        Text(
-                          "100m",
-                          style: theme.textTheme.bodySmall,
-                        ),
-                      ],
-                    ).expand(),
-                    Spacer(),
-                    AppbarLeadingIconbutton(
-                      decoration: BoxDecoration(
-                        color: Colors.red,
-                        borderRadius: BorderRadius.circular(20.h),
+              return controller.pageState == PageState.LOADING
+                  ? SizedBox.shrink()
+                  : Container(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          AppbarLeadingIconbutton(
+                            imagePath: ImageConstant.imgArrowLeftOnprimary,
+                            onTap: () => Get.back(),
+                          ),
+                          SizedBox(width: 23),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              "My route"
+                                  .text
+                                  .thin
+                                  .textStyle(theme.textTheme.titleMedium)
+                                  .make(),
+                              "${controller.currentTask.value?.title ?? ""}"
+                                  .text
+                                  .bold
+                                  .textStyle(theme.textTheme.titleLarge)
+                                  .make(),
+                              SizedBox(height: 10),
+                              // Text(
+                              //   "100m",
+                              //   style: theme.textTheme.bodySmall,
+                              // ),
+                            ],
+                          ).expand(),
+                          Spacer(),
+                          AppbarLeadingIconbutton(
+                            decoration: BoxDecoration(
+                              color: Colors.red,
+                              borderRadius: BorderRadius.circular(20.h),
+                            ),
+                            wiget: Icon(Icons.sos, color: Colors.white),
+                            onTap: () => controller.showContact(context),
+                          ),
+                        ],
                       ),
-                      wiget: Icon(Icons.sos, color: Colors.white),
-                      onTap: () => Get.back(),
-                    ),
-                  ],
-                ),
-              );
+                    );
             }),
             Container(
               height: Get.height * 0.85,

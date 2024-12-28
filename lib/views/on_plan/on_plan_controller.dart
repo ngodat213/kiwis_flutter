@@ -13,11 +13,13 @@ import 'package:kiwis_flutter/services/map.service.dart';
 import 'package:kiwis_flutter/services/services.dart';
 import 'package:kiwis_flutter/views/home/home_controller.dart';
 import 'package:kiwis_flutter/views/on_plan/widgets/camera.content.dart';
-import 'package:kiwis_flutter/views/plan/widgets/schedule.content.dart';
+import 'package:kiwis_flutter/views/on_plan/widgets/contact.content.dart';
+import 'package:kiwis_flutter/views/on_plan/widgets/schedule.content.dart';
 import 'package:vietmap_flutter_gl/vietmap_flutter_gl.dart';
 import 'package:vietmap_flutter_plugin/vietmap_flutter_plugin.dart'
     as vietMapFlg;
 import 'package:camera/camera.dart';
+import 'package:flutter_contacts/flutter_contacts.dart';
 
 class OnPlanController extends BaseController {
   final PlanRequest _planRequest = PlanRequest();
@@ -26,6 +28,8 @@ class OnPlanController extends BaseController {
   late CameraController cameraController;
 
   final RxBool isCameraInitialized = false.obs;
+  final Rx<DateTime> taskDate = Rx<DateTime>(DateTime.now());
+  final RxList<TaskModel> tasks = RxList<TaskModel>([]);
   final RxBool isFlashOn = false.obs;
   final RxBool onPost = false.obs;
   final Rx<XFile> imageXFile = XFile('').obs;
@@ -38,6 +42,7 @@ class OnPlanController extends BaseController {
   final Rxn<UserModel> currentUser = Rxn<UserModel>(null);
   final Rxn<PlanModel> currentPlan = Rxn<PlanModel>(null);
   final Rxn<TaskModel> currentTask = Rxn<TaskModel>(null);
+  final RxList<Contact> listContacts = RxList<Contact>([]);
   String? argPlanId;
   final RxBool onTracking = false.obs;
   final RxInt currentTaskIndex = 0.obs;
@@ -48,6 +53,7 @@ class OnPlanController extends BaseController {
     super.onInit();
     argPlanId = Get.arguments;
     await getPlan();
+    await _fetchContacts();
     currentUser.value = await AuthServices.getCurrentUser();
     initCamera();
   }
@@ -83,6 +89,45 @@ class OnPlanController extends BaseController {
     );
   }
 
+  void showContact(BuildContext context) {
+    Get.dialog(
+      ContactContent(),
+    );
+  }
+
+  Future<void> onTapTask(TaskModel task) async {
+    currentTask.value = task;
+    currentTaskIndex.value = currentPlan.value!.tasks!.indexOf(task);
+    if (currentTask.value?.planLocation != null) {
+      await drawLine();
+    }
+    print('onTapTask: ${currentTaskIndex.value}');
+  }
+
+  void getTasksByDate(DateTime date) {
+    taskDate.value = date;
+    var allTasks = currentPlan.value?.tasks ?? [];
+
+    tasks.value = allTasks.where((task) {
+      DateTime? startDate =
+          task.startDate != null ? DateTime.tryParse(task.startDate!) : null;
+      DateTime? endDate =
+          task.endDate != null ? DateTime.tryParse(task.endDate!) : null;
+
+      if (startDate == null || endDate == null) return false;
+
+      DateTime startDay =
+          DateTime(startDate.year, startDate.month, startDate.day);
+      DateTime endDay = DateTime(endDate.year, endDate.month, endDate.day);
+      DateTime targetDay = DateTime(date.year, date.month, date.day);
+
+      return targetDay.isAtSameMomentAs(startDay) ||
+          targetDay.isAtSameMomentAs(endDay) ||
+          (targetDay.isAfter(startDay) && targetDay.isBefore(endDay));
+    }).toList();
+    tasks.refresh();
+  }
+
   Future<void> getPlan() async {
     try {
       final plan = await _planRequest.findPlanById(argPlanId!);
@@ -108,6 +153,13 @@ class OnPlanController extends BaseController {
     );
   }
 
+  Future<void> _fetchContacts() async {
+    if (await FlutterContacts.requestPermission()) {
+      List<Contact> contacts =
+          await FlutterContacts.getContacts(withProperties: true);
+      listContacts.value = contacts;
+    }
+  }
   // Future<void> finishLocation() async {
   //   final plan =
   //       await _planRequest.updatePlanById(argPlanId!, currentPlan.value!);
