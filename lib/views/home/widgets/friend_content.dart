@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kiwis_flutter/core/base/base.view.dart';
 import 'package:kiwis_flutter/core/constants/app_export.dart';
+import 'package:kiwis_flutter/services/socket.service.dart';
 import 'package:kiwis_flutter/views/home/home_controller.dart';
 import 'package:kiwis_flutter/widgets/app_bar/app_bar_leadingiconbutton.dart';
 import 'package:kiwis_flutter/widgets/app_bar/app_bar_title.dart';
@@ -99,37 +100,43 @@ class FriendContent extends GetView<HomeController> {
                               controller: controller.tabController,
                               children: [
                                 Column(
-                                  children: controller.user.value.friends!
+                                  children: SocketService.friends
                                       .map(
-                                        (e) => SizedBox(
-                                          width: double.maxFinite,
-                                          child: _buildAboutSectionRow(
-                                            userId: e.user!.userId!,
-                                            avatar: e.user?.avatar?.imageUrl ??
-                                                AppValues.defaultAvatar,
-                                            fullName:
-                                                "${e.user!.firstName} ${e.user!.lastName}"
-                                                    .tr,
-                                          ),
-                                        ),
+                                        (e) => e.status == "accepted"
+                                            ? SizedBox(
+                                                width: double.maxFinite,
+                                                child: _buildAboutSectionRow(
+                                                  userId: e.user!.userId!,
+                                                  avatar: e.user?.avatar
+                                                          ?.imageUrl ??
+                                                      AppValues.defaultAvatar,
+                                                  fullName:
+                                                      "${e.user!.firstName} ${e.user!.lastName}"
+                                                          .tr,
+                                                ),
+                                              )
+                                            : SizedBox.shrink(),
                                       )
                                       .toList(),
                                 ),
                                 Column(
-                                  children: controller.friendsPending
+                                  children: SocketService.friends
                                       .map(
-                                        (e) => SizedBox(
-                                          width: double.maxFinite,
-                                          child: _buildAboutSectionRow(
-                                            userId: e.user!.userId!,
-                                            avatar: e.user?.avatar?.imageUrl ??
-                                                AppValues.defaultAvatar,
-                                            fullName:
-                                                "${e.user!.firstName} ${e.user!.lastName}"
-                                                    .tr,
-                                            isPending: true,
-                                          ),
-                                        ),
+                                        (e) => e.status == "pending"
+                                            ? SizedBox(
+                                                width: double.maxFinite,
+                                                child: _buildAboutSectionRow(
+                                                  userId: e.user!.userId!,
+                                                  avatar: e.user?.avatar
+                                                          ?.imageUrl ??
+                                                      AppValues.defaultAvatar,
+                                                  fullName:
+                                                      "${e.user!.firstName} ${e.user!.lastName}"
+                                                          .tr,
+                                                  isPending: true,
+                                                ),
+                                              )
+                                            : SizedBox.shrink(),
                                       )
                                       .toList(),
                                 ),

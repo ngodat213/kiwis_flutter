@@ -1,14 +1,14 @@
 import 'package:kiwis_flutter/models/friend_data.model.dart';
 
-class FriendshipModel {
+class FriendShipModel {
   String? friendshipId;
   String? status;
   String? createdAt;
   FriendDataModel? user;
 
-  FriendshipModel({this.friendshipId, this.status, this.createdAt, this.user});
+  FriendShipModel({this.friendshipId, this.status, this.createdAt, this.user});
 
-  FriendshipModel.fromJson(Map<String, dynamic> json) {
+  FriendShipModel.fromJson(Map<String, dynamic> json) {
     friendshipId = json['friendshipId'];
     status = json['status'];
     createdAt = json['createdAt'];

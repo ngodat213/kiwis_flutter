@@ -14,7 +14,7 @@ class UserModel {
   String? updatedAt;
   String? deletedAt;
   CloudinaryImageModel? avatar;
-  List<FriendshipModel>? friends;
+  List<FriendShipModel>? friends;
   // List<Null>? groups;
   // List<Null>? plans;
   // List<Null>? postFeeds;
@@ -73,9 +73,9 @@ class UserModel {
     //   });
     // }
     if (json['friends'] != null) {
-      friends = <FriendshipModel>[];
+      friends = <FriendShipModel>[];
       json['friends'].forEach((v) {
-        friends!.add(new FriendshipModel.fromJson(v));
+        friends!.add(new FriendShipModel.fromJson(v));
       });
     }
   }

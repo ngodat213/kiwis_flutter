@@ -3,7 +3,6 @@ import 'dart:typed_data';
 import 'package:kiwis_flutter/core/base/base.api.dart';
 import 'package:kiwis_flutter/core/constants/constants.dart';
 import 'package:kiwis_flutter/models/api.response.dart';
-import 'package:kiwis_flutter/models/plan.model.dart';
 import 'package:kiwis_flutter/models/plan_location.model.dart';
 
 class PlanRequest {

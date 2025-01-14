@@ -4,10 +4,10 @@ import 'package:glossy/glossy.dart';
 import 'package:kiwis_flutter/core/base/base.view.dart';
 import 'package:kiwis_flutter/core/constants/app_export.dart';
 import 'package:kiwis_flutter/models/plan.model.dart';
+import 'package:kiwis_flutter/services/socket.service.dart';
 import 'package:kiwis_flutter/widgets/app_bar/app_bar_leadingiconbutton.dart';
 import 'package:kiwis_flutter/widgets/app_bar/app_bar_title.dart';
 import 'package:kiwis_flutter/widgets/app_bar/custom_app_bar.dart';
-import 'package:kiwis_flutter/widgets/custom_elevated_button.dart';
 import 'package:velocity_x/velocity_x.dart';
 import 'package:intl/intl.dart';
 
@@ -32,8 +32,9 @@ class PlanView extends BaseView<PlanController> {
             },
           ),
           title: AppbarTitle(
-            text:
-                controller.argGroupId != null ? "Group plan".tr : "My plan".tr,
+            text: SocketService.currentGroup.value.groupId != null
+                ? "Group plan".tr
+                : "My plan".tr,
             margin: EdgeInsets.only(left: 16.h),
           ),
           actions: [
@@ -70,17 +71,23 @@ class PlanView extends BaseView<PlanController> {
             child: TabBarView(
               controller: controller.tabController,
               children: [
-                Column(
-                  children: controller.plans
-                      .where((plan) => plan.isStart == true)
-                      .map((plan) => _buildPlanItem(context, plan))
-                      .toList(),
-                ).pOnly(top: 16),
                 Expanded(
                   child: ListView.builder(
-                    itemCount: controller.plans.length,
+                    itemCount: SocketService.plans.length,
                     itemBuilder: (context, index) {
-                      final plan = controller.plans[index];
+                      final plan = SocketService.plans[index];
+                      if (plan.isStart == true) {
+                        return _buildPlanItem(context, plan);
+                      }
+                      return SizedBox.shrink();
+                    },
+                  ),
+                ),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: SocketService.plans.length,
+                    itemBuilder: (context, index) {
+                      final plan = SocketService.plans[index];
                       if (plan.isStart != true) {
                         return _buildPlanItem(context, plan);
                       }

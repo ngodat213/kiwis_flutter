@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:kiwis_flutter/core/constants/app_export.dart';
 import 'package:kiwis_flutter/models/task.model.dart';
+import 'package:kiwis_flutter/services/socket.service.dart';
 import 'package:kiwis_flutter/views/plan/plan_controller.dart';
 import 'package:kiwis_flutter/widgets/base_appbar.dart';
 import 'package:kiwis_flutter/widgets/custom_text_form_field.dart';
@@ -188,8 +189,8 @@ class TaskTimeWidget extends GetView<PlanController> {
                     TimePickerSpinnerPopUp(
                       mode: CupertinoDatePickerMode.date,
                       initTime: controller.taskStartTime.value,
-                      minTime: controller.currentPlan.value?.startDate,
-                      maxTime: controller.currentPlan.value?.endDate,
+                      minTime: SocketService.currentPlan.value.startDate,
+                      maxTime: SocketService.currentPlan.value.endDate,
                       barrierColor: Colors.black12,
                       minuteInterval: 1,
                       padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
@@ -265,7 +266,7 @@ class TaskTimeWidget extends GetView<PlanController> {
                       mode: CupertinoDatePickerMode.date,
                       initTime: controller.taskEndTime.value,
                       minTime: controller.taskStartTime.value,
-                      maxTime: controller.currentPlan.value?.endDate,
+                      maxTime: SocketService.currentPlan.value.endDate,
                       barrierColor: Colors.black12,
                       minuteInterval: 1,
                       padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),

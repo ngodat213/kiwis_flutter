@@ -6,13 +6,13 @@ import 'package:image_picker/image_picker.dart';
 import 'package:kiwis_flutter/core/base/base.controller.dart';
 import 'package:kiwis_flutter/core/constants/app_export.dart';
 import 'package:kiwis_flutter/core/constants/constants.dart';
-import 'package:kiwis_flutter/core/manager/manager.socket.dart';
 import 'package:kiwis_flutter/models/friendship.model.dart';
 import 'package:kiwis_flutter/models/group.model.dart';
 import 'package:kiwis_flutter/models/message.model.dart';
 import 'package:kiwis_flutter/models/user.models.dart';
 import 'package:kiwis_flutter/requests/group.request.dart';
 import 'package:kiwis_flutter/services/services.dart';
+import 'package:kiwis_flutter/services/socket.service.dart';
 import 'package:kiwis_flutter/views/message/widgets/calander_content.dart';
 import 'package:kiwis_flutter/views/message/widgets/chat_room.content.dart';
 import 'package:kiwis_flutter/views/message/widgets/create_group.content.dart';
@@ -20,8 +20,6 @@ import 'package:kiwis_flutter/views/message/widgets/group_name_content.dart';
 import 'package:kiwis_flutter/views/message/widgets/members.content.dart';
 import 'package:kiwis_flutter/views/message/widgets/setting_chat_room_content.dart';
 import 'package:kiwis_flutter/views/message/widgets/sharemap.content.dart';
-import 'package:kiwis_flutter/views/plan/plan_view.dart';
-import 'package:kiwis_flutter/views/plan/widgets/plan_create.content.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class MessageController extends BaseController {
@@ -30,27 +28,22 @@ class MessageController extends BaseController {
   final ImagePicker _imagePicker = ImagePicker();
   // Controller create group content
   final TextEditingController createGroupNameTEC = TextEditingController();
-  RxList<FriendshipModel> selectedFriends = <FriendshipModel>[].obs;
+  RxList<FriendShipModel> selectedFriends = <FriendShipModel>[].obs;
   // Controller chat room content
   final ItemScrollController scrollController = ItemScrollController();
   final TextEditingController messageTEC = TextEditingController();
   final TextEditingController editGroupNameTEC = TextEditingController();
 
   // Variables
-  RxInt currentGroupIndex = 0.obs;
   RxBool isOnchangeAvatar = false.obs;
   Rx<UserModel> user = UserModel().obs;
   Rx<File> editGroupAvatar = File('').obs;
-  RxList<GroupModel> groups = <GroupModel>[].obs;
   Rx<MessageModel> currentMessage = MessageModel().obs;
 
   @override
   void onInit() async {
     super.onInit();
     user.value = await AuthServices.getCurrentUser(force: true) ?? UserModel();
-    initGroups();
-    listenerGroup();
-    _listenCreateGroup();
   }
 
   @override
@@ -58,11 +51,11 @@ class MessageController extends BaseController {
     super.onClose();
   }
 
-  GroupModel get currentGroup => groups.value[currentGroupIndex.value];
+  GroupModel get currentGroup => SocketService.currentGroup.value;
 
   /// Message methods
-  void onPressedChanel(BuildContext context, int index) {
-    currentGroupIndex.value = index;
+  void onPressedChanel(BuildContext context, String groupId, GroupModel group) {
+    SocketService.currentGroup.value = group;
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -70,35 +63,8 @@ class MessageController extends BaseController {
     );
   }
 
-  Future<void> _listenCreateGroup() async {
-    ManagerSocket.socket?.on(AppAPI.socketAddGroup, (data) {
-      initGroups();
-    });
-  }
-
-  Future<void> initGroups() async {
-    final response = await _groupRequest.getGroupRequest();
-    if (response.allGood) {
-      groups.value.clear();
-      for (var e in response.body) {
-        groups.value.add(GroupModel.fromJson(e));
-      }
-      groups.refresh();
-    }
-  }
-
-  void listenerGroup() {
-    ManagerSocket.socket?.on(AppAPI.socketReceiveGroupMessage, (data) {
-      print('Received group message: $data');
-      final message = MessageModel.fromJson(data);
-      final group = groups.value[currentGroupIndex.value];
-      group.messages?.add(message);
-      groups.refresh();
-    });
-  }
-
   /// Create group methods
-  void onPressedRemoveFriend(FriendshipModel user) {
+  void onPressedRemoveFriend(FriendShipModel user) {
     if (selectedFriends.contains(user)) {
       selectedFriends.remove(user);
     } else {
@@ -123,8 +89,7 @@ class MessageController extends BaseController {
         );
         if (response.allGood) {
           Get.back();
-          initGroups();
-          ManagerSocket.addGroup(groupId: response.body['groupId']);
+          SocketService.addGroup(groupId: response.body['groupId']);
           AnimatedSnackBar.material(
             "Group created successfully",
             type: AnimatedSnackBarType.success,
@@ -165,11 +130,13 @@ class MessageController extends BaseController {
   Future<void> handleLeaveGroup() async {
     try {
       final response = await _groupRequest.leaveGroupRequest(
-        groupId: groups.value[currentGroupIndex.value].groupId!,
+        groupId: SocketService.currentGroup.value.groupId!,
       );
       if (response.allGood) {
-        groups.value.removeAt(currentGroupIndex.value);
-        groups.refresh();
+        SocketService.groups.removeWhere(
+          (e) => e.groupId == SocketService.currentGroup.value.groupId!,
+        );
+        SocketService.groups.refresh();
         Get.offAllNamed(Routes.MAIN);
         Get.snackbar("Leave group", "Leave group successfully");
       }
@@ -180,9 +147,9 @@ class MessageController extends BaseController {
 
   Future<void> handleBlockUser() async {
     try {
+      final group = SocketService.currentGroup.value;
       final response = await _groupRequest.blockUserRequest(
-        userId:
-            groups.value[currentGroupIndex.value].members!.first.user!.userId!,
+        userId: group.members!.first.user!.userId!,
       );
       if (response.allGood) {
         Get.offAllNamed(Routes.MAIN);
@@ -196,7 +163,7 @@ class MessageController extends BaseController {
   Future<void> handleChangeGroupName(BuildContext context) async {
     try {
       final response = await _groupRequest.editGroupRequest(
-        groupId: groups.value[currentGroupIndex.value].groupId!,
+        groupId: currentGroup.groupId!,
         name: editGroupNameTEC.text,
         file: editGroupAvatar.value.readAsBytesSync(),
       );
@@ -207,9 +174,9 @@ class MessageController extends BaseController {
         editGroupAvatar.value = File('');
         editGroupNameTEC.clear();
         // Update group
-        groups.value[currentGroupIndex.value].name = group.name;
-        groups.value[currentGroupIndex.value].avatar = group.avatar;
-        groups.refresh();
+        currentGroup.name = group.name;
+        currentGroup.avatar = group.avatar;
+        SocketService.groups.refresh();
 
         Get.back();
         AnimatedSnackBar.material(
@@ -232,11 +199,7 @@ class MessageController extends BaseController {
 
   void sendMessage() {
     if (messageTEC.text.isNotEmpty) {
-      ManagerSocket.sendMessage(
-        senderId: user.value.userId!,
-        groupId: groups.value[currentGroupIndex.value].groupId!,
-        messageText: messageTEC.text,
-      );
+      SocketService.sendMessage(messageText: messageTEC.text);
       messageTEC.clear();
     }
   }
@@ -252,17 +215,17 @@ class MessageController extends BaseController {
   void onPressedCreatePlan() {
     Get.toNamed(
       Routes.PLAN,
-      arguments: groups.value[currentGroupIndex.value].groupId!,
+      arguments: SocketService.currentGroup.value.groupId!,
     );
   }
 
   String getGroupName() {
-    final group = groups.value[currentGroupIndex.value];
+    final group = SocketService.currentGroup.value;
     return group.name ?? group.members!.first.user!.fullName;
   }
 
   String getAvatarGroup() {
-    final group = groups.value[currentGroupIndex.value];
+    final group = SocketService.currentGroup.value;
     if (group.avatar != null) {
       return group.avatar!.imageUrl!;
     } else if (isGroupChat()) {
@@ -273,7 +236,7 @@ class MessageController extends BaseController {
   }
 
   bool isGroupChat() {
-    final group = groups.value[currentGroupIndex.value];
+    final group = SocketService.currentGroup.value;
     return group.isGroupChat();
   }
 
@@ -322,7 +285,7 @@ class MessageController extends BaseController {
     );
   }
 
-  void addMember(FriendshipModel user) {
+  void addMember(FriendShipModel user) {
     selectedFriends.add(user);
   }
 }

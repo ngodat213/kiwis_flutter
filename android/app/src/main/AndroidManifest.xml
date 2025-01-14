@@ -16,6 +16,8 @@
     <!-- CONTACTS PERMISSION -->
     <uses-permission android:name="android.permission.READ_CONTACTS"/>
     <uses-permission android:name="android.permission.WRITE_CONTACTS"/>
+    <!-- Thêm quyền gọi điện -->
+    <uses-permission android:name="android.permission.CALL_PHONE" />
     <application
         android:label="Kiwis"
         android:name="${applicationName}"

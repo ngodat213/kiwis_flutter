@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
 
 import 'package:kiwis_flutter/core/constants/app_export.dart';
+import 'package:kiwis_flutter/models/group.model.dart';
+import 'package:kiwis_flutter/services/socket.service.dart';
 import 'package:kiwis_flutter/views/message/widgets/chat_bubble.widget.dart';
 import 'package:kiwis_flutter/views/message/message_controller.dart';
 import 'package:kiwis_flutter/widgets/app_bar/app_bar_leadingiconbutton.dart';
@@ -152,25 +154,16 @@ class ChatRoomContent extends GetView<MessageController> {
                           child: SizedBox(
                             height: Get.height * 0.78,
                             child: Obx(() {
+                              final GroupModel group =
+                                  SocketService.currentGroup.value;
                               return ScrollablePositionedList.builder(
                                 itemScrollController:
                                     controller.scrollController,
-                                initialScrollIndex: controller
-                                    .groups
-                                    .value[controller.currentGroupIndex.value]
-                                    .messages!
-                                    .length,
+                                initialScrollIndex: group.messages!.length,
                                 padding: const EdgeInsets.all(8.0),
-                                itemCount: controller
-                                    .groups
-                                    .value[controller.currentGroupIndex.value]
-                                    .messages!
-                                    .length,
+                                itemCount: group.messages!.length,
                                 itemBuilder: (context, index) {
-                                  final messages = controller
-                                      .groups
-                                      .value[controller.currentGroupIndex.value]
-                                      .messages!;
+                                  final messages = group.messages!;
                                   final currentMessage = messages[index];
                                   final isGroupStart = index == 0 ||
                                       messages[index - 1].senderId !=

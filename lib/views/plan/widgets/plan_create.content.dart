@@ -313,11 +313,15 @@ class TimeWidget extends GetView<PlanController> {
                           dateTime.year,
                           dateTime.month,
                           dateTime.day,
+                          controller.startDay.value.hour,
+                          controller.startDay.value.minute,
                         );
                         controller.startDay.value = DateTime(
                           dateTime.year,
                           dateTime.month,
                           dateTime.day,
+                          controller.startDay.value.hour,
+                          controller.startDay.value.minute,
                         );
                       },
                     ),
@@ -377,6 +381,13 @@ class TimeWidget extends GetView<PlanController> {
                           controller.startDay.value.day,
                           dateTime.hour,
                           dateTime.minute,
+                        );
+                        controller.endDay.value = DateTime(
+                          controller.startDay.value.year,
+                          controller.startDay.value.month,
+                          controller.startDay.value.day,
+                          controller.startDay.value.hour,
+                          controller.startDay.value.minute,
                         );
                       },
                     ),

@@ -3,6 +3,7 @@ import 'package:kiwis_flutter/core/constants/app_export.dart';
 
 import 'package:kiwis_flutter/core/base/base.view.dart';
 import 'package:kiwis_flutter/models/group.model.dart';
+import 'package:kiwis_flutter/services/socket.service.dart';
 import 'package:kiwis_flutter/widgets/app_bar/app_bar_title.dart';
 import 'package:kiwis_flutter/widgets/app_bar/custom_app_bar.dart';
 import 'package:kiwis_flutter/widgets/app_bar/app_bar_leadingiconbutton.dart';
@@ -33,10 +34,10 @@ class MessageScreen extends BaseView<MessageController> {
                 child: Obx(
                   () => ListView.builder(
                     shrinkWrap: true,
-                    itemCount: controller.groups.length,
+                    itemCount: SocketService.groups.length,
                     itemBuilder: (context, index) => _buildGroupItem(
                       context,
-                      controller.groups[index],
+                      SocketService.groups[index],
                       index,
                     ),
                   ),
@@ -52,7 +53,7 @@ class MessageScreen extends BaseView<MessageController> {
   /// Common widget
   Widget _buildGroupItem(BuildContext context, GroupModel group, int index) {
     return GestureDetector(
-      onTap: () => controller.onPressedChanel(context, index),
+      onTap: () => controller.onPressedChanel(context, group.groupId!, group),
       child: SizedBox(
         width: double.maxFinite,
         child: Container(

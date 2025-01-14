@@ -2,7 +2,7 @@ class SharedUsers {
   String? sharedUserid;
   String? costShareId;
   String? userId;
-  int? amount;
+  double? amount;
   bool? isPaid;
 
   SharedUsers(
@@ -16,7 +16,7 @@ class SharedUsers {
     sharedUserid = json['SharedUserid'];
     costShareId = json['costShareId'];
     userId = json['userId'];
-    amount = json['amount'];
+    amount = json['amount'] != null ? json['amount'].toDouble() : 0;
     isPaid = json['isPaid'];
   }
 

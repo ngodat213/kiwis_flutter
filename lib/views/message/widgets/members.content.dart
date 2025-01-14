@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kiwis_flutter/core/constants/app_export.dart';
+import 'package:kiwis_flutter/services/socket.service.dart';
 import 'package:kiwis_flutter/views/message/message_controller.dart';
 import 'package:kiwis_flutter/widgets/app_bar/app_bar_trainling_iconbutton.dart';
 import 'package:kiwis_flutter/widgets/base_appbar.dart';
@@ -36,19 +37,13 @@ class MembersContent extends GetView<MessageController> {
               children: [
                 SizedBox(height: 32.h),
                 ListView.builder(
-                  itemCount: controller
-                          .groups
-                          .value[controller.currentGroupIndex.value]
-                          .members
-                          ?.length ??
-                      0,
+                  itemCount:
+                      SocketService.currentGroup.value.members?.length ?? 0,
                   physics: AlwaysScrollableScrollPhysics(),
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
-                    final member = controller
-                        .groups
-                        .value[controller.currentGroupIndex.value]
-                        .members![index];
+                    final member =
+                        SocketService.currentGroup.value.members![index];
                     return ListTile(
                       leading: CustomImageView(
                         imagePath: member.user?.avatar?.imageUrl ??

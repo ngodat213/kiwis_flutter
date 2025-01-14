@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kiwis_flutter/core/base/base.view.dart';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:kiwis_flutter/core/constants/app_export.dart';
+import 'package:kiwis_flutter/services/socket.service.dart';
 import 'package:kiwis_flutter/views/home/widgets/camera.wiget.dart';
 import 'package:kiwis_flutter/views/home/widgets/post.item.dart';
 import 'home_controller.dart';
@@ -26,10 +27,10 @@ class HomeScreen extends BaseView<HomeController> {
                 if (index == 0) {
                   return CameraWidget();
                 }
-                return PostItem(post: controller.posts[index - 1]);
+                return PostItem(post: SocketService.posts[index - 1]);
               },
               scrollDirection: Axis.vertical,
-              itemCount: controller.posts.length + 1,
+              itemCount: SocketService.posts.length + 1,
               loop: false,
               fade: 0.1,
             );

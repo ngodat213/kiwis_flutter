@@ -6,7 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:kiwis_flutter/core/constants/app_export.dart';
 import 'package:kiwis_flutter/models/cost.model.dart';
 import 'package:kiwis_flutter/models/plan_location.model.dart';
-import 'package:kiwis_flutter/views/home/home_view.dart';
+import 'package:kiwis_flutter/services/socket.service.dart';
 import 'package:kiwis_flutter/views/plan/plan_controller.dart';
 import 'package:kiwis_flutter/widgets/app_bar/app_bar_leadingiconbutton.dart';
 import 'package:kiwis_flutter/widgets/app_bar/app_bar_trainling_iconbutton.dart';
@@ -28,7 +28,7 @@ class PlanDetailContent extends GetView<PlanController> {
           ? null
           : baseAppBar(
               context: context,
-              title: controller.currentPlan.value!.name!.tr,
+              title: SocketService.currentPlan.value.name!.tr,
               onBack: () {
                 controller.userPlans.clear();
                 controller.selectedShareCosts.clear();
@@ -71,14 +71,14 @@ class PlanDetailContent extends GetView<PlanController> {
                       onlySchedule ? SizedBox() : ContentWidget(),
                       SizedBox(height: 10),
                       DatePicker(
-                        controller.currentPlan.value!.startDate!,
+                        SocketService.currentPlan.value.startDate!,
                         height: 100,
                         width: 70,
                         initialSelectedDate:
-                            controller.currentPlan.value!.startDate!,
-                        daysCount: controller.currentPlan.value!.endDate!
+                            SocketService.currentPlan.value.startDate!,
+                        daysCount: SocketService.currentPlan.value.endDate!
                                 .difference(
-                                    controller.currentPlan.value!.startDate!)
+                                    SocketService.currentPlan.value.startDate!)
                                 .inDays +
                             1,
                         selectionColor: appTheme.green600.withOpacity(0.7),
@@ -93,8 +93,8 @@ class PlanDetailContent extends GetView<PlanController> {
                           fontWeight: FontWeight.w400,
                         ),
                         onDateChange: (date) {
-                          controller.getTasksByDate(date);
-                          controller.getCostSharingByDate(date);
+                          SocketService.getTasksByDate(date);
+                          SocketService.getCostSharingByDate(date);
                         },
                       ),
                       SizedBox(height: 16),
@@ -185,9 +185,9 @@ class PlanDetailContent extends GetView<PlanController> {
             child: ListView.builder(
               physics: AlwaysScrollableScrollPhysics(),
               shrinkWrap: true,
-              itemCount: controller.planCosts.length,
+              itemCount: SocketService.planCostsByDay.length,
               itemBuilder: (context, index) => LatestEntryItem(
-                cost: controller.planCosts[index],
+                cost: SocketService.planCostsByDay[index],
               ).paddingOnly(
                 bottom: 8.h,
               ),
@@ -263,9 +263,9 @@ class ContentWidget extends GetView<PlanController> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        controller.currentPlan.value?.thumbnail?.imageUrl != null
+        SocketService.currentPlan.value.thumbnail?.imageUrl != null
             ? CustomImageView(
-                imagePath: controller.currentPlan.value!.thumbnail!.imageUrl!,
+                imagePath: SocketService.currentPlan.value.thumbnail!.imageUrl!,
                 width: Get.width * 0.9,
                 height: 200,
                 fit: BoxFit.cover,
@@ -274,7 +274,7 @@ class ContentWidget extends GetView<PlanController> {
               )
             : SizedBox(),
         SizedBox(height: 10),
-        controller.currentPlan.value!.description!.text.ellipsis
+        SocketService.currentPlan.value.description!.text.ellipsis
             .maxLines(5)
             .textStyle(theme.textTheme.bodyMedium)
             .make(),
@@ -291,7 +291,7 @@ class ContentWidget extends GetView<PlanController> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text('• Created by: ', style: theme.textTheme.titleSmall),
-            Text(controller.currentPlan.value!.createdBy!.fullName,
+            Text(SocketService.currentPlan.value.createdBy!.fullName,
                 style: theme.textTheme.titleSmall!.copyWith(
                   fontWeight: FontWeight.w400,
                 ))
@@ -303,7 +303,7 @@ class ContentWidget extends GetView<PlanController> {
             Text('• Start date: ', style: theme.textTheme.titleSmall),
             Text(
                 DateFormat('dd/MM/yyyy')
-                    .format(controller.currentPlan.value!.startDate!),
+                    .format(SocketService.currentPlan.value.startDate!),
                 style: theme.textTheme.titleSmall!.copyWith(
                   fontWeight: FontWeight.w400,
                 ))
@@ -315,7 +315,7 @@ class ContentWidget extends GetView<PlanController> {
             Text('• End date: ', style: theme.textTheme.titleSmall),
             Text(
                 DateFormat('dd/MM/yyyy')
-                    .format(controller.currentPlan.value!.endDate!),
+                    .format(SocketService.currentPlan.value.endDate!),
                 style: theme.textTheme.titleSmall!.copyWith(
                   fontWeight: FontWeight.w400,
                 ))
@@ -327,10 +327,10 @@ class ContentWidget extends GetView<PlanController> {
             Text('• Time: ', style: theme.textTheme.titleSmall),
             Text(
               (DateFormat('HH:mm')
-                      .format(controller.currentPlan.value!.endDate!) +
+                      .format(SocketService.currentPlan.value.endDate!) +
                   ' - ' +
                   DateFormat('HH:mm')
-                      .format(controller.currentPlan.value!.startDate!)),
+                      .format(SocketService.currentPlan.value.startDate!)),
               style: theme.textTheme.titleSmall!.copyWith(
                 fontWeight: FontWeight.w400,
               ),
@@ -342,7 +342,7 @@ class ContentWidget extends GetView<PlanController> {
           children: [
             Text('• Budget: ', style: theme.textTheme.titleSmall),
             Text(
-              (controller.currentPlan.value!.totalCost.toString() + ' VNĐ'),
+              (SocketService.currentPlan.value.totalCost.toString() + ' VNĐ'),
               style: theme.textTheme.titleSmall!.copyWith(
                 fontWeight: FontWeight.w400,
               ),
@@ -370,14 +370,14 @@ class ScheduleWidget extends GetView<PlanController> {
           Obx(() => Expanded(
                 child: ListView.builder(
                   shrinkWrap: true,
-                  itemCount: controller.tasks.length,
+                  itemCount: SocketService.taskByDay.length,
                   itemBuilder: (context, index) {
-                    var currentTask = controller.tasks[index];
-                    return index != controller.tasks.length
+                    var currentTask = SocketService.taskByDay[index];
+                    return index != SocketService.taskByDay.length
                         ? buildTimelineItem(
                             status: currentTask.status!,
                             isActive: currentTask.taskId ==
-                                controller.currentTaskId.value,
+                                SocketService.taskChange.value?.taskId,
                             taskId: currentTask.taskId!,
                             context: context,
                             time: DateFormat('HH:mm').format(
@@ -390,7 +390,7 @@ class ScheduleWidget extends GetView<PlanController> {
                             endDate: DateTime.tryParse(currentTask.endDate!)!,
                             location: currentTask.planLocation,
                           ).onTap(() {
-                            controller.onChangeTask(currentTask.taskId!);
+                            SocketService.onChangeTask(currentTask);
                             controller.showDialog(
                               Dialog(
                                 insetPadding:
@@ -406,7 +406,8 @@ class ScheduleWidget extends GetView<PlanController> {
                                       buildTimelineItem(
                                         status: currentTask.status!,
                                         isActive: currentTask.taskId ==
-                                            controller.currentTaskId.value,
+                                            SocketService
+                                                .taskChange.value?.taskId,
                                         taskId: currentTask.taskId!,
                                         context: context,
                                         time: DateFormat('HH:mm').format(

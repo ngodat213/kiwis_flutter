@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:kiwis_flutter/core/constants/app_export.dart';
 import 'package:kiwis_flutter/models/plan_location.model.dart';
+import 'package:kiwis_flutter/services/socket.service.dart';
 import 'package:kiwis_flutter/views/plan/plan_controller.dart';
 import 'package:velocity_x/velocity_x.dart';
 
@@ -72,12 +73,12 @@ class ScheduleWidget extends GetView<PlanController> {
       child: Column(
         children: [
           DatePicker(
-            controller.currentPlan.value!.startDate!,
+            SocketService.currentPlan.value.startDate!,
             height: 100,
             width: 70,
-            initialSelectedDate: controller.currentPlan.value!.startDate!,
-            daysCount: controller.currentPlan.value!.endDate!
-                    .difference(controller.currentPlan.value!.startDate!)
+            initialSelectedDate: SocketService.currentPlan.value.startDate!,
+            daysCount: SocketService.currentPlan.value.endDate!
+                    .difference(SocketService.currentPlan.value.startDate!)
                     .inDays +
                 1,
             selectionColor: appTheme.green600.withOpacity(0.7),
@@ -92,18 +93,18 @@ class ScheduleWidget extends GetView<PlanController> {
               fontWeight: FontWeight.w400,
             ),
             onDateChange: (date) {
-              controller.getTasksByDate(date);
-              controller.getCostSharingByDate(date);
+              SocketService.getTasksByDate(date);
+              SocketService.getCostSharingByDate(date);
             },
           ),
           SizedBox(height: 16),
           Obx(() => Expanded(
                 child: ListView.builder(
                   shrinkWrap: true,
-                  itemCount: controller.tasks.length,
+                  itemCount: SocketService.taskByDay.length,
                   itemBuilder: (context, index) {
-                    var currentTask = controller.tasks[index];
-                    return index != controller.tasks.length
+                    var currentTask = SocketService.taskByDay[index];
+                    return index != SocketService.taskByDay.length
                         ? buildTimelineItem(
                             taskId: currentTask.taskId!,
                             context: context,

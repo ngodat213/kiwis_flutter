@@ -4,8 +4,8 @@ class AppAPI {
   AppAPI._();
   // static const String domain = 'http://172.20.10.4:1111/api/'; // hostpost
   // static const String domain = 'http://10.100.3.149:1111/api/'; // CMCC
-  static const String domainApi = 'http://192.168.0.106:1111/api/'; // home
-  static const String domainSocket = 'http://192.168.0.106:2222'; // home
+  static const String domainApi = 'http://192.168.0.109:1111/api/'; // home
+  static const String domainSocket = 'http://192.168.0.109:2222'; // home
 
   /// Socket
   static const String socketRegister = 'register';
@@ -22,7 +22,9 @@ class AppAPI {
   static const String socketAcceptFriend = 'accept_friend';
   static const String socketAddPlan = 'add_plan';
   static const String socketAddRefreshPlan = 'add_refresh_plan';
-  static const String socketAddGroup = 'add_group';
+  static const String socketRefreshGroup = 'refresh_group'; //
+  static const String socketAddTask = 'add_task';
+  static const String socketAddCost = 'add_cost';
 
   /// Auth
   static const String baseAuth = '${domainApi}auth';

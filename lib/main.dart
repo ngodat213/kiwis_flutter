@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:kiwis_flutter/services/socket.service.dart';
+
 import 'firebase_options.dart';
 
 import 'package:kiwis_flutter/my_app.dart';
@@ -13,6 +15,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
+import 'package:kiwis_flutter/services/socket.service.dart';
 
 void main() async {
   await dotenv.load(fileName: ".env");
