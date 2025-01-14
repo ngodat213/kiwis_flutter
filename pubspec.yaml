@@ -69,7 +69,11 @@ dependencies:
   time_picker_spinner_pop_up: ^2.0.0
   date_picker_timeline: ^1.2.6
 
-  # 
+  # CONTACT
+  flutter_contacts: ^1.1.9+2
+
+  # PERMISSION
+  permission_handler: ^11.3.1
   
   # UI 
   flutter_cache_manager: ^3.3.1
@@ -102,7 +106,7 @@ dependencies:
   easy_stepper: ^0.8.5+1
   gif: ^2.3.0
   glossy: ^0.0.4
-  flutter_contacts: ^1.1.9+2
+  url_launcher: ^6.3.1
 
 dependency_overrides:
   flutter_svg: 1.1.6
@@ -118,6 +122,7 @@ dev_dependencies:
       ref: dart-3
   flutter_launcher_icons: ^0.14.2
   flutter_lints: ^3.0.0
+  lint: ^2.3.0
 
 flutter:
   uses-material-design: true

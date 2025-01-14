@@ -5,8 +5,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:kiwis_flutter/app/routes/app_pages.dart';
 import 'package:kiwis_flutter/controllers/location_search.controller.dart';
 import 'package:kiwis_flutter/core/base/base.controller.dart';
-import 'package:kiwis_flutter/core/constants/constants.dart';
-import 'package:kiwis_flutter/core/manager/manager.socket.dart';
 import 'package:kiwis_flutter/enums/share_with.enum.dart';
 import 'package:kiwis_flutter/models/address.model.dart';
 import 'package:kiwis_flutter/models/api.response.dart';
@@ -21,6 +19,7 @@ import 'package:kiwis_flutter/requests/cost.request.dart';
 import 'package:kiwis_flutter/requests/plan.request.dart';
 import 'package:kiwis_flutter/requests/task.request.dart';
 import 'package:kiwis_flutter/services/services.dart';
+import 'package:kiwis_flutter/services/socket.service.dart';
 import 'package:kiwis_flutter/views/plan/widgets/add_expense.content.dart';
 import 'package:kiwis_flutter/views/plan/widgets/add_task.content.dart';
 import 'package:kiwis_flutter/views/plan/widgets/addlocation.content.dart';
@@ -61,22 +60,17 @@ class PlanController extends BaseController with GetTickerProviderStateMixin {
   Rx<DateTime> startDay = Rx<DateTime>(DateTime.now());
   Rx<DateTime> endDay = Rx<DateTime>(DateTime.now());
   Rx<DateTime?> focusedDay = Rx<DateTime?>(DateTime.now());
-  Rx<PlanModel?> currentPlan = Rxn<PlanModel?>();
   Rxn<TaskModel?> currentTask = Rxn<TaskModel?>();
   Rx<PlanLocationModel?> planLocationChanged = Rxn<PlanLocationModel?>();
   Rxn<AddressModel?> currentLocation = Rxn<AddressModel?>();
-  RxList<PlanModel> plans = <PlanModel>[].obs;
-  RxList<TaskModel> tasks = <TaskModel>[].obs;
   RxList<AddressModel> locations = <AddressModel>[].obs;
   RxList<MemberModel> selectedShareCosts = <MemberModel>[].obs;
   RxList<IndividualSharesModel> individualShares =
       <IndividualSharesModel>[].obs;
   RxList<MemberModel> userPlans = <MemberModel>[].obs;
-  RxList<CostModel> planCosts = <CostModel>[].obs;
   Rx<File?> imageFile = Rxn<File?>();
   RxInt currentStep = 0.obs;
   RxBool isEvenlyShared = true.obs;
-  Rxn<String?> currentTaskId = Rxn<String?>();
   String? argGroupId;
   Rx<UserModel?> currentUser = Rxn<UserModel?>();
   List<Widget> steps = [TimeWidget(), DetailWidget(), EnjoyWidget()];
@@ -86,34 +80,10 @@ class PlanController extends BaseController with GetTickerProviderStateMixin {
     super.onInit();
     showLoading();
     argGroupId = Get.arguments;
-    await handleInitPlans();
-    _listenAddPlan();
-    _listenAddRefreshPlan();
     currentUser.value = await AuthServices.getCurrentUser();
     tabController = TabController(length: 2, vsync: this);
     detailTabController = TabController(length: 3, vsync: this);
     hideLoading();
-  }
-
-  Future<void> _listenAddPlan() async {
-    ManagerSocket.socket?.on(AppAPI.socketAddPlan, (data) async {
-      await handleInitPlans();
-    });
-  }
-
-  Future<void> _listenAddRefreshPlan() async {
-    ManagerSocket.socket?.on(AppAPI.socketAddRefreshPlan, (data) async {
-      await handleRefreshCurrentPlan();
-    });
-  }
-
-  void onChangeTask(String taskId) {
-    if (currentTaskId.value == taskId) {
-      currentTaskId.value = null;
-    } else {
-      currentTaskId.value = taskId;
-    }
-    tasks.refresh();
   }
 
   void showDialog(Widget child) {
@@ -126,30 +96,6 @@ class PlanController extends BaseController with GetTickerProviderStateMixin {
     if (value) {
       individualShares.clear();
     }
-  }
-
-  void getTasksByDate(DateTime date) {
-    taskDate.value = date;
-    var allTasks = currentPlan.value?.tasks ?? [];
-
-    tasks.value = allTasks.where((task) {
-      DateTime? startDate =
-          task.startDate != null ? DateTime.tryParse(task.startDate!) : null;
-      DateTime? endDate =
-          task.endDate != null ? DateTime.tryParse(task.endDate!) : null;
-
-      if (startDate == null || endDate == null) return false;
-
-      DateTime startDay =
-          DateTime(startDate.year, startDate.month, startDate.day);
-      DateTime endDay = DateTime(endDate.year, endDate.month, endDate.day);
-      DateTime targetDay = DateTime(date.year, date.month, date.day);
-
-      return targetDay.isAtSameMomentAs(startDay) ||
-          targetDay.isAtSameMomentAs(endDay) ||
-          (targetDay.isAfter(startDay) && targetDay.isBefore(endDay));
-    }).toList();
-    tasks.refresh();
   }
 
   Future<void> pickImage() async {
@@ -165,7 +111,7 @@ class PlanController extends BaseController with GetTickerProviderStateMixin {
       isScrollControlled: true,
       builder: (context) => PlanCreateContent(
         isEdit: true,
-        plan: currentPlan.value!,
+        plan: SocketService.currentPlan.value,
       ),
     );
   }
@@ -232,9 +178,9 @@ class PlanController extends BaseController with GetTickerProviderStateMixin {
   /// Show content
   Future<void> showContentPlanDetail(
       BuildContext context, PlanModel plan) async {
-    currentPlan.value = plan;
-    getTasksByDate(currentPlan.value!.startDate!);
-    getCostSharingByDate(currentPlan.value!.startDate!);
+    SocketService.currentPlan.value = plan;
+    SocketService.getTasksByDate(null);
+    SocketService.getCostSharingByDate(null);
     getUserPlans();
     showModalBottomSheet(
       context: context,
@@ -252,29 +198,12 @@ class PlanController extends BaseController with GetTickerProviderStateMixin {
     );
   }
 
-  void getCostSharingByDate(DateTime date) {
-    taskDate.value = date;
-    var allCost = currentPlan.value?.planCosts ?? [];
-
-    planCosts.value = allCost.where((cost) {
-      DateTime? createdAt =
-          cost.createdAt != null ? DateTime.tryParse(cost.createdAt!) : null;
-
-      if (createdAt == null) return false;
-
-      return createdAt.year == date.year &&
-          createdAt.month == date.month &&
-          createdAt.day == date.day;
-    }).toList();
-    planCosts.refresh();
-  }
-
   void showContentAddTask(BuildContext context, {TaskModel? task}) {
     currentTask.value = task;
     taskTitleTEC.text = task?.title ?? "";
     taskDescriptionTEC.text = task?.description ?? "";
     taskBudgetTEC.text = task != null ? task.totalCost.toString() : "";
-    taskStartTime.value = currentPlan.value!.startDate!;
+    taskStartTime.value = SocketService.currentPlan.value.startDate!;
     taskEndTime.value = taskStartTime.value;
     showModalBottomSheet(
       context: context,
@@ -312,48 +241,48 @@ class PlanController extends BaseController with GetTickerProviderStateMixin {
   void showContentCreatePlan(BuildContext context, {bool isEdit = false}) {
     if (isEdit) {
       currentStep.value = 0;
-      startDay.value = currentPlan.value!.startDate!;
-      endDay.value = currentPlan.value!.endDate!;
-      titleTEC.text = currentPlan.value!.name!;
-      descriptionTEC.text = currentPlan.value!.description!;
-      budgetTEC.text = currentPlan.value!.totalCost.toString();
+      startDay.value = SocketService.currentPlan.value.startDate!;
+      endDay.value = SocketService.currentPlan.value.endDate!;
+      titleTEC.text = SocketService.currentPlan.value.name!;
+      descriptionTEC.text = SocketService.currentPlan.value.description!;
+      budgetTEC.text = SocketService.currentPlan.value.totalCost.toString();
     }
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       builder: (context) => PlanCreateContent(
         isEdit: isEdit,
-        plan: currentPlan.value,
+        plan: SocketService.currentPlan.value,
       ),
     );
   }
 
   /// Handle
-  Future<void> handleInitPlans() async {
-    plans.value.clear();
-    try {
-      final ApiResponse response;
-      if (argGroupId != null) {
-        response = await _planRequest.getPlanByGroupId(argGroupId!);
-      } else {
-        response = await _planRequest.getPlanRequest();
-      }
-      if (response.allGood) {
-        for (var e in response.body) {
-          plans.value.add(PlanModel.fromJson(e));
-          plans.refresh();
-        }
-      }
-      print(plans.length);
-    } catch (e) {
-      print(e);
-    }
-  }
+  // Future<void> handleInitPlans() async {
+  //   plans.value.clear();
+  //   try {
+  //     final ApiResponse response;
+  //     if (argGroupId != null) {
+  //       response = await _planRequest.getPlanByGroupId(argGroupId!);
+  //     } else {
+  //       response = await _planRequest.getPlanRequest();
+  //     }
+  //     if (response.allGood) {
+  //       for (var e in response.body) {
+  //         plans.value.add(PlanModel.fromJson(e));
+  //         plans.refresh();
+  //       }
+  //     }
+  //     print(plans.length);
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  // }
 
   void getUserPlans() {
     try {
-      if (currentPlan.value?.groupId != null) {
-        currentPlan.value?.group?.members?.forEach((member) {
+      if (SocketService.currentPlan.value.groupId != null) {
+        SocketService.currentPlan.value.group?.members?.forEach((member) {
           userPlans.add(member);
         });
         userPlans.refresh();
@@ -364,10 +293,11 @@ class PlanController extends BaseController with GetTickerProviderStateMixin {
   }
 
   Future<void> handleRefreshCurrentPlan() async {
-    var response = await _planRequest.getPlanById(currentPlan.value!.planId!);
+    var response =
+        await _planRequest.getPlanById(SocketService.currentPlan.value.planId!);
     if (response.allGood) {
-      currentPlan.value = PlanModel.fromJson(response.body);
-      currentPlan.refresh();
+      SocketService.currentPlan.value = PlanModel.fromJson(response.body);
+      SocketService.currentPlan.refresh();
     }
   }
 
@@ -381,10 +311,10 @@ class PlanController extends BaseController with GetTickerProviderStateMixin {
       }
       final amount = isEvenlyShared.value
           ? double.parse(expenseBudgetTEC.text) /
-              (currentPlan.value!.group?.members?.length ?? 1)
+              (SocketService.currentPlan.value.group?.members?.length ?? 1)
           : double.parse(expenseBudgetTEC.text);
       final individualSharesList = isEvenlyShared.value
-          ? currentPlan.value!.group?.members
+          ? SocketService.currentPlan.value.group?.members
               ?.map((e) => {
                     "userId": e.user!.userId,
                     "amount": amount,
@@ -400,7 +330,7 @@ class PlanController extends BaseController with GetTickerProviderStateMixin {
         title: expenseTitleTEC.text,
         amount: expenseBudgetTEC.text,
         payerId: currentUser.value!.userId!,
-        planId: currentPlan.value!.planId!,
+        planId: SocketService.currentPlan.value.planId!,
         note: expenseDescriptionTEC.text,
         sharedWith: isEvenlyShared.value
             ? CostSharingSharedWith.GROUP.name
@@ -411,15 +341,11 @@ class PlanController extends BaseController with GetTickerProviderStateMixin {
         Get.back();
         Get.snackbar("Success", "Expense created successfully");
         final cost = CostModel.fromJson(response.body);
-        currentPlan.value!.planCosts!.add(cost);
-        currentPlan.refresh();
-        planCosts.add(cost);
-        planCosts.refresh();
-        if (argGroupId != null) {
-          ManagerSocket.addRefreshPlan(
-            userId: currentUser.value!.userId!,
-            planId: currentPlan.value!.planId!,
-            groupId: argGroupId,
+        if (argGroupId != null ||
+            SocketService.currentPlan.value.groupId != null) {
+          SocketService.addExpense(
+            expenseId: cost.costShareId!,
+            groupId: argGroupId ?? SocketService.currentPlan.value.groupId!,
           );
         }
       }
@@ -432,7 +358,7 @@ class PlanController extends BaseController with GetTickerProviderStateMixin {
     try {
       if (taskTitleTEC.text.isNotEmpty) {
         var response = await _taskRequest.createTask(
-          planId: currentPlan.value!.planId!,
+          planId: SocketService.currentPlan.value.planId!,
           title: taskTitleTEC.text,
           description: taskDescriptionTEC.text,
           budget: taskBudgetTEC.text,
@@ -451,19 +377,22 @@ class PlanController extends BaseController with GetTickerProviderStateMixin {
         );
         if (response.allGood) {
           final task = TaskModel.fromJson(response.body);
-          currentPlan.value?.tasks?.add(task);
-          currentPlan.refresh();
           taskTitleTEC.clear();
           taskDescriptionTEC.clear();
           taskBudgetTEC.clear();
-          taskStartTime.value = currentPlan.value!.startDate!;
+          taskStartTime.value = SocketService.currentPlan.value.startDate!;
           taskEndTime.value = taskStartTime.value;
-          if (argGroupId != null) {
-            ManagerSocket.addRefreshPlan(
-              userId: currentUser.value!.userId!,
-              planId: currentPlan.value!.planId!,
-              groupId: argGroupId,
+          if (argGroupId != null ||
+              SocketService.currentPlan.value.groupId != null) {
+            SocketService.addTask(
+              taskId: task.taskId!,
+              groupId: argGroupId ?? SocketService.currentPlan.value.groupId!,
             );
+          } else {
+            SocketService.taskByDay.insert(0, task);
+            SocketService.taskByDay.refresh();
+            SocketService.currentPlan.value.tasks?.add(task);
+            SocketService.currentPlan.refresh();
           }
           Get.snackbar("Success", "Task created successfully");
         } else {
@@ -481,34 +410,38 @@ class PlanController extends BaseController with GetTickerProviderStateMixin {
     var response = await _taskRequest.updateTaskIsDone(taskId: taskId);
     if (response.allGood) {
       TaskModel task = TaskModel.fromJson(response.body);
-      tasks.removeWhere((task) => task.taskId == taskId);
-      tasks.add(task);
-      tasks.refresh();
+      SocketService.currentPlan.value.tasks
+          ?.removeWhere((task) => task.taskId == taskId);
+      SocketService.currentPlan.value.tasks?.add(task);
+      SocketService.currentPlan.refresh();
       Get.back();
     }
   }
 
   Future<void> handeToOnPlan() async {
-    if (currentPlan.value!.tasks!.isEmpty) {
+    if (SocketService.currentPlan.value.tasks!.isEmpty) {
       Get.snackbar("Note", "Please add tasks first");
       return;
     }
-    if (currentPlan.value!.isStart!) {
-      Get.toNamed(Routes.ON_PLAN, arguments: currentPlan.value!.planId);
+    if (SocketService.currentPlan.value.isStart!) {
+      Get.toNamed(Routes.ON_PLAN,
+          arguments: SocketService.currentPlan.value.planId);
     } else {
       var response = await _planRequest.updatePlanIsStart(
-        currentPlan.value!.planId!,
+        SocketService.currentPlan.value.planId!,
       );
       if (response.allGood) {
         if (response.body == 'Plan already started') {
-          Get.toNamed(Routes.ON_PLAN, arguments: currentPlan.value!.planId);
-          currentPlan.value!.isStart = true;
+          Get.toNamed(Routes.ON_PLAN,
+              arguments: SocketService.currentPlan.value.planId);
+          SocketService.currentPlan.value.isStart = true;
         } else {
           PlanModel plan = PlanModel.fromJson(response.body);
-          currentPlan.value = plan;
-          Get.toNamed(Routes.ON_PLAN, arguments: currentPlan.value!.planId);
+          SocketService.currentPlan.value = plan;
+          Get.toNamed(Routes.ON_PLAN,
+              arguments: SocketService.currentPlan.value.planId);
         }
-        currentPlan.refresh();
+        SocketService.currentPlan.refresh();
       }
     }
   }
@@ -517,8 +450,9 @@ class PlanController extends BaseController with GetTickerProviderStateMixin {
     try {
       var response = await _taskRequest.deleteTask(taskId: taskId);
       if (response.allGood) {
-        tasks.removeWhere((task) => task.taskId == taskId);
-        tasks.refresh();
+        SocketService.currentPlan.value.tasks
+            ?.removeWhere((task) => task.taskId == taskId);
+        SocketService.currentPlan.refresh();
       }
     } catch (e) {
       print(e);
@@ -537,7 +471,7 @@ class PlanController extends BaseController with GetTickerProviderStateMixin {
         ApiResponse response;
         if (isEdit) {
           response = await _planRequest.updatePlanById(
-            planId: currentPlan.value!.planId!,
+            planId: SocketService.currentPlan.value.planId!,
             title: titleTEC.text,
             description: descriptionTEC.text,
             budget: budgetTEC.text,
@@ -565,16 +499,18 @@ class PlanController extends BaseController with GetTickerProviderStateMixin {
           startDay.value = DateTime.now();
           endDay.value = DateTime.now();
           if (isEdit) {
-            plans.removeWhere(
-                (plan) => plan.planId == currentPlan.value!.planId);
+            SocketService.currentPlan.value.tasks?.clear();
           }
           final plan = PlanModel.fromJson(response.body);
-          plans.add(plan);
-          ManagerSocket.addPlan(
-            userId: currentUser.value!.userId!,
-            groupId: argGroupId,
-            planId: plan.planId!,
-          );
+          SocketService.plans.add(plan);
+          SocketService.plans.refresh();
+          if (argGroupId != null) {
+            SocketService.addPlan(
+              userId: currentUser.value!.userId!,
+              groupId: argGroupId,
+              planId: plan.planId!,
+            );
+          }
           Get.snackbar("Success", "Plan created successfully");
           currentStep.value++;
         }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kiwis_flutter/core/base/base.controller.dart';
-import 'package:kiwis_flutter/core/manager/manager.socket.dart';
 import 'package:kiwis_flutter/models/plan.model.dart';
 import 'package:kiwis_flutter/models/post.model.dart';
 import 'package:kiwis_flutter/models/task.model.dart';
@@ -11,7 +10,7 @@ import 'package:kiwis_flutter/requests/upload_realtime.request.dart';
 import 'package:kiwis_flutter/services/geolocator.service.dart';
 import 'package:kiwis_flutter/services/map.service.dart';
 import 'package:kiwis_flutter/services/services.dart';
-import 'package:kiwis_flutter/views/home/home_controller.dart';
+import 'package:kiwis_flutter/services/socket.service.dart';
 import 'package:kiwis_flutter/views/on_plan/widgets/camera.content.dart';
 import 'package:kiwis_flutter/views/on_plan/widgets/contact.content.dart';
 import 'package:kiwis_flutter/views/on_plan/widgets/schedule.content.dart';
@@ -50,12 +49,14 @@ class OnPlanController extends BaseController {
 
   @override
   void onInit() async {
+    showLoading();
     super.onInit();
     argPlanId = Get.arguments;
     await getPlan();
     await _fetchContacts();
     currentUser.value = await AuthServices.getCurrentUser();
     initCamera();
+    hideLoading();
   }
 
   @override
@@ -250,11 +251,10 @@ class OnPlanController extends BaseController {
           onPost.value = false;
 
           final PostModel post = PostModel.fromJson(response.body);
-          final homeController = Get.find<HomeController>();
-          homeController.posts.value.insert(0, post);
-          homeController.posts.refresh();
+          SocketService.posts.insert(0, post);
+          SocketService.posts.refresh();
 
-          ManagerSocket.sendPost(
+          SocketService.sendPost(
             postId: post.realtimePostId!,
           );
         } else {

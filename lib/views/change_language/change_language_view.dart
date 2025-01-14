@@ -148,8 +148,8 @@ class ChangeLanguageScreen extends BaseView<ChangeLanguageController> {
 
   /// Section Widget
   Widget _buildChangeLanguageList() {
-    final data = controller
-        .changeLanguageModelObj.value.changelanguagelistItemList.value;
+    final data =
+        controller.changeLanguageModelObj.value.changelanguagelistItemList;
     return ListView.builder(
       padding: EdgeInsets.zero,
       physics: NeverScrollableScrollPhysics(),

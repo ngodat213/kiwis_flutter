@@ -1,17 +1,15 @@
 import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fbAuth;
-import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:kiwis_flutter/app/routes/app_pages.dart';
 import 'package:kiwis_flutter/core/base/base.controller.dart';
 import 'package:kiwis_flutter/core/constants/app.theme_helper.dart';
-import 'package:kiwis_flutter/core/constants/constants.dart';
-import 'package:kiwis_flutter/core/manager/manager.socket.dart';
 import 'package:kiwis_flutter/models/api.response.dart';
 import 'package:kiwis_flutter/requests/auth.request.dart';
 import 'package:kiwis_flutter/requests/user.request.dart';
 import 'package:kiwis_flutter/services/services.dart';
+import 'package:kiwis_flutter/services/socket.service.dart';
 import 'package:kiwis_flutter/views/sign_in/models/sign_in_model.dart';
 
 class SignInController extends BaseController {
@@ -148,10 +146,8 @@ class SignInController extends BaseController {
 
       if (apiResponse.allGood) {
         await AuthServices.saveUser(apiResponse.body);
-        ManagerSocket.initSocket(
-          domain: AppAPI.domainSocket,
-          userId: apiResponse.body['userId'],
-        );
+        await Get.putAsync(
+            () => SocketService().init(userId: apiResponse.body['userId']));
       } else {
         throw Exception(apiResponse.error);
       }

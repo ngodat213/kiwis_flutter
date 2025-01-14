@@ -3,7 +3,7 @@ import 'package:glossy/glossy.dart';
 import 'package:kiwis_flutter/core/constants/app.button_style.dart';
 import 'package:kiwis_flutter/core/constants/app_export.dart';
 import 'package:kiwis_flutter/models/individual_shares.model.dart';
-import 'package:kiwis_flutter/models/task.model.dart';
+import 'package:kiwis_flutter/services/socket.service.dart';
 import 'package:kiwis_flutter/views/plan/plan_controller.dart';
 import 'package:kiwis_flutter/widgets/base_appbar.dart';
 import 'package:kiwis_flutter/widgets/custom_elevated_button.dart';
@@ -139,7 +139,7 @@ class AddExpenseContent extends GetView<PlanController> {
                             ),
                           SizedBox(height: 16),
                           SizedBox(width: 16),
-                          if (controller.currentPlan.value?.groupId != null &&
+                          if (SocketService.currentPlan.value.groupId != null &&
                               !controller.isEvenlyShared.value)
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
